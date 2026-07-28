@@ -61,6 +61,10 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .phase-wrap{display:flex;gap:12px;justify-content:center;margin-top:0}
 .phase-side{flex:1;min-width:0;max-width:190px}
 .phase-svg{width:100%;height:auto;display:block;overflow:visible}
+.phase-range{font-size:10px;color:#999;text-align:center;margin-bottom:4px;font-family:'MPLUS1Code',monospace}
+.phase-nav-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.phase-nav-row button{background:none;border:1px solid #ddd;border-radius:20px;padding:3px 10px;font-size:11px;color:#666;cursor:pointer;font-family:inherit}
+.phase-nav-row button:hover{border-color:#bbb;color:#333}
 .phase-pos{font-size:13px;font-weight:700;fill:#999;font-family:'MPLUS1Code',monospace}
 .phase-pos.current{fill:#b8860b}
 .phase-flow{font-size:10px;font-weight:700;font-family:'MPLUS1Code',monospace}
@@ -205,9 +209,9 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 /* 合盤 */
 .rec-check{width:16px;height:16px;accent-color:#b8860b;cursor:pointer;margin:0;display:block}
 .rec-check-wrap{width:24px;display:flex;align-items:center;justify-content:flex-start}
-.rec-pair-footer{padding:0 0 14px;margin-top:-2px;margin-bottom:4px;background:#fff;display:none}
+.rec-pair-footer{border-bottom:1px solid #eee;padding:0 0 14px;margin-top:-2px;margin-bottom:4px;background:#fff;display:none}
 .rec-pair-footer.show{display:block}
-.rec-pair-sticky{position:sticky;top:0;z-index:5;background:#fff;border-radius:0 0 12px 12px;overflow:hidden;margin-left:-9px;width:calc(100% + 9px);padding:9px 0 0 9px;box-sizing:border-box;box-shadow:0 8px 16px -6px rgba(0,0,0,.2)}
+.rec-pair-sticky{position:sticky;top:0;z-index:5;background:#fff;box-shadow:0 4px 6px -6px rgba(0,0,0,.15)}
 .rec-pair-sticky:empty{display:none}
 .rec-pair-names{font-size:12px;color:#888;text-align:center;margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rec-pair-btn{width:100%;padding:9px;border:1px solid #d8c48a;border-radius:20px;background:#fffdf5;color:#8a6d1a;font-size:13px;font-family:inherit;letter-spacing:.15em;cursor:pointer;transition:all .15s}
@@ -428,7 +432,11 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
           <div id="nineGridSection3" class="hidden" style="margin-top:12px;padding-top:12px;border-top:1px dashed #ddd"></div>
         </div>
         <div class="phase-section" id="phaseSection">
-          <div class="innate-title" id="phaseTitleText">位格</div>
+          <div class="phase-nav-row">
+            <button onclick="changePhaseNav(-1)">‹ <span id="phaseNavPrevText">去年</span></button>
+            <span class="innate-title" id="phaseTitleText">位格</span>
+            <button onclick="changePhaseNav(1)"><span id="phaseNavNextText">明年</span> ›</button>
+          </div>
           <div id="phaseBlock"></div>
         </div>
         <div class="flow-block" id="flowBlock">
@@ -449,7 +457,7 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
     <a href="https://buy.stripe.com/7sY8wQe1NdhXbkV98G8Vi01" target="_blank" id="coffeeBtn" style="display:inline-block;padding:4px 14px;border:1px solid #ddd;border-radius:14px;font-size:12px;color:#888;text-decoration:none;letter-spacing:.08em;transition:all .15s" onmouseover="this.style.borderColor='#bbb';this.style.color='#555'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">☕ 請我喝杯咖啡</a>
   </div>
   <div style="text-align:center;padding:16px 20px 24px;font-family:'M PLUS Rounded 1c',sans-serif;font-size:11px;color:#bbb;letter-spacing:.05em">
-    <span style="display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0">© 2026 Eric CH / <a id="footerStudio" href="https://www.therootshollow.com" target="_blank" style="color:inherit;text-decoration:none;">樹根樹洞</a>　·　<a href="https://instagram.com/eric.hypnotist" target="_blank" style="color:#bbb;text-decoration:none;display:inline-flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> @eric.hypnotist</a></span><br>
+    <span style="display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0">© 2026 Eric CH / <a id="footerStudio" href="https://www.therootshollow.com" target="_blank" style="color:inherit;text-decoration:none;">樹根樹洞</a>·　<a href="https://instagram.com/eric.hypnotist" target="_blank" style="color:#bbb;text-decoration:none;display:inline-flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> @eric.hypnotist</a></span><br>
     <a href="https://www.therootshollow.com" target="_blank" style="color:#bbb;text-decoration:none">www.therootshollow.com</a>
   </div>
 </div>
@@ -497,6 +505,8 @@ const T={
     bd2HintPrefix:'如果你除了閏月還有第二組生日，', bd2HintOpen:'按這裡→ +', bd2HintClose:'收起 －',
     innateTitle:'先天數',
     phaseTitle:'位格',
+    phaseNavPrev:'前一年',
+    phaseNavNext:'後一年',
     errDate:'請輸入正確的陽曆生日', errLunar:'陰曆換算失敗，請確認年份範圍',
     greg:'陽曆', lun:'陰曆', leap:'閏',
     stages:['幼年','少年','青年','中年','老年'],
@@ -527,15 +537,17 @@ const T={
     today:'Today',
     inputNote:'Enter your birthday below',
     labelDate:'Year', labelMonth:'Month', labelDay:'Day', labelHour:'Hour', labelMin:'Minute', labelTime:'H：M (opt)',
-    tab0:'Life\n5 Stages', tab1:'Solar¹\nFlow', tab2:'Lunar¹\nFlow', tab1no:'Solar\nFlow Table', tab2no:'Lunar\nFlow Table', tab3:'Solar²\nFlow', tab4:'Lunar²\nFlow', tab5:'Solar³\nFlow', tab6:'Lunar³\nFlow',
+    tab0:'Life\nStages', tab1:'Solar¹\nTransit', tab2:'Lunar¹\nTransit', tab1no:'Solar\nTransit', tab2no:'Lunar\nTransit', tab3:'Solar²\nTransit', tab4:'Lunar²\nTransit', tab5:'Solar³\nTransit', tab6:'Lunar³\nTransit',
     leapDivider:'— Leap Month Set 2 —', leapDivider2:'Leap Month Set 2', bd2Divider:'— Second Birthday —',
     bd2HintPrefix:'Have a second birthday besides a leap month one? ', bd2HintOpen:'Tap here → +', bd2HintClose:'Hide －',
-    innateTitle:'Innate',
+    innateTitle:'Innate Numbers',
     phaseTitle:'Phase',
+    phaseNavPrev:'Prev',
+    phaseNavNext:'Next',
     errDate:'Please enter a valid birthday', errLunar:'Lunar conversion failed, please check the date',
     greg:'Solar', lun:'Lunar', leap:'Leap',
     stages:['Childhood','Adolescence','Youth','Midlife','Elder'],
-    flowYear:'Annual', flowMonth:'Monthly', flowDay:'Daily', flowPrev:'Prev Year', flowCurr:'Current Year', flowNext:'Next Year', flowCurrSuffix:'',
+    flowYear:'Annual Transit', flowMonth:'Monthly Transit', flowDay:'Daily Transit', flowPrev:'Prev Year', flowCurr:'Current Year', flowNext:'Next Year', flowCurrSuffix:'',
     flowTableGreg:'Solar (+) 9-Year Energy Rhythm', flowTableLun:'Lunar (-) 9-Year Energy Rhythm', flowTableSuffix:'9-Year Energy Rhythm',
     coffee:'🧋 Buy Me a Bubble Tea', coffeeUrl:'https://buy.stripe.com/5kQ8wQe1NcdT9cN4Sq8Vi00', studio:'The Roots Hollow',
     langBtn:'中文',
@@ -611,6 +623,10 @@ function applyLang(){
   document.getElementById('innateTitleText').textContent=t('innateTitle');
   const phaseTitleEl=document.getElementById('phaseTitleText');
   if(phaseTitleEl) phaseTitleEl.textContent=t('phaseTitle');
+  const phaseNavPrevEl=document.getElementById('phaseNavPrevText');
+  if(phaseNavPrevEl) phaseNavPrevEl.textContent=t('phaseNavPrev');
+  const phaseNavNextEl=document.getElementById('phaseNavNextText');
+  if(phaseNavNextEl) phaseNavNextEl.textContent=t('phaseNavNext');
   const nineGridToggleBtn=document.querySelector('#innateTitle button');
   if(nineGridToggleBtn){
     const wraps=document.querySelectorAll('.nine-grid-collapsible');
@@ -1019,17 +1035,18 @@ function _phaseTrianglePoints(){
     apex,BL,BR
   };
 }
-function _phaseFlowTspans(sign,str){
-  // 配色比照流年卡片：路徑段落用 #999，最後的位格數用 #1a1a1a（皆粗體，因為這裡只顯示目前流年）
+function _phaseFlowTspans(sign,str,lv){
+  // 配色比照流年卡片：路徑段落用 #999，最後的位格數用 #1a1a1a，等級用 #4a90d9（皆粗體，因為這裡只顯示目前流年）
   const parts=str.split('/');
   let out=`<tspan fill="#1a1a1a">${sign}</tspan>`;
   parts.forEach((p,i)=>{
     if(i===parts.length-1) out+=`<tspan fill="#1a1a1a">${p}</tspan>`;
     else out+=`<tspan fill="#999">${p}/</tspan>`;
   });
+  if(lv!==undefined&&lv!==null) out+=`<tspan fill="#4a90d9" font-size="8">${lv}</tspan>`;
   return out;
 }
-function _phaseTriangleSVG(sign,currentK,currentStr){
+function _phaseTriangleSVG(sign,currentK,currentStr,currentLv){
   const{pts,apex,BL,BR}=_phaseTrianglePoints();
   const cx=(apex.x+BL.x+BR.x)/3, cy=(apex.y+BL.y+BR.y)/3;
   const margin=12,cornerMargin=margin/Math.sin(Math.PI/6);
@@ -1064,26 +1081,64 @@ function _phaseTriangleSVG(sign,currentK,currentStr){
         outerX=p.x+ux*gap+(ux>0?2:-2);
         outerY=p.y+uy*gap;
       }
-      svg+=`<text class="phase-flow" x="${outerX}" y="${outerY}" text-anchor="${anchor}" dominant-baseline="middle">${_phaseFlowTspans(sign,currentStr)}</text>`;
+      svg+=`<text class="phase-flow" x="${outerX}" y="${outerY}" text-anchor="${anchor}" dominant-baseline="middle">${_phaseFlowTspans(sign,currentStr,currentLv)}</text>`;
     }
   });
   svg+=`</svg>`;
   return svg;
 }
+// ── 位格區間日期計算 ──
+function _phaseRangeGreg(cycleStartY,m,d){
+  const p2=n=>n<10?'0'+n:String(n);
+  const start=`${cycleStartY}/${p2(m)}/${p2(d)}`;
+  const endDate=new Date(cycleStartY+1,m-1,d);
+  endDate.setDate(endDate.getDate()-1);
+  const end=`${endDate.getFullYear()}/${p2(endDate.getMonth()+1)}/${p2(endDate.getDate())}`;
+  return{start,end};
+}
+function _phaseRangeLunar(cycleStartY,m,d){
+  const p2=n=>n<10?'0'+n:String(n);
+  const start=`${cycleStartY}/${p2(m)}/${p2(d)}`;
+  try{
+    // 下一年同農曆月日，轉國曆往前推一天，再轉回農曆，取得區間結束的農曆日期
+    // （農曆生日若剛好在閏月，這裡跟其他位格計算一樣，先簡化用同一個月份數字處理，不特別分辨閏月）
+    const lunarNext=Lunar.fromYmd(cycleStartY+1,m,d);
+    const solarNext=lunarNext.getSolar();
+    const d2=new Date(solarNext.getYear(),solarNext.getMonth()-1,solarNext.getDay());
+    d2.setDate(d2.getDate()-1);
+    const backLunar=Solar.fromYmd(d2.getFullYear(),d2.getMonth()+1,d2.getDate()).getLunar();
+    const endM=Math.abs(backLunar.getMonth());
+    const end=`${backLunar.getYear()}/${p2(endM)}/${p2(backLunar.getDay())}`;
+    return{start,end};
+  }catch(e){
+    return{start,end:'?'};
+  }
+}
+let _phaseNavOffset=0,_phaseSetsCache=null,_phaseTodayCache=null;
 function renderPhase(el,sets,todayY,todayM,todayD){
+  _phaseSetsCache=sets;
+  _phaseTodayCache={todayY,todayM,todayD};
+  // 導覽用的參考日期：把「今天」的年份依偏移量往前後推，月日不變
+  const refY=todayY+_phaseNavOffset,refM=todayM,refD=todayD;
   let html='<div class="phase-block-inner">';
   sets.forEach((s,idx)=>{
-    const{gFY,lFY}=calcFlowData(s.gregY,s.gregM,s.gregD,s.lunY,s.lunM,s.lunD,todayY,todayM,todayD);
+    const{gFY,lFY,gInnate,lInnate}=calcFlowData(s.gregY,s.gregM,s.gregD,s.lunY,s.lunM,s.lunD,refY,refM,refD);
     const gPhase=((gFY-s.gregY+1)%9+9)%9||9;
     const lPhase=((lFY-s.lunY+1)%9+9)%9||9;
     const gStage=makeStage(sumArr([...digs(gFY),...digs(s.gregM),...digs(s.gregD)]));
     const lStage=makeStage(sumArr([...digs(lFY),...digs(s.lunM),...digs(s.lunD)]));
+    const gLv=calcLevel(gInnate,gStage.destiny,gStage.pathNums).level;
+    const lLv=calcLevel(lInnate,lStage.destiny,lStage.pathNums).level;
+    const gRange=_phaseRangeGreg(gFY,s.gregM,s.gregD);
+    const lRange=_phaseRangeLunar(lFY,s.lunM,s.lunD);
     const wrap=`<div class="phase-wrap">
       <div class="phase-side">
-        ${_phaseTriangleSVG('+',gPhase,gStage.str)}
+        <div class="phase-range">+${gRange.start} - ${gRange.end}</div>
+        ${_phaseTriangleSVG('+',gPhase,gStage.str,gLv)}
       </div>
       <div class="phase-side">
-        ${_phaseTriangleSVG('-',lPhase,lStage.str)}
+        <div class="phase-range">-${lRange.start} - ${lRange.end}</div>
+        ${_phaseTriangleSVG('-',lPhase,lStage.str,lLv)}
       </div>
     </div>`;
     if(idx===0) html+=wrap;
@@ -1091,6 +1146,11 @@ function renderPhase(el,sets,todayY,todayM,todayD){
   });
   html+='</div>';
   el.innerHTML=html;
+}
+function changePhaseNav(delta){
+  if(!_phaseSetsCache||!_phaseTodayCache) return;
+  _phaseNavOffset+=delta;
+  renderPhase(document.getElementById('phaseBlock'),_phaseSetsCache,_phaseTodayCache.todayY,_phaseTodayCache.todayM,_phaseTodayCache.todayD);
 }
 
 // ── 流月流日導航狀態 ──
@@ -1160,8 +1220,8 @@ function renderFlowDay(el,sets,todayY,todayM,todayD){
   const startOffset=(firstDay+6)%7;
   const daysInMonth=new Date(calYear,calMonth,0).getDate();
   const monthNames=lang==='en'?['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-  const prevMonthLabel=lang==='en'?'‹ Prev':'‹ 上月';
-  const nextMonthLabel=lang==='en'?'Next ›':'下月 ›';
+  const prevMonthLabel=lang==='en'?'‹ Prev':'‹ 前一月';
+  const nextMonthLabel=lang==='en'?'Next ›':'後一月 ›';
   const monthNavHtml=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
     <button onclick="if(_flowDayNavMonth===1){_flowDayNavMonth=12;_flowDayNavYear--;}else{_flowDayNavMonth--;}_reRenderFlowDay()" style="background:none;border:1px solid #ddd;border-radius:20px;padding:3px 10px;font-size:11px;color:#666;cursor:pointer">${prevMonthLabel}</button>
     <span style="font-size:13px;font-weight:600">${calYear}/${String(calMonth).padStart(2,'0')}</span>
@@ -1525,6 +1585,10 @@ function renderPartial(){_resetFlowNav();
     document.getElementById('innateTitleText').textContent=t('innateTitle');
     const phaseTitleEl2=document.getElementById('phaseTitleText');
     if(phaseTitleEl2) phaseTitleEl2.textContent=t('phaseTitle');
+    const phaseNavPrevEl2=document.getElementById('phaseNavPrevText');
+    if(phaseNavPrevEl2) phaseNavPrevEl2.textContent=t('phaseNavPrev');
+    const phaseNavNextEl2=document.getElementById('phaseNavNextText');
+    if(phaseNavNextEl2) phaseNavNextEl2.textContent=t('phaseNavNext');
     const now=new Date();
     // 流年流月流日
     const nowY=now.getFullYear(),nowM=now.getMonth()+1,nowD=now.getDate();
@@ -1590,6 +1654,7 @@ function renderPartial(){_resetFlowNav();
       document.getElementById('tab1').textContent=t('tab1no');
       document.getElementById('tab2').textContent=t('tab2no');
     }
+    _phaseNavOffset=0;
     renderPhase(document.getElementById('phaseBlock'),flowSetsAll,nowY,nowM,nowD);
     renderFlowYear(document.getElementById('flowYearBlock'),flowSetsAll,nowY,nowM,nowD);
     _initFlowNav(flowSetsAll,nowY,nowM);
