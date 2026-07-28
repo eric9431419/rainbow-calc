@@ -207,6 +207,8 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .rec-check-wrap{width:24px;display:flex;align-items:center;justify-content:flex-start}
 .rec-pair-footer{border-bottom:1px solid #eee;padding:0 0 14px;margin-top:-2px;margin-bottom:4px;background:#fff;display:none}
 .rec-pair-footer.show{display:block}
+.rec-pair-sticky{position:sticky;top:0;z-index:5;background:#fff;box-shadow:0 4px 6px -6px rgba(0,0,0,.15)}
+.rec-pair-sticky:empty{display:none}
 .rec-pair-names{font-size:12px;color:#888;text-align:center;margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rec-pair-btn{width:100%;padding:9px;border:1px solid #d8c48a;border-radius:20px;background:#fffdf5;color:#8a6d1a;font-size:13px;font-family:inherit;letter-spacing:.15em;cursor:pointer;transition:all .15s}
 .rec-pair-btn:disabled{border-color:#e5e5e5;background:#fafafa;color:#bbb;cursor:default}
@@ -468,6 +470,7 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
         <button id="recExportBtn" onclick="exportRecords()" style="padding:4px 14px;border:1px solid #ddd;border-radius:14px;font-size:12px;color:#888;background:#fff;cursor:pointer;font-family:inherit"><span id="recExportBtnText">匯出</span></button>
         <input type="file" id="recImportFile" accept="application/json,.json" style="display:none" onchange="importRecordsFile(event)">
       </div>
+      <div class="rec-pair-sticky" id="recPairSticky"></div>
       <div id="recList"></div>
     </div>
   </div>
@@ -1951,27 +1954,13 @@ function toggleRecordDetail(id){
   if(dummy) dummy.textContent=label;
 }
 
-function renderRecordList(){
-  const list=getRecords();
-  const wrap=document.getElementById('recList');
-  _pairSel=_pairSel.filter(id=>list.some(r=>r.id===id));
-  if(!list.length){
-    wrap.innerHTML=`<div class="rec-empty">${t('recEmpty')}</div>`;
-    return;
-  }
-  // 排序優先順序：勾選中的合盤紀錄（依勾選順序）> 釘選的紀錄 > 其餘紀錄（維持原順序）
-  const selItems=_pairSel.map(id=>list.find(r=>r.id===id)).filter(Boolean);
-  const nonSelItems=list.filter(r=>!_pairSel.includes(r.id));
-  const pinnedItems=nonSelItems.filter(r=>r.pinned);
-  const otherItems=nonSelItems.filter(r=>!r.pinned);
-  const ordered=[...selItems,...pinnedItems,...otherItems];
-  let html='';
-  ordered.forEach((r,i)=>{
-    html+=`<div class="rec-item${r.pinned?' rec-pinned':''}" id="rec-item-${r.id}">
+function recordItemHtml(r){
+  const checkedAttr=_pairSel.includes(r.id)?' checked':'';
+  return`<div class="rec-item${r.pinned?' rec-pinned':''}" id="rec-item-${r.id}">
       <div class="rec-pin-badge${r.pinned?' active':''}" onclick="toggleRecordPin(${r.id})"><svg viewBox="0 0 384 512"><path d="M32 32C32 14.3 46.3 0 64 0H320c17.7 0 32 14.3 32 32s-14.3 32-32 32h-3.6l12.2 122.2c48.5 21.4 84.1 66.7 90.8 121.1l.5 4.3c.6 4.6-.9 9.3-4 12.8s-7.6 5.5-12.3 5.5H32c-4.7 0-9.1-2-12.3-5.5s-4.6-8.2-4-12.8l.5-4.3c6.7-54.4 42.3-99.7 90.8-121.1L119.6 64H116c-17.7 0-32-14.3-32-32zM160 464V336h64V464c0 26.5-14.3 48-32 48s-32-21.5-32-48z"/></svg></div>
       <div class="rec-item-head">
         <button class="rec-toggle-btn rec-detail-toggle-dummy" id="rec-detail-dummy-${r.id}" disabled>${t('recExpand')}</button>
-        <div class="rec-check-wrap"><input type="checkbox" class="rec-check" id="rec-check-${r.id}" onchange="togglePairSel(${r.id},this)"></div>
+        <div class="rec-check-wrap"><input type="checkbox" class="rec-check" id="rec-check-${r.id}" onchange="togglePairSel(${r.id},this)"${checkedAttr}></div>
         <div class="rec-item-name">${escapeHtmlRec(r.name)}</div>
         <button class="rec-toggle-btn rec-detail-toggle" id="rec-detail-btn-${r.id}" onclick="toggleRecordDetail(${r.id})">${t('recExpand')}</button>
         <div class="rec-check-wrap" style="visibility:hidden"><input type="checkbox" class="rec-check" tabindex="-1"></div>
@@ -1983,14 +1972,27 @@ function renderRecordList(){
       </div>
       <div class="rec-item-confirm" id="rec-confirm-${r.id}"></div>
     </div>`;
-    // 合盤卡片緊接在最後一筆已勾選的紀錄下方（勾1筆時在第1筆下方，勾2筆時在第2筆下方）
-    if(selItems.length>0&&i===selItems.length-1) html+=pairFooterHtml(selItems);
-  });
-  wrap.innerHTML=html;
-  _pairSel.forEach(id=>{
-    const cb=document.getElementById('rec-check-'+id);
-    if(cb) cb.checked=true;
-  });
+}
+function renderRecordList(){
+  const list=getRecords();
+  const wrap=document.getElementById('recList');
+  _pairSel=_pairSel.filter(id=>list.some(r=>r.id===id));
+  if(!list.length){
+    wrap.innerHTML=`<div class="rec-empty">${t('recEmpty')}</div>`;
+    document.getElementById('recPairSticky').innerHTML='';
+    return;
+  }
+  // 已勾選要合盤的紀錄整張卡片移到頂端 sticky 區域，跟著合盤按鈕一起浮動；
+  // 捲動列表只顯示尚未勾選的（釘選優先，其餘維持原順序）
+  const selItems=_pairSel.map(id=>list.find(r=>r.id===id)).filter(Boolean);
+  const nonSelItems=list.filter(r=>!_pairSel.includes(r.id));
+  const pinnedItems=nonSelItems.filter(r=>r.pinned);
+  const otherItems=nonSelItems.filter(r=>!r.pinned);
+  const ordered=[...pinnedItems,...otherItems];
+  wrap.innerHTML=ordered.map(recordItemHtml).join('');
+  document.getElementById('recPairSticky').innerHTML=selItems.length>0
+    ?selItems.map(recordItemHtml).join('')+pairFooterHtml(selItems)
+    :'';
 }
 function pairFooterHtml(selItems){
   let names,disabledAttr;
