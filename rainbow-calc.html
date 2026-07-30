@@ -72,6 +72,43 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .phase-dot{fill:#999}
 .phase-dot.current{fill:#b8860b}
 .flow-block{margin-top:16px;border-top:1px solid #e8e8e8;padding-top:16px;text-align:center}
+.soul-section{margin-top:32px;border-top:1px solid #e8e8e8;padding-top:16px;text-align:center}
+.soul-country-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
+.soul-country-row select{font-size:13px;padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-family:inherit;background:#fff}
+.soul-country-row label{font-size:12px;color:#666}
+.soul-result{margin-top:12px}
+.soul-numline{font-size:13px;margin:2px 0}
+.soul-numline .lab{color:#888;margin-right:6px}
+.soul-numline .num{letter-spacing:.05em;font-family:'MPLUS1Code',monospace}
+.soul-numline .title{color:#666;margin-left:8px}
+.soul-body-num{color:#1a1a1a}
+.soul-fu-num{color:#e06c75}
+.soul-yang-line{font-size:12px;color:#488850;margin-top:2px;letter-spacing:.03em}
+.soulChartWrap{overflow-x:auto;margin-top:10px}
+.soul-track{margin-top:4px}
+.soul-track+.soul-track{margin-top:20px;padding-top:16px;border-top:1px dashed #ddd}
+.soul-tl-table{border-collapse:collapse;font-family:"SF Mono",Menlo,Consolas,monospace;width:100%;table-layout:fixed}
+.soul-tl-labelcol{width:13px}
+.soul-tl-table td,.soul-tl-table th{padding:0;text-align:center;overflow:hidden;white-space:nowrap;font-size:9px;line-height:1.6;border:none;letter-spacing:-.5px}
+.soul-tl-table td.soul-tl-yang,.soul-tl-table td.soul-tl-fu,.soul-tl-table td.soul-tl-body{line-height:.8}
+.soul-tl-table td.soul-tl-yang,.soul-tl-table td.soul-tl-fu,.soul-tl-table td.soul-tl-body,.soul-tl-table td.soul-tl-stagelabel{border-left:1px dashed #ddd}
+.soul-tl-table td.soul-tl-nowdivider{border-left:1px solid #1a1a1a}
+.soul-tl-table td.soul-tl-nowcell{color:#1a1a1a}
+.soul-tl-rowlabel{font-family:inherit;font-size:11px;font-weight:600;color:#888;text-align:center;vertical-align:middle}
+.soul-tl-yang{color:#488850}
+.soul-tl-fu{color:#e06c75}
+.soul-tl-body{color:#1a1a1a}
+.soul-tl-stagelabel{color:#488850;font-weight:600;font-size:10px}
+.soul-tl-axis{color:#999;font-size:9px}
+.soul-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:200}
+.soul-modal-card{background:#fff;border-radius:12px;padding:20px;width:260px;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.soul-modal-card h3{font-size:14px;margin:0 0 12px;text-align:center;font-weight:500}
+.soul-modal-row{display:flex;gap:8px;align-items:center;justify-content:center;margin-bottom:8px;font-size:12px}
+.soul-modal-row input{width:70px;font-size:13px;padding:5px;border:1px solid #ddd;border-radius:6px}
+.soul-modal-btnrow{display:flex;justify-content:center;gap:8px;margin-top:14px}
+.soul-modal-card .input-group input{padding:5px 4px;font-size:13px}
+.soul-modal-btnrow button{font-size:13px;padding:7px 18px;border:none;border-radius:8px;background:#333;color:#fff;cursor:pointer}
+.soul-modal-btnrow button.secondary{background:#eee;color:#333}
 .flow-path,.flow-dest{font-size:13px;font-family:'MPLUS1Code',monospace}
 .flow-path{color:#999}
 .flow-dest{color:#1a1a1a}
@@ -444,6 +481,24 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
           <div id="flowMonthBlock" style="margin-top:20px;padding-top:20px;border-top:1px solid #e8e8e8"></div>
           <div id="flowDayBlock" style="margin-top:20px;padding-top:20px;border-top:1px solid #e8e8e8"></div>
         </div>
+        <div class="soul-section" id="soulSection">
+          <div class="innate-title" style="display:flex;align-items:center;justify-content:center;gap:6px">靈魂本質<button onclick="openSoulRefModal()" style="-webkit-appearance:none;appearance:none;background:none;border:1px solid #ccc;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;color:#888;cursor:pointer;padding:0">?</button></div>
+          <div class="soul-country-row">
+            <label for="soulCountry">對照國家</label>
+            <select id="soulCountry" onchange="onSoulCountryChange(this)">
+              <option value="">請選擇</option>
+              <option value="TW">台灣</option>
+              <option value="US">美國</option>
+              <option value="CN">中國</option>
+              <option value="KR">韓國</option>
+              <option value="MY">馬來西亞</option>
+              <option value="JP">日本（自動判斷年號）</option>
+              <option value="CUSTOM">自訂國家／地區</option>
+            </select>
+          </div>
+          <div id="soulCustomLabel" class="hidden" style="font-size:11px;color:#2c8a4a;margin-top:4px"></div>
+          <div id="soulOutput"></div>
+        </div>
       </div>
       <div class="panel" id="panel1"><div id="gregFlowTable"></div></div>
       <div class="panel" id="panel2"><div id="lunFlowTable"></div></div>
@@ -453,7 +508,7 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
       <div class="panel hidden" id="panel6"><div id="lunFlowTable3"></div></div>
     </div>
   </div>
-  <div style="text-align:center;padding:12px 20px 16px;font-family:'M PLUS Rounded 1c',sans-serif">
+  <div style="text-align:center;padding:16px 20px 16px;font-family:'M PLUS Rounded 1c',sans-serif">
     <a href="https://buy.stripe.com/7sY8wQe1NdhXbkV98G8Vi01" target="_blank" id="coffeeBtn" style="display:inline-block;padding:4px 14px;border:1px solid #ddd;border-radius:14px;font-size:12px;color:#888;text-decoration:none;letter-spacing:.08em;transition:all .15s" onmouseover="this.style.borderColor='#bbb';this.style.color='#555'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">☕ 請我喝杯咖啡</a>
   </div>
   <div style="text-align:center;padding:16px 20px 24px;font-family:'M PLUS Rounded 1c',sans-serif;font-size:11px;color:#bbb;letter-spacing:.05em">
@@ -489,6 +544,44 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
     <div class="pair-panel-body">
       <div id="pairCapture"></div>
       <div class="screenshot-btn-wrap" style="text-align:center;padding:16px 0 4px"><button id="pairShotBtn" onclick="takePairScreenshot()" class="screenshot-btn" style="padding:7px 18px;border:1px solid #ddd;border-radius:20px;font-size:12px;color:#888;letter-spacing:.08em;background:#fff;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#bbb';this.style.color='#555'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">📷 <span id="pairShotText">儲存截圖</span></button></div>
+    </div>
+  </div>
+</div>
+<div id="soulRefModal" class="soul-modal-overlay hidden" onclick="if(event.target===this)closeSoulRefModal()">
+  <div class="soul-modal-card" style="width:min(90vw,360px);max-height:80vh;overflow-y:auto">
+    <h3>靈魂本質對照表</h3>
+    <div style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">0的系列（未來印記）</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px">
+      <tbody id="soulRefAlienTable"></tbody>
+    </table>
+    <div style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">9的系列（過去印記）</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px">
+      <tbody id="soulRefEarthTable"></tbody>
+    </table>
+    <div class="soul-modal-btnrow">
+      <button onclick="closeSoulRefModal()">關閉</button>
+    </div>
+  </div>
+</div>
+<div id="soulCustomModal" class="soul-modal-overlay hidden">
+  <div class="soul-modal-card">
+    <h3>自訂國家／地區</h3>
+    <div class="soul-modal-row"><label>名稱（選填）</label><input id="soulCName" type="text" style="width:110px"></div>
+    <div class="input-note" style="margin:10px 0 4px;font-size:12px">國家建國日（國慶日）</div>
+    <div class="input-row" style="gap:6px">
+      <div class="input-group" style="flex:1">
+        <input type="text" id="soulCY" placeholder="YYYY" maxlength="4" inputmode="numeric" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>
+      <div class="input-group" style="flex:1">
+        <input type="text" id="soulCM" placeholder="MM" maxlength="2" inputmode="numeric" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>
+      <div class="input-group" style="flex:1">
+        <input type="text" id="soulCD" placeholder="DD" maxlength="2" inputmode="numeric" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>
+    </div>
+    <div class="soul-modal-btnrow">
+      <button class="secondary" onclick="cancelSoulCustom()">取消</button>
+      <button onclick="confirmSoulCustom()">確定</button>
     </div>
   </div>
 </div>
@@ -720,10 +813,13 @@ function reduce(total){
   return parts;
 }
 function makeStage(total){
-  if(total===0) return{str:'0',destiny:0,pathNums:[]};
+  if(total===0) return{str:'0',checkStr:'0',destiny:0,pathNums:[]};
   const parts=reduce(total);
-  // 加總若得一位數，補 0 成 02/2
+  // 加總若得一位數，補 0 成 02/2（純顯示格式，這個補的0不是真正的數字）
   const str=parts.length===1?`0${parts[0]}/${parts[0]}`:parts.join('/');
+  // checkStr：揚升計畫判斷0/9專用，不含補零——依講義補充資料，補零湊格式的「外在0」不算揚升計畫的0，
+  // 只有加總本身真正產生的0（例如20/2、10/1裡的0）才算
+  const checkStr=parts.length===1?`${parts[0]}`:parts.join('/');
   const destiny=parts[parts.length-1];
   const pathNums=[];
   if(parts.length===1){pathNums.push(0);pathNums.push(parts[0]);}
@@ -732,7 +828,7 @@ function makeStage(total){
     if(p>=10) digs(p).forEach(d=>{if(!pathNums.includes(d))pathNums.push(d);});
     else if(!pathNums.includes(p)) pathNums.push(p);
   }
-  return{str,destiny,pathNums};
+  return{str,checkStr,destiny,pathNums};
 }
 function calcStages(y,m,d,h,mn){
   const yD=digs(y),mD=p2(m).split('').map(Number),dD=p2(d).split('').map(Number);
@@ -1662,6 +1758,7 @@ function renderPartial(){_resetFlowNav();
     renderFlowDay(document.getElementById('flowDayBlock'),flowSetsAll,nowY,nowM,nowD);
     main.classList.remove('hidden');
     initScreenshotBtn();
+    renderSoulSection();
   }
 }
 
@@ -1731,6 +1828,34 @@ const _inputIds=['inputYear','inputMonth','inputDay','inputHour','inputMin'];
 const _inputIds2=['inputYear2','inputMonth2','inputDay2','inputHour2','inputMin2'];
 bindDateInputNav(_inputIds);
 bindDateInputNav(_inputIds2);
+// 靈魂本質自訂國家的建國日輸入，比照同一套跳格/backspace邏輯，但不觸發主流程的 renderPartial
+(function(){
+  const ids=['soulCY','soulCM','soulCD'];
+  ids.forEach(function(id){
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input',function(){
+      this.value=this.value.replace(/[^0-9]/g,'');
+      const maxLen=parseInt(this.getAttribute('maxlength'));
+      if(this.value.length>=maxLen){
+        const next=ids[ids.indexOf(id)+1];
+        if(next) document.getElementById(next).focus();
+      }
+    });
+    el.addEventListener('keydown',function(e){
+      if(e.key==='Backspace'&&this.value===''){
+        const prev=ids[ids.indexOf(id)-1];
+        if(prev){
+          e.preventDefault();
+          const prevEl=document.getElementById(prev);
+          prevEl.focus();
+          const len=prevEl.value.length;
+          prevEl.setSelectionRange(len,len);
+        }
+      }
+    });
+  });
+})();
 function toggleAllBdHeaders(btn){
   const headers=document.querySelectorAll('.bd-header');
   if(!headers.length) return;
@@ -2328,6 +2453,290 @@ function takePairScreenshot(){
     txt.textContent=origText;
     btn.disabled=false;
   });
+}
+
+// ══════════════════════════════════════════════════════════
+// 靈魂本質 / 主體副體 / 揚升計畫
+// ══════════════════════════════════════════════════════════
+const SOUL_COUNTRIES={
+  TW:{y:1911,m:10,d:10}, CN:{y:1949,m:10,d:1}, US:{y:1776,m:7,d:4},
+  KR:{y:1945,m:8,d:15}, MY:{y:1957,m:8,d:31}
+};
+const SOUL_ERAS=[
+  {name:'大正',y:1912,m:7,d:30},
+  {name:'昭和',y:1926,m:12,d:25},
+  {name:'平成',y:1989,m:1,d:8},
+  {name:'令和',y:2019,m:5,d:1}
+];
+let _soulCustomData=null; // {name,y,m,d}
+let _soulPrevCountry='';
+
+function soulDateGE(y,m,d,y2,m2,d2){
+  if(y!==y2) return y>y2;
+  if(m!==m2) return m>m2;
+  return d>=d2;
+}
+function soulCalcAdjYear(country,by,bm,bd,custom){
+  if(country==='JP'){
+    let era=null;
+    for(const e of SOUL_ERAS){ if(soulDateGE(by,bm,bd,e.y,e.m,e.d)) era=e; }
+    if(!era) return {adjYear:null,note:'不支援明治以前的日本年號'};
+    return {adjYear:by-era.y+1, note:`${era.name}${by-era.y+1}年`, refDate:era};
+  }
+  const f=country==='CUSTOM'?custom:SOUL_COUNTRIES[country];
+  let adj=by-f.y;
+  if(!(bm<f.m||(bm===f.m&&bd<f.d))) adj+=1;
+  return {adjYear:adj, note:null, refDate:f};
+}
+// 主體/副體比對：調整年每一位數字依序（由左到右）在西元年數字裡找第一個「還沒被配對過」的相同數字，
+// 配對成功就消耗掉那個位置歸主體；配對不到的調整年數字、以及年份裡剩下沒配對到的數字，全部歸副體。
+// 不是單純集合去重比對——同一個數字出現兩次以上時，次數要逐一扣抵，這條規則已用
+// 1985/209、1989/213、2012/102 三組案例驗證過。
+function soulBodyCalc(by,adjYear,bm,bd){
+  const yearDigits=digs(by), adjDigits=digs(adjYear);
+  const usedYearIdx=new Set();
+  const matchedDigits=[], unmatchedAdjDigits=[];
+  for(const d of adjDigits){
+    let foundIdx=-1;
+    for(let i=0;i<yearDigits.length;i++){
+      if(!usedYearIdx.has(i)&&yearDigits[i]===d){ foundIdx=i; break; }
+    }
+    if(foundIdx!==-1){ usedYearIdx.add(foundIdx); matchedDigits.push(d); }
+    else{ unmatchedAdjDigits.push(d); }
+  }
+  const unmatchedYearDigits=yearDigits.filter((_,i)=>!usedYearIdx.has(i));
+  const bodyNum=matchedDigits.join('')+p2(bm)+p2(bd);
+  const fuNum=unmatchedYearDigits.concat(unmatchedAdjDigits).join('')||'0';
+  return {bodyNum,fuNum};
+}
+const SOUL_EARTH=['新靈魂','宗教人','巫師','亞特蘭提斯人','列木理亞人','遠古外星實驗生物'];
+const SOUL_ALIEN=['','四次元靈','五次元靈','六次元靈','七次元靈','八次元靈','九次元靈'];
+// 對照表用：X次元靈＝第N類外星人＋別稱＋（9系列）稱號＋別稱＋時間點，給說明彈窗參考
+const SOUL_ALIEN_REF=[
+  {n:0,dim:'',title:'新靈魂',alt:'—'},
+  {n:1,dim:'四次元',title:'第一類外星人',alt:'小天使／智人'},
+  {n:2,dim:'五次元',title:'第二類外星人',alt:'幹部天使／侍奉天使／中天使／飛天女、飛天男'},
+  {n:3,dim:'六次元',title:'第三類外星人',alt:'大天使'},
+  {n:4,dim:'七次元',title:'第四類外星人',alt:'彩虹使者／彩虹國度／基督意識'},
+  {n:5,dim:'八次元',title:'第五類外星人',alt:'造物主層級'},
+  {n:6,dim:'九次元',title:'第六類外星人',alt:'聖靈層級／原始造物主'}
+];
+const SOUL_EARTH_REF=[
+  {n:0,title:'新靈魂',alt:'—',time:'—'},
+  {n:1,title:'宗教人',alt:'—',time:'約2600年前'},
+  {n:2,title:'巫師',alt:'北美彩虹巫師／南美療癒巫師',time:'約5200年前（前宗教時期）'},
+  {n:3,title:'亞特蘭提斯',alt:'古代神話中的神祇',time:'約10400年前（沉沒古文明）'},
+  {n:4,title:'列木理亞',alt:'神人（可飛行、瞬間移動）',time:'時間不可考（地球最偉大而光輝的神人世代）'},
+  {n:5,title:'遠古外星實驗生物',alt:'巨人、半獸半人、神獸奇類',time:'時間不可考（更早於列木理亞）'}
+];
+function soulCountChar(str,ch){return str.split('').filter(c=>c===ch).length;}
+function soulTitleFromCounts(c0,c9){
+  const e=SOUL_EARTH[Math.min(c9,5)], a=SOUL_ALIEN[Math.min(c0,6)];
+  let title;
+  if(c0===0) title=e; else if(c9===0) title=a; else title=`${e}升${a}再返`;
+  return {title,c0,c9};
+}
+function soulBodyTitle(numStr){
+  return soulTitleFromCounts(soulCountChar(numStr,'0'),soulCountChar(numStr,'9'));
+}
+function soulFuTitle(fuStr,bodyC0,bodyC9){
+  const ownC0=soulCountChar(fuStr,'0'), ownC9=soulCountChar(fuStr,'9');
+  const mergedC0=ownC0>0?ownC0+bodyC0:0;
+  const mergedC9=ownC9>0?ownC9+bodyC9:0;
+  return soulTitleFromCounts(mergedC0,mergedC9);
+}
+
+const SOUL_NOW_IDX=8;
+const SOUL_TOTAL_LEN=SOUL_NOW_IDX*2+1;
+function soulLaneRows(c9,c0){
+  const main=new Array(SOUL_TOTAL_LEN).fill(''), fold=new Array(SOUL_TOTAL_LEN).fill('');
+  const refold=c9>0&&c0>0;
+  for(let d=1;d<=c9;d++) main[SOUL_NOW_IDX-d]='→→→→';
+  if(refold){
+    for(let d=1;d<=c0;d++){
+      main[SOUL_NOW_IDX+d]=(d===c0)?'→→→┘':'→→→→';
+      fold[SOUL_NOW_IDX+d]=(d===c0)?'←←←┐':'←←←←';
+    }
+  } else {
+    for(let d=1;d<=c0;d++) main[SOUL_NOW_IDX+d]='←←←←';
+  }
+  return {main,fold,hasFold:refold};
+}
+function soulStageCells(leftIdx,rightIdx,stages){
+  const cells=new Array(SOUL_TOTAL_LEN).fill(''), labels=new Array(SOUL_TOTAL_LEN).fill('');
+  const order=['幼年','少年','青年','中年','老年'];
+  order.map(n=>stages.find(s=>s.name===n)).filter(Boolean).forEach(st=>{
+    if(st.checkStr.includes('0')){ rightIdx++; cells[rightIdx]='→→→→'; labels[rightIdx]=st.name[0]; }
+    if(st.checkStr.includes('9')){ leftIdx--; cells[leftIdx]='←←←←'; labels[leftIdx]=st.name[0]; }
+  });
+  return {cells,labels};
+}
+const SOUL_POS_LABELS_FULL=['9x8','9x7','9x6','9x5','9x4','9x3','9x2','9x1','NOW','0x1','0x2','0x3','0x4','0x5','0x6','0x7','0x8'];
+function soulVisible(arr){return arr.filter((_,i)=>i!==SOUL_NOW_IDX);}
+const SOUL_POS_LABELS=soulVisible(SOUL_POS_LABELS_FULL);
+
+function renderSoulChart(bodyInfo,fuInfo,stages){
+  const bodyRows=soulLaneRows(bodyInfo.c9,bodyInfo.c0);
+  const fuRows=soulLaneRows(fuInfo.c9,fuInfo.c0);
+  const leftIdx=Math.min(SOUL_NOW_IDX-bodyInfo.c9,SOUL_NOW_IDX-fuInfo.c9);
+  const rightIdx=Math.max(SOUL_NOW_IDX+bodyInfo.c0,SOUL_NOW_IDX+fuInfo.c0);
+  const {cells:yangC,labels:yangL}=soulStageCells(leftIdx,rightIdx,stages);
+  function row(cellsArr,colorClass){
+    return soulVisible(cellsArr).map((c,i)=>`<td colspan="2" class="soul-tl-cell ${colorClass}${i===SOUL_NOW_IDX?' soul-tl-nowdivider':''}">${c||'&nbsp;'}</td>`).join('');
+  }
+  // colgroup：標籤欄拆兩個半欄（合計寬度跟原本一欄一樣）+ 16段箭頭(each 2個半欄) + 右側1個空白半欄，
+  // 這樣 9x8 可以跟標籤欄第2個半欄合併、0x8 可以跟右側空白半欄合併，兩端才會跟其他刻度點一樣寬。
+  let html='<table class="soul-tl-table"><colgroup><col class="soul-tl-labelcol"><col class="soul-tl-labelcol">'+SOUL_POS_LABELS.map(()=>'<col><col>').join('')+'<col></colgroup><tbody>';
+  html+=`<tr><th rowspan="2" colspan="2" class="soul-tl-rowlabel soul-tl-yang"></th>${row(yangL,'soul-tl-stagelabel')}<td class="soul-tl-cell soul-tl-stagelabel">&nbsp;</td></tr>`;
+  html+=`<tr>${row(yangC,'soul-tl-yang')}<td class="soul-tl-cell soul-tl-yang">&nbsp;</td></tr>`;
+  html+=`<tr><th rowspan="2" colspan="2" class="soul-tl-rowlabel soul-tl-fu"></th>${row(fuRows.fold,'soul-tl-fu')}<td class="soul-tl-cell soul-tl-fu">&nbsp;</td></tr>`;
+  html+=`<tr>${row(fuRows.main,'soul-tl-fu')}<td class="soul-tl-cell soul-tl-fu">&nbsp;</td></tr>`;
+  html+=`<tr><th rowspan="2" colspan="2" class="soul-tl-rowlabel soul-tl-body"></th>${row(bodyRows.fold,'soul-tl-body')}<td class="soul-tl-cell soul-tl-body">&nbsp;</td></tr>`;
+  html+=`<tr>${row(bodyRows.main,'soul-tl-body')}<td class="soul-tl-cell soul-tl-body">&nbsp;</td></tr>`;
+  // 座標軸列：第一個 th 單獨留白（純角落），17 個刻度點統一 colspan=2——
+  // 第一個(9x8)自然跨到標籤欄第2半欄，最後一個(0x8)自然跨到右側空白半欄，中間15個跨在兩段箭頭的交界上。
+  let axisRowHtml='';
+  SOUL_POS_LABELS_FULL.forEach(l=>{
+    const isNow=l==='NOW';
+    axisRowHtml+=`<td colspan="2" class="soul-tl-cell soul-tl-axis${isNow?' soul-tl-nowcell':''}">${l}</td>`;
+  });
+  html+=`<tr><th class="soul-tl-rowlabel"></th>${axisRowHtml}</tr>`;
+  html+='</tbody></table>';
+  return html;
+}
+
+function renderSoulSection(){
+  const country=document.getElementById('soulCountry').value;
+  if(!country){ document.getElementById('soulOutput').innerHTML=''; return; }
+  const syRaw=document.getElementById('inputYear').value.trim();
+  const smRaw=document.getElementById('inputMonth').value.trim();
+  const sdRaw=document.getElementById('inputDay').value.trim();
+  const shRaw=document.getElementById('inputHour').value.trim();
+  const smnRaw=document.getElementById('inputMin').value.trim();
+  const by=parseInt(syRaw)||0, bm=parseInt(smRaw)||0, bd=parseInt(sdRaw)||0;
+  if(!by||!bm||!bd){ document.getElementById('soulOutput').innerHTML=''; return; }
+  const bh=shRaw?parseInt(shRaw):null, bmn=smnRaw?parseInt(smnRaw):null;
+  const missingTime=(bh===null||bmn===null);
+  if(country==='CUSTOM'&&!_soulCustomData){
+    document.getElementById('soulCustomModal').classList.remove('hidden');
+    return;
+  }
+  const custom=country==='CUSTOM'?_soulCustomData:null;
+  const adjResult=soulCalcAdjYear(country,by,bm,bd,custom);
+  if(adjResult.adjYear===null){
+    document.getElementById('soulOutput').innerHTML=`<div style="color:#c0392b;font-size:12px;margin-top:8px">${adjResult.note}</div>`;
+    return;
+  }
+  const {bodyNum,fuNum}=soulBodyCalc(by,adjResult.adjYear,bm,bd);
+  const bodyInfo=soulBodyTitle(bodyNum);
+  const fuInfo=soulFuTitle(fuNum,bodyInfo.c0,bodyInfo.c9);
+  const {stages}=calcStages(by,bm,bd,bh,bmn);
+
+  const refLabel=country==='JP'?`年號起始日（${adjResult.refDate.name}）`:'建國日';
+  const refDateStr=`+${adjResult.refDate.y}/${p2(adjResult.refDate.m)}/${p2(adjResult.refDate.d)}`;
+  const soulYearStr=`+${adjResult.adjYear}/${p2(bm)}/${p2(bd)}`;
+
+  let html='<div class="soul-result">';
+  html+=renderSoulTrackBlock({
+    refLabel,refDateStr,yearLabel:'人天數',yearStr:soulYearStr,
+    bodyNum,fuNum,bodyInfo,fuInfo,stages,missingTime
+  });
+
+  {
+    const lunarBd=solarToLunar(by,bm,bd);
+    const lunarFound=solarToLunar(adjResult.refDate.y,adjResult.refDate.m,adjResult.refDate.d);
+    if(lunarBd&&lunarFound){
+      let lunAdj=lunarBd.year-lunarFound.year;
+      if(!(lunarBd.month<lunarFound.month||(lunarBd.month===lunarFound.month&&lunarBd.day<lunarFound.day))) lunAdj+=1;
+      const lunFoundStr=`-${lunarFound.year}/${p2(lunarFound.month)}/${p2(lunarFound.day)}`;
+      const lunYearStr=`-${lunAdj}/${p2(lunarBd.month)}/${p2(lunarBd.day)}`;
+
+      const {bodyNum:lBodyNum,fuNum:lFuNum}=soulBodyCalc(lunarBd.year,lunAdj,lunarBd.month,lunarBd.day);
+      const lBodyInfo=soulBodyTitle(lBodyNum);
+      const lFuInfo=soulFuTitle(lFuNum,lBodyInfo.c0,lBodyInfo.c9);
+      const {stages:lStagesArr}=calcStages(lunarBd.year,lunarBd.month,lunarBd.day,bh,bmn);
+
+      html+=renderSoulTrackBlock({
+        refLabel:country==='JP'?`年號起始日（${adjResult.refDate.name}）`:'建國日',refDateStr:lunFoundStr,yearLabel:'人地數',yearStr:lunYearStr,
+        bodyNum:lBodyNum,fuNum:lFuNum,bodyInfo:lBodyInfo,fuInfo:lFuInfo,stages:lStagesArr,missingTime
+      });
+    }
+  }
+  html+='</div>';
+  document.getElementById('soulOutput').innerHTML=html;
+}
+
+// 國曆軌／農曆軌共用的完整區塊渲染：標題＋主體／副體＋揚升計畫文字版＋表格版時間軸
+function renderSoulTrackBlock({refLabel,refDateStr,yearLabel,yearStr,bodyNum,fuNum,bodyInfo,fuInfo,stages,missingTime}){
+  const order=['幼年','少年','青年','中年','老年'];
+  const yangLine=order.map(n=>{
+    const st=stages.find(s=>s.name===n);
+    if(!st) return `${n[0]}：－`;
+    const marks=[];
+    if(st.checkStr.includes('9')) marks.push('9');
+    if(st.checkStr.includes('0')) marks.push('0');
+    return `${n[0]}：${marks.length?marks.join('、'):'X'}`;
+  }).join('｜');
+
+  let html='<div class="soul-track">';
+  if(missingTime){
+    html+='<div style="color:#c0392b;font-size:11px;margin-bottom:6px">（未填寫「時」與「分」，揚升計畫僅計算青年／中年／老年，幼年少年顯示為 －）</div>';
+  }
+  html+=`<div class="soul-numline" style="color:#999"><span class="lab">${refLabel}</span><span class="num">${refDateStr}</span><span class="title" style="margin-left:14px;color:#999">${yearLabel}：</span><span class="num" style="color:#999">${yearStr}</span></div>`;
+  html+=`<div class="soul-numline"><span class="lab">靈魂主體</span><span class="num soul-body-num">【${bodyNum}】</span><span class="title">${bodyInfo.title}</span></div>`;
+  html+=`<div class="soul-numline"><span class="lab">靈魂副體</span><span class="num soul-fu-num">【${fuNum}】</span><span class="title">${fuInfo.title}</span></div>`;
+  html+=`<div class="soul-yang-line">揚升計畫：${yangLine}</div>`;
+  html+=`<div class="soulChartWrap">${renderSoulChart(bodyInfo,fuInfo,stages)}</div>`;
+  html+='</div>';
+  return html;
+}
+
+function onSoulCountryChange(sel){
+  if(sel.value==='CUSTOM'){
+    document.getElementById('soulCustomModal').classList.remove('hidden');
+    if(_soulCustomData){
+      document.getElementById('soulCName').value=_soulCustomData.name||'';
+      document.getElementById('soulCY').value=_soulCustomData.y;
+      document.getElementById('soulCM').value=_soulCustomData.m;
+      document.getElementById('soulCD').value=_soulCustomData.d;
+    }
+  } else {
+    _soulPrevCountry=sel.value;
+    document.getElementById('soulCustomLabel').classList.add('hidden');
+    document.getElementById('soulCustomLabel').textContent='';
+    renderSoulSection();
+  }
+}
+function cancelSoulCustom(){
+  document.getElementById('soulCustomModal').classList.add('hidden');
+  if(!_soulCustomData) document.getElementById('soulCountry').value=_soulPrevCountry;
+}
+function confirmSoulCustom(){
+  const y=+document.getElementById('soulCY').value, m=+document.getElementById('soulCM').value, d=+document.getElementById('soulCD').value;
+  if(!y||!m||!d){ alert('請填完整的建國年月日'); return; }
+  const name=document.getElementById('soulCName').value.trim();
+  _soulCustomData={name,y,m,d};
+  _soulPrevCountry='CUSTOM';
+  document.getElementById('soulCustomModal').classList.add('hidden');
+  const lbl=document.getElementById('soulCustomLabel');
+  lbl.classList.remove('hidden');
+  lbl.textContent=`${name?name+'：':''}建國 ${y}/${p2(m)}/${p2(d)}（點國家選單可重新設定）`;
+  renderSoulSection();
+}
+
+function openSoulRefModal(){
+  const alienTbody=document.getElementById('soulRefAlienTable');
+  alienTbody.innerHTML=SOUL_ALIEN_REF.map(r=>
+    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap">${r.n}顆0</td><td style="padding:5px 4px;font-weight:600;width:calc(5em + 8px);text-align:center;word-break:break-word">${r.dim?r.dim+'靈':r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px">${r.dim?r.title+'／'+r.alt:'—'}</td></tr>`
+  ).join('');
+  const earthTbody=document.getElementById('soulRefEarthTable');
+  earthTbody.innerHTML=SOUL_EARTH_REF.map(r=>
+    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap">${r.n}顆9</td><td style="padding:5px 4px;font-weight:600;width:calc(5em + 8px);text-align:center;word-break:break-word">${r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px">${r.alt!=='—'?r.alt+'　':''}${r.time}</td></tr>`
+  ).join('');
+  document.getElementById('soulRefModal').classList.remove('hidden');
+}
+function closeSoulRefModal(){
+  document.getElementById('soulRefModal').classList.add('hidden');
 }
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
