@@ -87,19 +87,20 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .soulChartWrap{overflow-x:auto;margin-top:10px}
 .soul-track{margin-top:4px}
 .soul-track+.soul-track{margin-top:20px;padding-top:16px;border-top:1px dashed #ddd}
-.soul-tl-table{border-collapse:collapse;font-family:"SF Mono",Menlo,Consolas,monospace;width:100%;table-layout:fixed}
-.soul-tl-labelcol{width:13px}
-.soul-tl-table td,.soul-tl-table th{padding:0;text-align:center;overflow:hidden;white-space:nowrap;font-size:9px;line-height:1.6;border:none;letter-spacing:-.5px}
-.soul-tl-table td.soul-tl-yang,.soul-tl-table td.soul-tl-fu,.soul-tl-table td.soul-tl-body{line-height:.8}
-.soul-tl-table td.soul-tl-yang,.soul-tl-table td.soul-tl-fu,.soul-tl-table td.soul-tl-body,.soul-tl-table td.soul-tl-stagelabel{border-left:1px dashed #ddd}
-.soul-tl-table td.soul-tl-nowdivider{border-left:1px solid #1a1a1a}
-.soul-tl-table td.soul-tl-nowcell{color:#1a1a1a}
-.soul-tl-rowlabel{font-family:inherit;font-size:11px;font-weight:600;color:#888;text-align:center;vertical-align:middle}
+.soul-tl-grid{display:grid;grid-template-columns:13px 13px repeat(33,1fr);font-family:"SF Mono",Menlo,Consolas,monospace}
+.soul-tl-grid>div{text-align:center;overflow:hidden;white-space:nowrap;font-size:9px;line-height:1.6;letter-spacing:-.5px}
+.soul-tl-yangcell{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;border-left:1px dashed #ddd;min-height:34px;padding:3px 0 1px;width:100%;box-sizing:border-box}
+.soul-tl-yangcell>div{line-height:1.2}
+.soul-tl-cell.soul-tl-yang,.soul-tl-cell.soul-tl-fu,.soul-tl-cell.soul-tl-body{line-height:.8;border-left:1px dashed #ddd}
+.soul-tl-nowdivider{border-left:1px solid #1a1a1a!important}
+.soul-tl-nowcell{color:#1a1a1a}
+.soul-tl-rowlabel{font-family:inherit;font-size:11px;font-weight:600;color:#888;text-align:center;display:flex;align-items:center;justify-content:center}
 .soul-tl-yang{color:#488850}
 .soul-tl-fu{color:#e06c75}
 .soul-tl-body{color:#1a1a1a}
 .soul-tl-stagelabel{color:#488850;font-weight:600;font-size:10px}
-.soul-tl-axis{color:#999;font-size:9px}
+.soul-tl-axis{color:#999;font-size:9px;display:flex;align-items:center;justify-content:center}
+.soul-tl-yangcell.soul-tl-stage-current{border:none;box-shadow:inset 0 0 0 2px #F0D080;border-radius:3px;background:#FFFDF5;position:relative;z-index:2}
 .soul-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:200}
 .soul-modal-card{background:#fff;border-radius:12px;padding:20px;width:260px;box-shadow:0 8px 24px rgba(0,0,0,.15)}
 .soul-modal-card h3{font-size:14px;margin:0 0 12px;text-align:center;font-weight:500}
@@ -2562,47 +2563,98 @@ function soulLaneRows(c9,c0){
   }
   return {main,fold,hasFold:refold};
 }
-function soulStageCells(leftIdx,rightIdx,stages){
-  const cells=new Array(SOUL_TOTAL_LEN).fill(''), labels=new Array(SOUL_TOTAL_LEN).fill('');
+// 依足歲判斷目前所在的人生階段（幼0-10／少11-20／青21-40／中41-60／老61+）。
+// isGreg=true 用陽曆生日比對陽曆今日；isGreg=false 用農曆生日比對換算成農曆的今日，
+// 邏輯跟 renderFlowYearTable 裡九年能量波動表判斷 currentYear 的方式一致。
+function soulCurrentStageName(birthY,birthM,birthD,isGreg){
+  const today=new Date();
+  const todayY=today.getFullYear(),todayM=today.getMonth()+1,todayD=today.getDate();
+  let currentYear;
+  if(isGreg){
+    const passed=(todayM>birthM)||(todayM===birthM&&todayD>=birthD);
+    currentYear=passed?todayY:todayY-1;
+  } else {
+    const lt=solarToLunar(todayY,todayM,todayD);
+    const ltY=lt?lt.year:todayY,ltM=lt?lt.month:todayM,ltD=lt?lt.day:todayD;
+    const passed=(ltM>birthM)||(ltM===birthM&&ltD>=birthD);
+    currentYear=passed?ltY:ltY-1;
+  }
+  const age=currentYear-birthY+1;
+  if(age<=10) return '幼年';
+  if(age<=20) return '少年';
+  if(age<=40) return '青年';
+  if(age<=60) return '中年';
+  return '老年';
+}
+function soulStageCells(leftIdx,rightIdx,stages,currentStageName){
+  const cells=new Array(SOUL_TOTAL_LEN).fill(''), labels=new Array(SOUL_TOTAL_LEN).fill(''), curr=new Array(SOUL_TOTAL_LEN).fill(false);
   const order=['幼年','少年','青年','中年','老年'];
   order.map(n=>stages.find(s=>s.name===n)).filter(Boolean).forEach(st=>{
-    if(st.checkStr.includes('0')){ rightIdx++; cells[rightIdx]='→→→→'; labels[rightIdx]=st.name[0]; }
-    if(st.checkStr.includes('9')){ leftIdx--; cells[leftIdx]='←←←←'; labels[leftIdx]=st.name[0]; }
+    const isCurr=st.name===currentStageName;
+    if(st.checkStr.includes('0')){ rightIdx++; cells[rightIdx]='→→→→'; labels[rightIdx]=st.name[0]; if(isCurr) curr[rightIdx]=true; }
+    if(st.checkStr.includes('9')){ leftIdx--; cells[leftIdx]='←←←←'; labels[leftIdx]=st.name[0]; if(isCurr) curr[leftIdx]=true; }
   });
-  return {cells,labels};
+  return {cells,labels,curr};
 }
 const SOUL_POS_LABELS_FULL=['9x8','9x7','9x6','9x5','9x4','9x3','9x2','9x1','NOW','0x1','0x2','0x3','0x4','0x5','0x6','0x7','0x8'];
 function soulVisible(arr){return arr.filter((_,i)=>i!==SOUL_NOW_IDX);}
 const SOUL_POS_LABELS=soulVisible(SOUL_POS_LABELS_FULL);
 
-function renderSoulChart(bodyInfo,fuInfo,stages){
+function renderSoulChart(bodyInfo,fuInfo,stages,currentStageName){
   const bodyRows=soulLaneRows(bodyInfo.c9,bodyInfo.c0);
   const fuRows=soulLaneRows(fuInfo.c9,fuInfo.c0);
   const leftIdx=Math.min(SOUL_NOW_IDX-bodyInfo.c9,SOUL_NOW_IDX-fuInfo.c9);
   const rightIdx=Math.max(SOUL_NOW_IDX+bodyInfo.c0,SOUL_NOW_IDX+fuInfo.c0);
-  const {cells:yangC,labels:yangL}=soulStageCells(leftIdx,rightIdx,stages);
-  function row(cellsArr,colorClass){
-    return soulVisible(cellsArr).map((c,i)=>`<td colspan="2" class="soul-tl-cell ${colorClass}${i===SOUL_NOW_IDX?' soul-tl-nowdivider':''}">${c||'&nbsp;'}</td>`).join('');
+  const {cells:yangC,labels:yangL,curr:yangCurr}=soulStageCells(leftIdx,rightIdx,stages,currentStageName);
+
+  // 把含 NOW 的完整索引(0..16)轉成扣掉 NOW 之後的可視刻度序號(0..15)
+  const visIndex=k=>k<SOUL_NOW_IDX?k:k-1;
+  // 每個可視刻度佔 2 欄，內容列從第3欄開始(前面2欄留給列標籤)
+  const tickCol=i=>3+i*2;
+
+  let items='';
+  items+=`<div class="soul-tl-rowlabel soul-tl-yang" style="grid-column:1/3;grid-row:1/span 2"></div>`;
+  items+=`<div class="soul-tl-rowlabel soul-tl-fu" style="grid-column:1/3;grid-row:3/span 2"></div>`;
+  items+=`<div class="soul-tl-rowlabel soul-tl-body" style="grid-column:1/3;grid-row:5/span 2"></div>`;
+  items+=`<div class="soul-tl-rowlabel" style="grid-column:1/2;grid-row:7"></div>`;
+
+  // 揚升計畫：標籤＋箭頭合併成同一個 wrapper div（跟 .fyt-col 同一種做法），
+  // 目前所在階段直接對這一個 div 套框，不需要再拼接兩個格子。
+  for(let k=0;k<SOUL_TOTAL_LEN;k++){
+    if(k===SOUL_NOW_IDX) continue;
+    const i=visIndex(k);
+    const isNowEdge=(i===8);
+    const isCurr=yangCurr[k];
+    const lab=yangL[k]||'&nbsp;',arr=yangC[k]||'&nbsp;';
+    items+=`<div class="soul-tl-yangcell${isCurr?' soul-tl-stage-current':''}${isNowEdge?' soul-tl-nowdivider':''}" style="grid-column:${tickCol(i)}/span 2;grid-row:1/span 2">
+      <div class="soul-tl-stagelabel">${lab}</div>
+      <div class="soul-tl-yang">${arr}</div>
+    </div>`;
   }
-  // colgroup：標籤欄拆兩個半欄（合計寬度跟原本一欄一樣）+ 16段箭頭(each 2個半欄) + 右側1個空白半欄，
-  // 這樣 9x8 可以跟標籤欄第2個半欄合併、0x8 可以跟右側空白半欄合併，兩端才會跟其他刻度點一樣寬。
-  let html='<table class="soul-tl-table"><colgroup><col class="soul-tl-labelcol"><col class="soul-tl-labelcol">'+SOUL_POS_LABELS.map(()=>'<col><col>').join('')+'<col></colgroup><tbody>';
-  html+=`<tr><th rowspan="2" colspan="2" class="soul-tl-rowlabel soul-tl-yang"></th>${row(yangL,'soul-tl-stagelabel')}<td class="soul-tl-cell soul-tl-stagelabel">&nbsp;</td></tr>`;
-  html+=`<tr>${row(yangC,'soul-tl-yang')}<td class="soul-tl-cell soul-tl-yang">&nbsp;</td></tr>`;
-  html+=`<tr><th rowspan="2" colspan="2" class="soul-tl-rowlabel soul-tl-fu"></th>${row(fuRows.fold,'soul-tl-fu')}<td class="soul-tl-cell soul-tl-fu">&nbsp;</td></tr>`;
-  html+=`<tr>${row(fuRows.main,'soul-tl-fu')}<td class="soul-tl-cell soul-tl-fu">&nbsp;</td></tr>`;
-  html+=`<tr><th rowspan="2" colspan="2" class="soul-tl-rowlabel soul-tl-body"></th>${row(bodyRows.fold,'soul-tl-body')}<td class="soul-tl-cell soul-tl-body">&nbsp;</td></tr>`;
-  html+=`<tr>${row(bodyRows.main,'soul-tl-body')}<td class="soul-tl-cell soul-tl-body">&nbsp;</td></tr>`;
-  // 座標軸列：第一個 th 單獨留白（純角落），17 個刻度點統一 colspan=2——
-  // 第一個(9x8)自然跨到標籤欄第2半欄，最後一個(0x8)自然跨到右側空白半欄，中間15個跨在兩段箭頭的交界上。
-  let axisRowHtml='';
-  SOUL_POS_LABELS_FULL.forEach(l=>{
+
+  // 副體／主體：各自兩列(回頭折線+主線)，每個刻度各自一個 div，跟揚升計畫共用同一套 grid 欄位定義
+  function laneRow(arr,rowLine,colorClass){
+    let h='';
+    for(let k=0;k<SOUL_TOTAL_LEN;k++){
+      if(k===SOUL_NOW_IDX) continue;
+      const i=visIndex(k);
+      const isNowEdge=(i===8);
+      h+=`<div class="soul-tl-cell ${colorClass}${isNowEdge?' soul-tl-nowdivider':''}" style="grid-column:${tickCol(i)}/span 2;grid-row:${rowLine}">${arr[k]||'&nbsp;'}</div>`;
+    }
+    return h;
+  }
+  items+=laneRow(fuRows.fold,3,'soul-tl-fu');
+  items+=laneRow(fuRows.main,4,'soul-tl-fu');
+  items+=laneRow(bodyRows.fold,5,'soul-tl-body');
+  items+=laneRow(bodyRows.main,6,'soul-tl-body');
+
+  // 座標軸：17格(含NOW)，起點比內容列少1欄，形成半格位移，讓兩端刻度跟內容列對齊
+  SOUL_POS_LABELS_FULL.forEach((l,j)=>{
     const isNow=l==='NOW';
-    axisRowHtml+=`<td colspan="2" class="soul-tl-cell soul-tl-axis${isNow?' soul-tl-nowcell':''}">${l}</td>`;
+    items+=`<div class="soul-tl-cell soul-tl-axis${isNow?' soul-tl-nowcell':''}" style="grid-column:${2+j*2}/span 2;grid-row:7">${l}</div>`;
   });
-  html+=`<tr><th class="soul-tl-rowlabel"></th>${axisRowHtml}</tr>`;
-  html+='</tbody></table>';
-  return html;
+
+  return `<div class="soul-tl-grid">${items}</div>`;
 }
 
 function renderSoulSection(){
@@ -2639,7 +2691,8 @@ function renderSoulSection(){
   let html='<div class="soul-result">';
   html+=renderSoulTrackBlock({
     refLabel,refDateStr,yearLabel:'人天數',yearStr:soulYearStr,
-    bodyNum,fuNum,bodyInfo,fuInfo,stages,missingTime
+    bodyNum,fuNum,bodyInfo,fuInfo,stages,missingTime,
+    stageBirthY:by,stageBirthM:bm,stageBirthD:bd,isGreg:true
   });
 
   {
@@ -2658,7 +2711,8 @@ function renderSoulSection(){
 
       html+=renderSoulTrackBlock({
         refLabel:country==='JP'?`年號起始日（${adjResult.refDate.name}）`:'建國日',refDateStr:lunFoundStr,yearLabel:'人地數',yearStr:lunYearStr,
-        bodyNum:lBodyNum,fuNum:lFuNum,bodyInfo:lBodyInfo,fuInfo:lFuInfo,stages:lStagesArr,missingTime
+        bodyNum:lBodyNum,fuNum:lFuNum,bodyInfo:lBodyInfo,fuInfo:lFuInfo,stages:lStagesArr,missingTime,
+        stageBirthY:lunarBd.year,stageBirthM:lunarBd.month,stageBirthD:lunarBd.day,isGreg:false
       });
     }
   }
@@ -2667,7 +2721,8 @@ function renderSoulSection(){
 }
 
 // 國曆軌／農曆軌共用的完整區塊渲染：標題＋主體／副體＋揚升計畫文字版＋表格版時間軸
-function renderSoulTrackBlock({refLabel,refDateStr,yearLabel,yearStr,bodyNum,fuNum,bodyInfo,fuInfo,stages,missingTime}){
+function renderSoulTrackBlock({refLabel,refDateStr,yearLabel,yearStr,bodyNum,fuNum,bodyInfo,fuInfo,stages,missingTime,stageBirthY,stageBirthM,stageBirthD,isGreg}){
+  const currentStageName=soulCurrentStageName(stageBirthY,stageBirthM,stageBirthD,isGreg);
   const order=['幼年','少年','青年','中年','老年'];
   const yangLine=order.map(n=>{
     const st=stages.find(s=>s.name===n);
@@ -2686,7 +2741,7 @@ function renderSoulTrackBlock({refLabel,refDateStr,yearLabel,yearStr,bodyNum,fuN
   html+=`<div class="soul-numline"><span class="lab">靈魂主體</span><span class="num soul-body-num">【${bodyNum}】</span><span class="title">${bodyInfo.title}</span></div>`;
   html+=`<div class="soul-numline"><span class="lab">靈魂副體</span><span class="num soul-fu-num">【${fuNum}】</span><span class="title">${fuInfo.title}</span></div>`;
   html+=`<div class="soul-yang-line">揚升計畫：${yangLine}</div>`;
-  html+=`<div class="soulChartWrap">${renderSoulChart(bodyInfo,fuInfo,stages)}</div>`;
+  html+=`<div class="soulChartWrap">${renderSoulChart(bodyInfo,fuInfo,stages,currentStageName)}</div>`;
   html+='</div>';
   return html;
 }
