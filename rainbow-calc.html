@@ -29,6 +29,8 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .input-group.date,.input-group.time{flex:1}
 .tabs{display:flex;border-bottom:1px solid #e8e8e8}
 .tab{flex:1;padding:12px 4px;font-size:13px;letter-spacing:.05em;text-align:center;color:#999;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;white-space:pre-line;line-height:1.4}
+.tab-l1{position:relative;display:inline-block}
+.tab-sup{position:absolute;left:100%;top:0;white-space:nowrap;margin-left:1px}
 .tab.active{color:#1a1a1a;border-bottom-color:#1a1a1a;font-weight:500}
 .results{padding:0 20px}
 .cal-section{margin-top:24px;padding-top:8px}
@@ -70,10 +72,11 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .phase-dot{fill:#999}
 .phase-dot.current{fill:#b8860b}
 .flow-block{margin-top:16px;border-top:1px solid #e8e8e8;padding-top:16px;text-align:center}
-.soul-section{margin-top:32px;border-top:1px solid #e8e8e8;padding-top:16px;text-align:center}
-.soul-country-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
+.soul-section{margin-top:32px;border-top:1px solid #e8e8e8;padding-top:16px;padding-bottom:20px;text-align:center}
+.soul-country-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:0}
 .soul-country-row select{font-size:13px;padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-family:inherit;background:#fff}
 .soul-country-row label{font-size:12px;color:#666}
+#soulOutput:not(:empty){margin-top:8px}
 .soul-result{margin-top:12px}
 .soul-numline{font-size:13px;margin:2px 0}
 .soul-numline .lab{color:#888;margin-right:6px}
@@ -481,18 +484,18 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
           <div id="flowDayBlock" style="margin-top:20px;padding-top:20px;border-top:1px solid #e8e8e8"></div>
         </div>
         <div class="soul-section" id="soulSection">
-          <div class="innate-title" style="display:flex;align-items:center;justify-content:center;gap:6px">靈魂本質<button onclick="openSoulRefModal()" style="-webkit-appearance:none;appearance:none;background:none;border:1px solid #ccc;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;color:#888;cursor:pointer;padding:0">?</button></div>
+          <div class="innate-title" style="display:flex;align-items:center;justify-content:center;gap:6px"><span id="soulTitleText">靈魂本質</span><button onclick="openSoulRefModal()" style="-webkit-appearance:none;appearance:none;background:none;border:1px solid #ccc;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;color:#888;cursor:pointer;padding:0">?</button></div>
           <div class="soul-country-row">
-            <label for="soulCountry">對照國家</label>
+            <label for="soulCountry" id="soulCountryLabelText">對照國家</label>
             <select id="soulCountry" onchange="onSoulCountryChange(this)">
-              <option value="">請選擇</option>
-              <option value="TW">台灣</option>
-              <option value="US">美國</option>
-              <option value="CN">中國</option>
-              <option value="KR">韓國</option>
-              <option value="MY">馬來西亞</option>
-              <option value="JP">日本（自動判斷年號）</option>
-              <option value="CUSTOM">自訂國家／地區</option>
+              <option value="" id="soulOptNone">請選擇</option>
+              <option value="TW" id="soulOptTW">台灣</option>
+              <option value="US" id="soulOptUS">美國</option>
+              <option value="CN" id="soulOptCN">中國</option>
+              <option value="KR" id="soulOptKR">韓國</option>
+              <option value="MY" id="soulOptMY">馬來西亞</option>
+              <option value="JP" id="soulOptJP">日本（自動判斷年號）</option>
+              <option value="CUSTOM" id="soulOptCustom">自訂國家／地區</option>
             </select>
           </div>
           <div id="soulCustomLabel" class="hidden" style="font-size:11px;color:#2c8a4a;margin-top:4px"></div>
@@ -548,25 +551,29 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 </div>
 <div id="soulRefModal" class="soul-modal-overlay hidden" onclick="if(event.target===this)closeSoulRefModal()">
   <div class="soul-modal-card" style="width:min(90vw,360px);max-height:80vh;overflow-y:auto">
-    <h3>靈魂本質對照表</h3>
-    <div style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">0的系列（未來印記）</div>
+    <h3 id="soulRefModalTitleText">靈魂本質對照表</h3>
+    <div id="soulRefAlienDescText" style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">0的系列（未來印記）</div>
     <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px">
       <tbody id="soulRefAlienTable"></tbody>
     </table>
-    <div style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">9的系列（過去印記）</div>
+    <div id="soulRefEarthDescText" style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">9的系列（過去印記）</div>
     <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px">
       <tbody id="soulRefEarthTable"></tbody>
     </table>
+    <div id="soulRefDimDescText" style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">次元意識參考表</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px">
+      <tbody id="soulRefDimTable"></tbody>
+    </table>
     <div class="soul-modal-btnrow">
-      <button onclick="closeSoulRefModal()">關閉</button>
+      <button onclick="closeSoulRefModal()" id="soulRefCloseBtnText">關閉</button>
     </div>
   </div>
 </div>
 <div id="soulCustomModal" class="soul-modal-overlay hidden">
   <div class="soul-modal-card">
-    <h3>自訂國家／地區</h3>
-    <div class="soul-modal-row"><label>名稱（選填）</label><input id="soulCName" type="text" style="width:110px"></div>
-    <div class="input-note" style="margin:10px 0 4px;font-size:12px">國家建國日（國慶日）</div>
+    <h3 id="soulCustomModalTitleText">自訂國家／地區</h3>
+    <div class="soul-modal-row"><label id="soulCustomNameLabelText">名稱（選填）</label><input id="soulCName" type="text" style="width:110px"></div>
+    <div class="input-note" id="soulCustomFoundingNoteText" style="margin:10px 0 4px;font-size:12px">國家建國日（國慶日）</div>
     <div class="input-row" style="gap:6px">
       <div class="input-group" style="flex:1">
         <input type="text" id="soulCY" placeholder="YYYY" maxlength="4" inputmode="numeric" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
@@ -579,8 +586,8 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
       </div>
     </div>
     <div class="soul-modal-btnrow">
-      <button class="secondary" onclick="cancelSoulCustom()">取消</button>
-      <button onclick="confirmSoulCustom()">確定</button>
+      <button class="secondary" onclick="cancelSoulCustom()" id="soulCustomCancelText">取消</button>
+      <button onclick="confirmSoulCustom()" id="soulCustomConfirmText">確定</button>
     </div>
   </div>
 </div>
@@ -588,12 +595,12 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 // ── i18n ──────────────────────────────────────────────────────
 const T={
   zh:{
-    titleMain:'彩虹數字', titleSub:'計算器',
+    titleSub:'計算器',
     today:'今天',
     inputNote:'請輸入西元陽曆生日',
     labelDate:'年', labelMonth:'月', labelDay:'日', labelHour:'時', labelMin:'分', labelTime:'時：分（選填）',
-    tab0:'五大階段數', tab1:'陽曆流年表¹', tab2:'陰曆流年表¹', tab1no:'陽曆流年表', tab2no:'陰曆流年表', tab3:'陽曆流年表²', tab4:'陰曆流年表²', tab5:'陽曆流年表³', tab6:'陰曆流年表³',
-    leapDivider:'— 閏月第二組 —', leapDivider2:'閏月第二組', bd2Divider:'— 第二組生日 —',
+    tab0:'五大\n階段數', tab1:'陽曆¹\n流年表', tab2:'陰曆¹\n流年表', tab1no:'陽曆\n流年表', tab2no:'陰曆\n流年表', tab3:'陽曆²\n流年表', tab4:'陰曆²\n流年表', tab5:'陽曆³\n流年表', tab6:'陰曆³\n流年表',
+    leapDivider:'— 閏月第二組 —', bd2Divider:'— 第二組生日 —',
     bd2HintPrefix:'如果你除了閏月還有第二組生日，', bd2HintOpen:'按這裡→ +', bd2HintClose:'收起 －',
     innateTitle:'先天數',
     phaseTitle:'位格',
@@ -601,9 +608,8 @@ const T={
     phaseNavNext:'後一年',
     errDate:'請輸入正確的陽曆生日', errLunar:'陰曆換算失敗，請確認年份範圍',
     greg:'陽曆', lun:'陰曆', leap:'閏',
-    stages:['幼年','少年','青年','中年','老年'],
-    flowYear:'流年', flowMonth:'流月', flowDay:'流日', flowPrev:'前一年', flowCurr:'目前流年', flowNext:'下一年', flowCurrSuffix:'',
-    flowTableGreg:'陽曆 (+) 九年能量波動表', flowTableLun:'陰曆 (-) 九年能量波動表', flowTableSuffix:'九年能量波動表',
+    flowYear:'流年', flowMonth:'流月', flowDay:'流日',
+    flowTableSuffix:'九年能量波動表',
     coffee:'☕ 請我喝杯咖啡', coffeeUrl:'https://buy.stripe.com/7sY8wQe1NdhXbkV98G8Vi01', studio:'樹根樹洞',
     langBtn:'EN',
     g4:'四次元', g5:'五次元', g6:'六次元以上',
@@ -612,25 +618,40 @@ const T={
     recCurrentTitle:'目前生日', recNoDate:'（尚未輸入生日）',
     recNameInputPh:'姓名或暱稱', recSaveBtn:'儲存這筆生日',
     recNeedDate:'請先輸入生日，再儲存', recSaved:'已儲存',
-    recUnnamed:'未命名', recDestinyLabel:'青年（主命數）',
+    recUnnamed:'未命名',
     recListTitle:'已存紀錄', recEmpty:'尚無紀錄', recExportBtn:'匯出', recImportBtn:'匯入',
     recImportSuccess:'已匯入 {n} 筆新紀錄', recImportNone:'沒有新紀錄可匯入（可能已經匯入過）', recImportError:'匯入失敗，檔案格式不正確',
     recLoadBtn:'載入', recDeleteBtn:'刪除',
     recDeleteConfirm:'確定刪除？', recDeleteYes:'刪除', recDeleteNo:'取消',
     recExpand:'▼', recCollapse:'▲',
-    pairBtn:'合盤', pairSelHint:'勾選兩筆紀錄進行合盤', pairMax:'最多勾選兩位',
+    pairBtn:'合盤', pairMax:'最多勾選兩位',
     pairPanelTitle:'關係的緣與份', pairBondTitle:'緣', pairBondSub:'九階段關係矩陣',
     pairRhythmTitle:'份', pairRhythmSub:'關係流年表',
     rhythmPrev:'‹ 前3年', rhythmNext:'後3年 ›',
+    soulTitle:'靈魂本質', soulCountryLabel:'對照國家', soulSelectPlaceholder:'請選擇',
+    soulCountryTW:'台灣', soulCountryUS:'美國', soulCountryCN:'中國', soulCountryKR:'韓國', soulCountryMY:'馬來西亞', soulCountryJP:'日本（自動判斷年號）', soulCountryCustom:'自訂國家／地區',
+    soulRefModalTitle:'靈魂本質對照表', soulRefAlienDesc:'0的系列（未來印記）', soulRefEarthDesc:'9的系列（過去印記）', soulRefDimDesc:'次元意識參考表', soulRefCloseBtn:'關閉',
+    soulRefDimSuffix:'靈',
+    soulCustomModalTitle:'自訂國家／地區', soulCustomNameLabel:'名稱（選填）', soulCustomFoundingNote:'國家建國日（國慶日）',
+    soulCustomCancel:'取消', soulCustomConfirm:'確定',
+    soulCustomSetLabel:'建國 {date}（點國家選單可重新設定）',
+    soulCustomAlertIncomplete:'請填完整的建國年月日',
+    soulEraUnsupported:'不支援明治以前的日本年號',
+    soulFoundingLabel:'建國日', soulEraLabel:'年號起始日（{name}）',
+    soulSkyNumLabel:'人天數', soulEarthNumLabel:'人地數',
+    soulBodyLabel:'靈魂主體', soulFuLabel:'靈魂副體', soulYangPlanLabel:'揚升計畫',
+    soulStageAbbr:['幼','少','青','中','老'],
+    soulMissingTimeNote:'（未填寫「時」與「分」，揚升計畫僅計算青年／中年／老年，幼年少年顯示為 －）',
+    soulExceedNote:'超過對照表範圍，無前例可循',
     pairShot:'合盤'
   },
   en:{
-    titleMain:'Rainbow Numerology', titleSub:'Calculator',
+    titleSub:'Calculator',
     today:'Today',
     inputNote:'Enter your birthday below',
     labelDate:'Year', labelMonth:'Month', labelDay:'Day', labelHour:'Hour', labelMin:'Minute', labelTime:'H：M (opt)',
     tab0:'Life\nStages', tab1:'Solar¹\nTransit', tab2:'Lunar¹\nTransit', tab1no:'Solar\nTransit', tab2no:'Lunar\nTransit', tab3:'Solar²\nTransit', tab4:'Lunar²\nTransit', tab5:'Solar³\nTransit', tab6:'Lunar³\nTransit',
-    leapDivider:'— Leap Month Set 2 —', leapDivider2:'Leap Month Set 2', bd2Divider:'— Second Birthday —',
+    leapDivider:'— Leap Month Set 2 —', bd2Divider:'— Second Birthday —',
     bd2HintPrefix:'Have a second birthday besides a leap month one? ', bd2HintOpen:'Tap here → +', bd2HintClose:'Hide －',
     innateTitle:'Innate Numbers',
     phaseTitle:'Phase',
@@ -638,9 +659,8 @@ const T={
     phaseNavNext:'Next',
     errDate:'Please enter a valid birthday', errLunar:'Lunar conversion failed, please check the date',
     greg:'Solar', lun:'Lunar', leap:'Leap',
-    stages:['Childhood','Adolescence','Youth','Midlife','Elder'],
-    flowYear:'Annual Transit', flowMonth:'Monthly Transit', flowDay:'Daily Transit', flowPrev:'Prev Year', flowCurr:'Current Year', flowNext:'Next Year', flowCurrSuffix:'',
-    flowTableGreg:'Solar (+) 9-Year Energy Rhythm', flowTableLun:'Lunar (-) 9-Year Energy Rhythm', flowTableSuffix:'9-Year Energy Rhythm',
+    flowYear:'Annual Transit', flowMonth:'Monthly Transit', flowDay:'Daily Transit',
+    flowTableSuffix:'9-Year Energy Rhythm',
     coffee:'🧋 Buy Me a Bubble Tea', coffeeUrl:'https://buy.stripe.com/5kQ8wQe1NcdT9cN4Sq8Vi00', studio:'The Roots Hollow',
     langBtn:'中文',
     g4:'4D', g5:'5D', g6:'6D+',
@@ -649,16 +669,31 @@ const T={
     recCurrentTitle:'Current Birthday', recNoDate:'(No birthday entered)',
     recNameInputPh:'Name or nickname', recSaveBtn:'Save This Birthday',
     recNeedDate:'Please enter a birthday first', recSaved:'Saved',
-    recUnnamed:'Unnamed', recDestinyLabel:'Youth (Core Number)',
+    recUnnamed:'Unnamed',
     recListTitle:'Saved Records', recEmpty:'No records yet', recExportBtn:'Export', recImportBtn:'Import',
     recImportSuccess:'Imported {n} new record(s)', recImportNone:'No new records to import (may already be imported)', recImportError:'Import failed, invalid file format',
     recLoadBtn:'Load', recDeleteBtn:'Delete',
     recDeleteConfirm:'Delete this record?', recDeleteYes:'Delete', recDeleteNo:'Cancel',
     recExpand:'▼', recCollapse:'▲',
-    pairBtn:'Synastry', pairSelHint:'Check two records to compare', pairMax:'Select at most two',
+    pairBtn:'Synastry', pairMax:'Select at most two',
     pairPanelTitle:'Relationship Matrix & Timeline', pairBondTitle:'Bond', pairBondSub:'Nine-Stage Relationship Matrix',
     pairRhythmTitle:'Rhythm', pairRhythmSub:'Relationship Transit Timeline',
     rhythmPrev:'‹ 3 Yrs Back', rhythmNext:'3 Yrs Fwd ›',
+    soulTitle:'Soul Essence', soulCountryLabel:'Reference Country', soulSelectPlaceholder:'Select...',
+    soulCountryTW:'Taiwan', soulCountryUS:'USA', soulCountryCN:'China', soulCountryKR:'South Korea', soulCountryMY:'Malaysia', soulCountryJP:'Japan (auto era detection)', soulCountryCustom:'Custom Country/Region',
+    soulRefModalTitle:'Soul Essence Reference Table', soulRefAlienDesc:'Series of 0 (Future Imprint)', soulRefEarthDesc:'Series of 9 (Past Imprint)', soulRefDimDesc:'Dimensional Consciousness Reference', soulRefCloseBtn:'Close',
+    soulRefDimSuffix:' Spirit',
+    soulCustomModalTitle:'Custom Country/Region', soulCustomNameLabel:'Name (optional)', soulCustomFoundingNote:'Founding Date (National Day)',
+    soulCustomCancel:'Cancel', soulCustomConfirm:'Confirm',
+    soulCustomSetLabel:'Founded {date} (tap the country menu to change)',
+    soulCustomAlertIncomplete:'Please fill in the complete founding date',
+    soulEraUnsupported:'Japanese eras before Meiji are not supported',
+    soulFoundingLabel:'Founded', soulEraLabel:'{name} Era Start',
+    soulSkyNumLabel:'Adj. Birthday', soulEarthNumLabel:'Adj. Birthday',
+    soulBodyLabel:'Primary Soul', soulFuLabel:'Companion Soul', soulYangPlanLabel:'Ascension Plan',
+    soulStageAbbr:['C','Y','A','M','E'],
+    soulMissingTimeNote:'(Hour/Minute not entered — Ascension Plan only covers Youth/Midlife/Elder; Childhood/Adolescence shown as "－")',
+    soulExceedNote:'Beyond the reference table — no precedent yet',
     pairShot:'Synastry'
   }
 };
@@ -666,6 +701,8 @@ let lang='zh';
 let _bd2Open=false;
 let _bd2FullTracked=false; // 第二組生日是否已完整並觸發過 GA4 事件（邊緣觸發，避免重複計數）
 let _secondSetReason=null; // 'leap' | 'bd2' | null，記錄目前第二組畫面是被閏月自動觸發還是手動第二生日觸發
+let _soulSets=[]; // 靈魂本質要計算的生日組別（1~3組），renderPartial() 每次重算時同步更新，renderSoulSection() 讀這個
+let _soulCustomData=null; // {name,y,m,d}，靈魂本質自訂國家的建國日資料；搬到這裡宣告是因為 applyLang() 現在會在頁面載入時就被呼叫，若宣告太晚會有 TDZ 錯誤
 function toggleBd2(){
   _bd2Open=!_bd2Open;
   document.getElementById('bd2Row').classList.toggle('hidden',!_bd2Open);
@@ -677,6 +714,18 @@ function toggleBd2(){
   if(dateVal) calculate();
 }
 function t(key){return T[lang][key];}
+// tab 標籤共用設定函式：把「陽曆¹\n流年表」拆成「陽曆」+ 絕對定位的上標數字 + 「流年表」，
+// 這樣上標數字不會佔用置中計算的寬度，「陽曆」本身才能跟下面的「流年表」對齊置中
+function setTabLabel(el,str){
+  if(!el) return;
+  const m=str.match(/^(.*?)([¹²³])?\n(.*)$/s);
+  if(m){
+    const word=m[1],sup=m[2],bottom=m[3];
+    el.innerHTML=sup?`<span class="tab-l1">${word}<span class="tab-sup">${sup}</span></span><br>${bottom}`:`<span class="tab-l1">${word}</span><br>${bottom}`;
+  } else {
+    el.textContent=str;
+  }
+}
 
 function toggleLang(){
   lang=lang==='zh'?'en':'zh';
@@ -693,12 +742,16 @@ function toggleLang(){
 }
 
 function applyLang(){
-  const now=new Date();
-  const y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
-  const lunar=solarToLunar(y,parseInt(m),parseInt(d));
-  const lunarStr=lunar?`${lunar.year}/${p2(lunar.month)}/${p2(lunar.day)}${lunar.isLeap?t('leap'):''}`: '';
-  document.getElementById('todayDisplay').innerHTML=
-    `<span style="font-size:13px;letter-spacing:.1em">${t('today')}</span><br><span style="font-family:'MPLUS1Code',monospace">${t('greg')}<span class="cal-sign">(+)</span>${y}/${m}/${d}　｜　${t('lun')}<span class="cal-sign">(-)</span>${lunarStr}</span>`;
+  try{
+    const now=new Date();
+    const y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
+    const lunar=solarToLunar(y,parseInt(m),parseInt(d));
+    const lunarStr=lunar?`${lunar.year}/${p2(lunar.month)}/${p2(lunar.day)}${lunar.isLeap?t('leap'):''}`: '';
+    document.getElementById('todayDisplay').innerHTML=
+      `<span style="font-size:13px;letter-spacing:.1em">${t('today')}</span><br><span style="font-family:'MPLUS1Code',monospace">${t('greg')}<span class="cal-sign">(+)</span>${y}/${m}/${d}　｜　${t('lun')}<span class="cal-sign">(-)</span>${lunarStr}</span>`;
+  }catch(e){
+    console.error('applyLang: 今天農曆顯示失敗（不影響其他文字更新）',e);
+  }
   document.getElementById('inputNote').textContent=t('inputNote');
   const labelDate=document.getElementById('labelDate');
   if(labelDate) labelDate.textContent=t('labelDate');
@@ -708,10 +761,10 @@ function applyLang(){
   });
   const labelTime=document.getElementById('labelTime');
   if(labelTime) labelTime.textContent=t('labelTime');
-  document.getElementById('tab0').textContent=t('tab0');
+  setTabLabel(document.getElementById('tab0'),t('tab0'));
   const isLeap=!!document.getElementById('tab3');
-  document.getElementById('tab1').textContent=isLeap?t('tab1'):t('tab1no');
-  document.getElementById('tab2').textContent=isLeap?t('tab2'):t('tab2no');
+  setTabLabel(document.getElementById('tab1'),isLeap?t('tab1'):t('tab1no'));
+  setTabLabel(document.getElementById('tab2'),isLeap?t('tab2'):t('tab2no'));
   document.getElementById('innateTitleText').textContent=t('innateTitle');
   const phaseTitleEl=document.getElementById('phaseTitleText');
   if(phaseTitleEl) phaseTitleEl.textContent=t('phaseTitle');
@@ -741,12 +794,12 @@ function applyLang(){
   document.getElementById('titleSub').textContent=t('titleSub');
   const t3=document.getElementById('tab3');
   const t4=document.getElementById('tab4');
-  if(t3) t3.textContent=t('tab3');
-  if(t4) t4.textContent=t('tab4');
+  if(t3) setTabLabel(t3,t('tab3'));
+  if(t4) setTabLabel(t4,t('tab4'));
   const t5=document.getElementById('tab5');
   const t6=document.getElementById('tab6');
-  if(t5) t5.textContent=t('tab5');
-  if(t6) t6.textContent=t('tab6');
+  if(t5) setTabLabel(t5,t('tab5'));
+  if(t6) setTabLabel(t6,t('tab6'));
   const ld=document.getElementById('leapDividerText');
   if(ld) ld.textContent=_secondSetReason==='bd2'?t('bd2Divider'):t('leapDivider');
   const s3d=document.getElementById('slot3DividerText');
@@ -763,6 +816,27 @@ function applyLang(){
   document.getElementById('recListTitle').textContent=t('recListTitle');
   document.getElementById('recExportBtnText').textContent=t('recExportBtn');
   document.getElementById('recImportBtnText').textContent=t('recImportBtn');
+  document.getElementById('soulTitleText').textContent=t('soulTitle');
+  document.getElementById('soulCountryLabelText').textContent=t('soulCountryLabel');
+  document.getElementById('soulOptNone').textContent=t('soulSelectPlaceholder');
+  document.getElementById('soulOptTW').textContent=t('soulCountryTW');
+  document.getElementById('soulOptUS').textContent=t('soulCountryUS');
+  document.getElementById('soulOptCN').textContent=t('soulCountryCN');
+  document.getElementById('soulOptKR').textContent=t('soulCountryKR');
+  document.getElementById('soulOptMY').textContent=t('soulCountryMY');
+  document.getElementById('soulOptJP').textContent=t('soulCountryJP');
+  document.getElementById('soulOptCustom').textContent=t('soulCountryCustom');
+  document.getElementById('soulRefModalTitleText').textContent=t('soulRefModalTitle');
+  document.getElementById('soulRefAlienDescText').textContent=t('soulRefAlienDesc');
+  document.getElementById('soulRefEarthDescText').textContent=t('soulRefEarthDesc');
+  document.getElementById('soulRefDimDescText').textContent=t('soulRefDimDesc');
+  document.getElementById('soulRefCloseBtnText').textContent=t('soulRefCloseBtn');
+  document.getElementById('soulCustomModalTitleText').textContent=t('soulCustomModalTitle');
+  document.getElementById('soulCustomNameLabelText').textContent=t('soulCustomNameLabel');
+  document.getElementById('soulCustomFoundingNoteText').textContent=t('soulCustomFoundingNote');
+  document.getElementById('soulCustomCancelText').textContent=t('soulCustomCancel');
+  document.getElementById('soulCustomConfirmText').textContent=t('soulCustomConfirm');
+  if(_soulCustomData&&!document.getElementById('soulCustomLabel').classList.contains('hidden')) renderSoulCustomLabel();
   if(!document.getElementById('recordsOverlay').classList.contains('open')) return;
   renderRecCurrentDate();
   renderRecordList();
@@ -1564,13 +1638,13 @@ function renderExtraSlotFull(targets,sy,sm,sd,ly,lm,ld,sh,smn,sup,dividerTextKey
   const tabsEl=document.querySelector('.tabs');
   if(!document.getElementById(targets.tabGregId)){
     const tg=document.createElement('div');
-    tg.className='tab';tg.id=targets.tabGregId;tg.textContent=t(targets.tabGregKey);
+    tg.className='tab';tg.id=targets.tabGregId;setTabLabel(tg,t(targets.tabGregKey));
     tg.onclick=()=>switchTab(targets.tabGregIdx);
     tabsEl.appendChild(tg);
   }
   if(!document.getElementById(targets.tabLunId)){
     const tl=document.createElement('div');
-    tl.className='tab';tl.id=targets.tabLunId;tl.textContent=t(targets.tabLunKey);
+    tl.className='tab';tl.id=targets.tabLunId;setTabLabel(tl,t(targets.tabLunKey));
 
     tl.onclick=()=>switchTab(targets.tabLunIdx);
     tabsEl.appendChild(tl);
@@ -1693,6 +1767,8 @@ function renderPartial(){_resetFlowNav();
 
     // 第二組／第三組：閏月自動觸發＝一定佔 slot2；手動第二組生日，若閏月已佔用 slot2 則落在 slot3，否則也用 slot2
     let flowSetsAll=[...flowSets1];
+    // 靈魂本質要跑的生日組別（陽曆 by/bm/bd + 時分），只收「完整年月日」的組，跟 flowSetsAll 的 slot 分派邏輯保持同步
+    let soulSets=[{by:sy,bm:sm,bd:sd,bh:sh,bmn:smn,dividerKey:null}];
     if(isLeap){
       _secondSetReason='leap';
       const solar2=lunarToSolar(ly,lm,ld);
@@ -1701,7 +1777,7 @@ function renderPartial(){_resetFlowNav();
         const lm2=lm===12?1:lm+1;
         const ly2=lm===12?ly+1:ly;
         const entry=renderExtraSlotFull(SLOT2_TARGETS,sy2,sm2,sd2,ly2,lm2,ld,sh,smn,'²','leapDivider');
-        if(entry) flowSetsAll.push(entry);
+        if(entry){ flowSetsAll.push(entry); soulSets.push({by:sy2,bm:sm2,bd:sd2,bh:sh,bmn:smn,dividerKey:'leapDivider'}); }
       } else {
         clearExtraSlot(SLOT2_TARGETS);
       }
@@ -1711,7 +1787,7 @@ function renderPartial(){_resetFlowNav();
         const lunar3=solarToLunar(sy3,sm3,sd3);
         if(lunar3){
           const entry=renderExtraSlotFull(SLOT3_TARGETS,sy3,sm3,sd3,lunar3.year,lunar3.month,lunar3.day,sh2,smn2,'³','bd2Divider',lunar3.isLeap);
-          if(entry) flowSetsAll.push(entry);
+          if(entry){ flowSetsAll.push(entry); soulSets.push({by:sy3,bm:sm3,bd:sd3,bh:sh2,bmn:smn2,dividerKey:'bd2Divider'}); }
         } else {
           clearExtraSlot(SLOT3_TARGETS);
         }
@@ -1726,13 +1802,13 @@ function renderPartial(){_resetFlowNav();
       const lunar2=solarToLunar(sy2,sm2,sd2);
       if(lunar2){
         const entry=renderExtraSlotFull(SLOT2_TARGETS,sy2,sm2,sd2,lunar2.year,lunar2.month,lunar2.day,sh2,smn2,'²','bd2Divider',lunar2.isLeap);
-        if(entry) flowSetsAll.push(entry);
+        if(entry){ flowSetsAll.push(entry); soulSets.push({by:sy2,bm:sm2,bd:sd2,bh:sh2,bmn:smn2,dividerKey:'bd2Divider'}); }
       } else {
         clearExtraSlot(SLOT2_TARGETS);
       }
       clearExtraSlot(SLOT3_TARGETS);
     } else if(hasBd2Year){
-      // 第二組生日只填了年，或年+月：比照主生日的局部呈現（僅老年，或老年+中年）
+      // 第二組生日只填了年，或年+月：比照主生日的局部呈現（僅老年，或老年+中年）——靈魂本質資料不足，不列入 soulSets
       _secondSetReason='bd2';
       renderExtraSlotPartial(SLOT2_TARGETS,sy2raw,sm2raw,hasBd2Month,'bd2Divider');
       clearExtraSlot(SLOT3_TARGETS);
@@ -1741,13 +1817,14 @@ function renderPartial(){_resetFlowNav();
       clearExtraSlot(SLOT2_TARGETS);
       clearExtraSlot(SLOT3_TARGETS);
     }
+    _soulSets=soulSets;
     // tab1/tab2（陽曆／陰曆流年表）是否標註上標數字，取決於合併流年表是否有多組
     if(flowSetsAll.length>1){
-      document.getElementById('tab1').textContent=t('tab1');
-      document.getElementById('tab2').textContent=t('tab2');
+      setTabLabel(document.getElementById('tab1'),t('tab1'));
+      setTabLabel(document.getElementById('tab2'),t('tab2'));
     } else {
-      document.getElementById('tab1').textContent=t('tab1no');
-      document.getElementById('tab2').textContent=t('tab2no');
+      setTabLabel(document.getElementById('tab1'),t('tab1no'));
+      setTabLabel(document.getElementById('tab2'),t('tab2no'));
     }
     _phaseNavOffset=0;
     renderPhase(document.getElementById('phaseBlock'),flowSetsAll,nowY,nowM,nowD);
@@ -1784,14 +1861,10 @@ function switchTab(idx){
 }
 
 
-(function(){
-  const now=new Date();
-  const y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
-  const lunar=solarToLunar(y,parseInt(m),parseInt(d));
-  const lunarStr=lunar?`${lunar.year}/${p2(lunar.month)}/${p2(lunar.day)}${lunar.isLeap?t('leap'):''}`: '';
-  document.getElementById('todayDisplay').innerHTML=
-    `<span style="font-size:13px;letter-spacing:.1em">${t('today')}</span><br><span style="font-family:'MPLUS1Code',monospace">${t('greg')}<span class="cal-sign">(+)</span>${y}/${m}/${d}　｜　${t('lun')}<span class="cal-sign">(-)</span>${lunarStr}</span>`;
-})();
+// 頁面載入時執行一次，初始化所有語言文字（含五大階段數等tab標籤的換行）；
+// 之前這裡只重複算了一次「今天」的顯示，其他像 tab0 的文字要靠 toggleLang() 呼叫 applyLang() 才會更新，
+// 但頁面剛載入時沒人按過語言切換鈕，導致 tab0 一直停留在 HTML 寫死的初始文字（沒有換行）
+applyLang();
 
 // 生日欄位輸入事件（跳格 / backspace），可重複套用在主生日與第二組生日
 function bindDateInputNav(ids){
@@ -2467,7 +2540,7 @@ const SOUL_ERAS=[
   {name:'平成',y:1989,m:1,d:8},
   {name:'令和',y:2019,m:5,d:1}
 ];
-let _soulCustomData=null; // {name,y,m,d}
+// _soulCustomData 已搬到檔案前面宣告（避免 applyLang() 在頁面載入時呼叫時發生 TDZ 錯誤）
 let _soulPrevCountry='';
 
 function soulDateGE(y,m,d,y2,m2,d2){
@@ -2479,7 +2552,7 @@ function soulCalcAdjYear(country,by,bm,bd,custom){
   if(country==='JP'){
     let era=null;
     for(const e of SOUL_ERAS){ if(soulDateGE(by,bm,bd,e.y,e.m,e.d)) era=e; }
-    if(!era) return {adjYear:null,note:'不支援明治以前的日本年號'};
+    if(!era) return {adjYear:null,note:t('soulEraUnsupported')};
     return {adjYear:by-era.y+1, note:`${era.name}${by-era.y+1}年`, refDate:era};
   }
   const f=country==='CUSTOM'?custom:SOUL_COUNTRIES[country];
@@ -2508,32 +2581,48 @@ function soulBodyCalc(by,adjYear,bm,bd){
   const fuNum=unmatchedYearDigits.concat(unmatchedAdjDigits).join('')||'0';
   return {bodyNum,fuNum};
 }
-const SOUL_EARTH=['新靈魂','宗教人','巫師','亞特蘭提斯人','列木理亞人','遠古外星實驗生物'];
+const SOUL_EARTH=['新靈魂','宗教人','巫師','亞特蘭提斯人','列穆里亞人','遠古外星實驗生物'];
 const SOUL_ALIEN=['','四次元靈','五次元靈','六次元靈','七次元靈','八次元靈','九次元靈'];
 // 對照表用：X次元靈＝第N類外星人＋別稱＋（9系列）稱號＋別稱＋時間點，給說明彈窗參考
 const SOUL_ALIEN_REF=[
-  {n:0,dim:'',title:'新靈魂',alt:'—'},
-  {n:1,dim:'四次元',title:'第一類外星人',alt:'小天使／智人'},
-  {n:2,dim:'五次元',title:'第二類外星人',alt:'幹部天使／侍奉天使／中天使／飛天女、飛天男'},
-  {n:3,dim:'六次元',title:'第三類外星人',alt:'大天使'},
-  {n:4,dim:'七次元',title:'第四類外星人',alt:'彩虹使者／彩虹國度／基督意識'},
-  {n:5,dim:'八次元',title:'第五類外星人',alt:'造物主層級'},
-  {n:6,dim:'九次元',title:'第六類外星人',alt:'聖靈層級／原始造物主'}
+  {n:0,dim:'',title:'新靈魂',alt:'—',desc:''},
+  {n:1,dim:'四次元',title:'第一類外星人',alt:'小天使／守護靈／智人靈',desc:'理智頭腦化，善於邏輯，追求心智成長'},
+  {n:2,dim:'五次元',title:'第二類外星人',alt:'中階幹部天使／飛天男女',desc:'致力改善地球，靈通心電感應'},
+  {n:3,dim:'六次元',title:'第三類外星人',alt:'大天使',desc:'沉穩不怒而威，任務與地球磁場建構相關'},
+  {n:4,dim:'七次元',title:'第四類外星人',alt:'彩虹國度使者／基督意識',desc:'傳遞喜悅真理之光，任務是傳訊息、傳福音'},
+  {n:5,dim:'八次元',title:'第五類外星人',alt:'造物主層級',desc:'顯像創造的源頭，意念容易心想事成'},
+  {n:6,dim:'九次元',title:'第六類外星人',alt:'聖靈層級／原始造物主',desc:'講義原文僅稱「神秘的黑洞」'}
 ];
 const SOUL_EARTH_REF=[
   {n:0,title:'新靈魂',alt:'—',time:'—'},
-  {n:1,title:'宗教人',alt:'—',time:'約2600年前'},
-  {n:2,title:'巫師',alt:'北美彩虹巫師／南美療癒巫師',time:'約5200年前（前宗教時期）'},
-  {n:3,title:'亞特蘭提斯',alt:'古代神話中的神祇',time:'約10400年前（沉沒古文明）'},
-  {n:4,title:'列木理亞',alt:'神人（可飛行、瞬間移動）',time:'時間不可考（地球最偉大而光輝的神人世代）'},
-  {n:5,title:'遠古外星實驗生物',alt:'巨人、半獸半人、神獸奇類',time:'時間不可考（更早於列木理亞）'}
+  {n:1,title:'宗教人',alt:'—',time:'約2600年前，歷練各大宗教，累積深厚信仰智慧；但易困於輪迴劇本、依賴算命，覺醒關鍵在超越教條'},
+  {n:2,title:'巫師',alt:'北美彩虹巫師／南美薩滿療癒巫師',time:'約5200年前前宗教時期，善用自然力量療癒；曾遭獵巫迫害，因此不信任制度化宗教'},
+  {n:3,title:'亞特<br>蘭提斯人',alt:'古代神話中的神祇',time:'約10400年前古文明，分裂成心靈行者（水晶療癒）與科技行者（高科技3C）兩派，相信人定勝天；但攜帶災難創傷印記（懼高、懼水、幽閉等）'},
+  {n:4,title:'列穆<br>里亞人',alt:'神人（可飛行、瞬間移動）',time:'約30萬～3萬年前神人世代，可瞬間移動、擁有異能，擅長磁力治療，對生命充滿美學與慈悲的理解'},
+  {n:5,title:'遠古外星<br>實驗生物',alt:'巨人、半獸半人、神獸等奇珍異獸',time:'30萬年前外星實驗計畫，蘊藏特殊天賦體質'}
+];
+// 次元意識參考表：純介紹次元本身，不綁定0/9顆數
+const SOUL_DIMENSION_REF=[
+  {n:1,title:'第一次元',desc:'純粹礦物的領域，只能容納意識，缺乏自我意識與覺察能力，是萬物精靈適應環境的階段。'},
+  {n:2,title:'第二次元',desc:'低等星光界，能覺察自身是僅有的存在，對精神毫無知覺，是植物物種所在。'},
+  {n:3,title:'第三次元',desc:'物質與相似星光界，直線時空為基礎的實相，是人類意識所在的領域。'},
+  {n:4,title:'第四次元',desc:'生命體保有意識與感情想法，黑暗光明兩極並存，是基督意識的初步階段，有指導靈天使驅策成長。惡夢與星光體傷害多發生於此。'},
+  {n:5,title:'第五次元',desc:'仍存兩極性，生命體可隨意變形，已超越時空限制。此為因果層面，飛翔夢、療癒夢、清醒夢、正神通皆發生於此；黑暗面存在惡勢力魔頭、法師、巫師、陰間魔王。'},
+  {n:6,title:'第六次元',desc:'高層會眾團、天使長老，自此以上唯有光明無黑暗。集體意識產生的初步階段，同一靈魂投生後可能分裂為多個部分、共享同一高我。默基瑟德意識存在此領域。'},
+  {n:7,title:'第七次元',desc:'聖音與聖樂的領域，生命體以和聲作為本質表達，形成流動的立體圖像。同一靈魂家族成員可體驗合一而仍保有個別特性。'},
+  {n:8,title:'第八次元',desc:'特徵為純然的顏色與流動圖像，生命體彼此交融、無法辨識自我與他人差異，大愛在此產生，也稱渾沌之境。'},
+  {n:9,title:'第九次元',desc:'聖火柱、光柱的起始點，是仍有「分裂」存在的最後次元。形相僅有極精細光柱或平行光束，是米大隆意識的領域，人類意識能企及的最高次元。'},
+  {n:10,title:'第十次元',desc:'所有原始超靈族群完全交融於同一意識，再也無法察覺各自的個體性。'},
+  {n:11,title:'第十一次元以上',desc:'目前無參考資料。'}
 ];
 function soulCountChar(str,ch){return str.split('').filter(c=>c===ch).length;}
 function soulTitleFromCounts(c0,c9){
-  const e=SOUL_EARTH[Math.min(c9,5)], a=SOUL_ALIEN[Math.min(c0,6)];
+  const eExceed=c9>5, aExceed=c0>6;
+  const e=SOUL_EARTH[Math.min(c9,5)]+(eExceed?'⁺':'');
+  const a=SOUL_ALIEN[Math.min(c0,6)]+(aExceed?'⁺':'');
   let title;
-  if(c0===0) title=e; else if(c9===0) title=a; else title=`${e}升${a}再返`;
-  return {title,c0,c9};
+  if(c0===0) title=e; else if(c9===0) title=a; else title=`${e}${c0>c9?'升':'歷'}${a}再返`;
+  return {title,c0,c9,exceeded:eExceed||aExceed};
 }
 function soulBodyTitle(numStr){
   return soulTitleFromCounts(soulCountChar(numStr,'0'),soulCountChar(numStr,'9'));
@@ -2586,11 +2675,13 @@ function soulCurrentStageName(birthY,birthM,birthD,isGreg){
 }
 function soulStageCells(leftIdx,rightIdx,stages,currentStageName){
   const cells=new Array(SOUL_TOTAL_LEN).fill(''), labels=new Array(SOUL_TOTAL_LEN).fill(''), curr=new Array(SOUL_TOTAL_LEN).fill(false);
-  const order=['幼年','少年','青年','中年','老年'];
+  const order=['幼年','少年','青年','中年','老年']; // 內部比對用固定中文key，跟語言無關
+  const abbr=t('soulStageAbbr');
   order.map(n=>stages.find(s=>s.name===n)).filter(Boolean).forEach(st=>{
+    const idx=order.indexOf(st.name);
     const isCurr=st.name===currentStageName;
-    if(st.checkStr.includes('0')){ rightIdx++; cells[rightIdx]='→→→→'; labels[rightIdx]=st.name[0]; if(isCurr) curr[rightIdx]=true; }
-    if(st.checkStr.includes('9')){ leftIdx--; cells[leftIdx]='←←←←'; labels[leftIdx]=st.name[0]; if(isCurr) curr[leftIdx]=true; }
+    if(st.checkStr.includes('0')){ rightIdx++; cells[rightIdx]='→→→→'; labels[rightIdx]=abbr[idx]; if(isCurr) curr[rightIdx]=true; }
+    if(st.checkStr.includes('9')){ leftIdx--; cells[leftIdx]='←←←←'; labels[leftIdx]=abbr[idx]; if(isCurr) curr[leftIdx]=true; }
   });
   return {cells,labels,curr};
 }
@@ -2655,90 +2746,97 @@ function renderSoulChart(bodyInfo,fuInfo,stages,currentStageName){
   return `<div class="soul-tl-grid">${items}</div>`;
 }
 
-function renderSoulSection(){
-  const country=document.getElementById('soulCountry').value;
-  if(!country){ document.getElementById('soulOutput').innerHTML=''; return; }
-  const syRaw=document.getElementById('inputYear').value.trim();
-  const smRaw=document.getElementById('inputMonth').value.trim();
-  const sdRaw=document.getElementById('inputDay').value.trim();
-  const shRaw=document.getElementById('inputHour').value.trim();
-  const smnRaw=document.getElementById('inputMin').value.trim();
-  const by=parseInt(syRaw)||0, bm=parseInt(smRaw)||0, bd=parseInt(sdRaw)||0;
-  if(!by||!bm||!bd){ document.getElementById('soulOutput').innerHTML=''; return; }
-  const bh=shRaw?parseInt(shRaw):null, bmn=smnRaw?parseInt(smnRaw):null;
+// 單一生日組（陽曆 by/bm/bd/bh/bmn）算出陽曆軌＋農曆軌兩段完整 HTML，country/custom 共用同一組對照國家
+function renderSoulResultForBirthday(country,custom,by,bm,bd,bh,bmn){
   const missingTime=(bh===null||bmn===null);
-  if(country==='CUSTOM'&&!_soulCustomData){
-    document.getElementById('soulCustomModal').classList.remove('hidden');
-    return;
-  }
-  const custom=country==='CUSTOM'?_soulCustomData:null;
   const adjResult=soulCalcAdjYear(country,by,bm,bd,custom);
   if(adjResult.adjYear===null){
-    document.getElementById('soulOutput').innerHTML=`<div style="color:#c0392b;font-size:12px;margin-top:8px">${adjResult.note}</div>`;
-    return;
+    return `<div style="color:#c0392b;font-size:12px;margin-top:8px">${adjResult.note}</div>`;
   }
   const {bodyNum,fuNum}=soulBodyCalc(by,adjResult.adjYear,bm,bd);
   const bodyInfo=soulBodyTitle(bodyNum);
   const fuInfo=soulFuTitle(fuNum,bodyInfo.c0,bodyInfo.c9);
   const {stages}=calcStages(by,bm,bd,bh,bmn);
 
-  const refLabel=country==='JP'?`年號起始日（${adjResult.refDate.name}）`:'建國日';
+  const refLabel=country==='JP'?t('soulEraLabel').replace('{name}',adjResult.refDate.name):t('soulFoundingLabel');
   const refDateStr=`+${adjResult.refDate.y}/${p2(adjResult.refDate.m)}/${p2(adjResult.refDate.d)}`;
   const soulYearStr=`+${adjResult.adjYear}/${p2(bm)}/${p2(bd)}`;
 
-  let html='<div class="soul-result">';
-  html+=renderSoulTrackBlock({
-    refLabel,refDateStr,yearLabel:'人天數',yearStr:soulYearStr,
+  let html=renderSoulTrackBlock({
+    refLabel,refDateStr,yearLabel:t('soulSkyNumLabel'),yearStr:soulYearStr,
     bodyNum,fuNum,bodyInfo,fuInfo,stages,missingTime,
     stageBirthY:by,stageBirthM:bm,stageBirthD:bd,isGreg:true
   });
 
-  {
-    const lunarBd=solarToLunar(by,bm,bd);
-    const lunarFound=solarToLunar(adjResult.refDate.y,adjResult.refDate.m,adjResult.refDate.d);
-    if(lunarBd&&lunarFound){
-      let lunAdj=lunarBd.year-lunarFound.year;
-      if(!(lunarBd.month<lunarFound.month||(lunarBd.month===lunarFound.month&&lunarBd.day<lunarFound.day))) lunAdj+=1;
-      const lunFoundStr=`-${lunarFound.year}/${p2(lunarFound.month)}/${p2(lunarFound.day)}`;
-      const lunYearStr=`-${lunAdj}/${p2(lunarBd.month)}/${p2(lunarBd.day)}`;
+  const lunarBd=solarToLunar(by,bm,bd);
+  const lunarFound=solarToLunar(adjResult.refDate.y,adjResult.refDate.m,adjResult.refDate.d);
+  if(lunarBd&&lunarFound){
+    let lunAdj=lunarBd.year-lunarFound.year;
+    if(!(lunarBd.month<lunarFound.month||(lunarBd.month===lunarFound.month&&lunarBd.day<lunarFound.day))) lunAdj+=1;
+    const lunFoundStr=`-${lunarFound.year}/${p2(lunarFound.month)}/${p2(lunarFound.day)}`;
+    const lunYearStr=`-${lunAdj}/${p2(lunarBd.month)}/${p2(lunarBd.day)}`;
 
-      const {bodyNum:lBodyNum,fuNum:lFuNum}=soulBodyCalc(lunarBd.year,lunAdj,lunarBd.month,lunarBd.day);
-      const lBodyInfo=soulBodyTitle(lBodyNum);
-      const lFuInfo=soulFuTitle(lFuNum,lBodyInfo.c0,lBodyInfo.c9);
-      const {stages:lStagesArr}=calcStages(lunarBd.year,lunarBd.month,lunarBd.day,bh,bmn);
+    const {bodyNum:lBodyNum,fuNum:lFuNum}=soulBodyCalc(lunarBd.year,lunAdj,lunarBd.month,lunarBd.day);
+    const lBodyInfo=soulBodyTitle(lBodyNum);
+    const lFuInfo=soulFuTitle(lFuNum,lBodyInfo.c0,lBodyInfo.c9);
+    const {stages:lStagesArr}=calcStages(lunarBd.year,lunarBd.month,lunarBd.day,bh,bmn);
 
-      html+=renderSoulTrackBlock({
-        refLabel:country==='JP'?`年號起始日（${adjResult.refDate.name}）`:'建國日',refDateStr:lunFoundStr,yearLabel:'人地數',yearStr:lunYearStr,
-        bodyNum:lBodyNum,fuNum:lFuNum,bodyInfo:lBodyInfo,fuInfo:lFuInfo,stages:lStagesArr,missingTime,
-        stageBirthY:lunarBd.year,stageBirthM:lunarBd.month,stageBirthD:lunarBd.day,isGreg:false
-      });
-    }
+    html+=renderSoulTrackBlock({
+      refLabel,refDateStr:lunFoundStr,yearLabel:t('soulEarthNumLabel'),yearStr:lunYearStr,
+      bodyNum:lBodyNum,fuNum:lFuNum,bodyInfo:lBodyInfo,fuInfo:lFuInfo,stages:lStagesArr,missingTime,
+      stageBirthY:lunarBd.year,stageBirthM:lunarBd.month,stageBirthD:lunarBd.day,isGreg:false
+    });
   }
-  html+='</div>';
-  document.getElementById('soulOutput').innerHTML=html;
+  return `<div class="soul-result">${html}</div>`;
+}
+
+// 對照國家共用同一組；依 _soulSets（1~3組：主生日／閏月第二組／報錯戶口第三組）依序輸出，組間比照份/緣同款分隔線
+function renderSoulSection(){
+  const country=document.getElementById('soulCountry').value;
+  const outEl=document.getElementById('soulOutput');
+  if(!country){ outEl.innerHTML=''; return; }
+  if(!_soulSets.length){ outEl.innerHTML=''; return; }
+  if(country==='CUSTOM'&&!_soulCustomData){
+    document.getElementById('soulCustomModal').classList.remove('hidden');
+    return;
+  }
+  const custom=country==='CUSTOM'?_soulCustomData:null;
+
+  let html='';
+  _soulSets.forEach(set=>{
+    if(set.dividerKey){
+      html+=`<div style="border-top:1px dashed #ddd;margin-top:16px;padding-top:8px;text-align:center;font-size:11px;color:#bbb;letter-spacing:.1em">${t(set.dividerKey)}</div>`;
+    }
+    html+=renderSoulResultForBirthday(country,custom,set.by,set.bm,set.bd,set.bh,set.bmn);
+  });
+  outEl.innerHTML=html;
 }
 
 // 國曆軌／農曆軌共用的完整區塊渲染：標題＋主體／副體＋揚升計畫文字版＋表格版時間軸
 function renderSoulTrackBlock({refLabel,refDateStr,yearLabel,yearStr,bodyNum,fuNum,bodyInfo,fuInfo,stages,missingTime,stageBirthY,stageBirthM,stageBirthD,isGreg}){
   const currentStageName=soulCurrentStageName(stageBirthY,stageBirthM,stageBirthD,isGreg);
-  const order=['幼年','少年','青年','中年','老年'];
-  const yangLine=order.map(n=>{
+  const order=['幼年','少年','青年','中年','老年']; // 內部比對用固定中文key，跟語言無關
+  const abbr=t('soulStageAbbr');
+  const yangLine=order.map((n,idx)=>{
     const st=stages.find(s=>s.name===n);
-    if(!st) return `${n[0]}：－`;
+    if(!st) return `${abbr[idx]}：－`;
     const marks=[];
     if(st.checkStr.includes('9')) marks.push('9');
     if(st.checkStr.includes('0')) marks.push('0');
-    return `${n[0]}：${marks.length?marks.join('、'):'X'}`;
+    return `${abbr[idx]}：${marks.length?marks.join('、'):'X'}`;
   }).join('｜');
 
   let html='<div class="soul-track">';
   if(missingTime){
-    html+='<div style="color:#c0392b;font-size:11px;margin-bottom:6px">（未填寫「時」與「分」，揚升計畫僅計算青年／中年／老年，幼年少年顯示為 －）</div>';
+    html+=`<div style="color:#c0392b;font-size:11px;margin-bottom:6px">${t('soulMissingTimeNote')}</div>`;
   }
   html+=`<div class="soul-numline" style="color:#999"><span class="lab">${refLabel}</span><span class="num">${refDateStr}</span><span class="title" style="margin-left:14px;color:#999">${yearLabel}：</span><span class="num" style="color:#999">${yearStr}</span></div>`;
-  html+=`<div class="soul-numline"><span class="lab">靈魂主體</span><span class="num soul-body-num">【${bodyNum}】</span><span class="title">${bodyInfo.title}</span></div>`;
-  html+=`<div class="soul-numline"><span class="lab">靈魂副體</span><span class="num soul-fu-num">【${fuNum}】</span><span class="title">${fuInfo.title}</span></div>`;
-  html+=`<div class="soul-yang-line">揚升計畫：${yangLine}</div>`;
+  html+=`<div class="soul-numline"><span class="lab">${t('soulBodyLabel')}</span><span class="num soul-body-num">【${bodyNum}】</span><span class="title">${bodyInfo.title}</span></div>`;
+  html+=`<div class="soul-numline"><span class="lab">${t('soulFuLabel')}</span><span class="num soul-fu-num">【${fuNum}】</span><span class="title">${fuInfo.title}</span></div>`;
+  if(bodyInfo.exceeded||fuInfo.exceeded){
+    html+=`<div style="font-size:10px;color:#bbb;margin-top:-2px">⁺ ${t('soulExceedNote')}</div>`;
+  }
+  html+=`<div class="soul-yang-line">${t('soulYangPlanLabel')}｜${yangLine}｜</div>`;
   html+=`<div class="soulChartWrap">${renderSoulChart(bodyInfo,fuInfo,stages,currentStageName)}</div>`;
   html+='</div>';
   return html;
@@ -2764,27 +2862,37 @@ function cancelSoulCustom(){
   document.getElementById('soulCustomModal').classList.add('hidden');
   if(!_soulCustomData) document.getElementById('soulCountry').value=_soulPrevCountry;
 }
+function renderSoulCustomLabel(){
+  if(!_soulCustomData) return;
+  const {name,y,m,d}=_soulCustomData;
+  const dateStr=`${y}/${p2(m)}/${p2(d)}`;
+  const namePrefix=name?(lang==='en'?name+': ':name+'：'):'';
+  document.getElementById('soulCustomLabel').textContent=namePrefix+t('soulCustomSetLabel').replace('{date}',dateStr);
+}
 function confirmSoulCustom(){
   const y=+document.getElementById('soulCY').value, m=+document.getElementById('soulCM').value, d=+document.getElementById('soulCD').value;
-  if(!y||!m||!d){ alert('請填完整的建國年月日'); return; }
+  if(!y||!m||!d){ alert(t('soulCustomAlertIncomplete')); return; }
   const name=document.getElementById('soulCName').value.trim();
   _soulCustomData={name,y,m,d};
   _soulPrevCountry='CUSTOM';
   document.getElementById('soulCustomModal').classList.add('hidden');
-  const lbl=document.getElementById('soulCustomLabel');
-  lbl.classList.remove('hidden');
-  lbl.textContent=`${name?name+'：':''}建國 ${y}/${p2(m)}/${p2(d)}（點國家選單可重新設定）`;
+  document.getElementById('soulCustomLabel').classList.remove('hidden');
+  renderSoulCustomLabel();
   renderSoulSection();
 }
 
 function openSoulRefModal(){
   const alienTbody=document.getElementById('soulRefAlienTable');
   alienTbody.innerHTML=SOUL_ALIEN_REF.map(r=>
-    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap">${r.n}顆0</td><td style="padding:5px 4px;font-weight:600;width:calc(5em + 8px);text-align:center;word-break:break-word">${r.dim?r.dim+'靈':r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px">${r.dim?r.title+'／'+r.alt:'—'}</td></tr>`
+    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap">0x${r.n}</td><td style="padding:5px 4px;font-weight:600;white-space:nowrap;text-align:center">${r.dim?r.dim+t('soulRefDimSuffix'):r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px;line-height:1.5">${r.dim?(r.title+'／'+r.alt)+(r.desc?'<br>'+r.desc:''):'—'}</td></tr>`
   ).join('');
   const earthTbody=document.getElementById('soulRefEarthTable');
   earthTbody.innerHTML=SOUL_EARTH_REF.map(r=>
-    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap">${r.n}顆9</td><td style="padding:5px 4px;font-weight:600;width:calc(5em + 8px);text-align:center;word-break:break-word">${r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px">${r.alt!=='—'?r.alt+'　':''}${r.time}</td></tr>`
+    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap">9x${r.n}</td><td style="padding:5px 4px;font-weight:600;white-space:nowrap;text-align:center">${r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px;line-height:1.5">${r.alt!=='—'?r.alt+'<br>':''}${r.time}</td></tr>`
+  ).join('');
+  const dimTbody=document.getElementById('soulRefDimTable');
+  dimTbody.innerHTML=SOUL_DIMENSION_REF.map(r=>
+    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;font-weight:600;white-space:nowrap;vertical-align:top">${r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px">${r.desc}</td></tr>`
   ).join('');
   document.getElementById('soulRefModal').classList.remove('hidden');
 }
