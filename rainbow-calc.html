@@ -50,13 +50,13 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .stage-path{color:#888}
 .stage-dest{color:#1a1a1a}
 .stage-lv{font-size:11px;color:#4a90d9;font-family:'MPLUS1Code',monospace}
-.innate-section{margin-top:32px;border-top:1px solid #e8e8e8;padding-top:32px;text-align:center}
-.innate-title{font-size:14px;font-weight:500;letter-spacing:.1em;color:#1a1a1a;margin-bottom:12px}
+.innate-section{margin-top:32px;border-top:1px solid #e8e8e8;padding-top:20px;text-align:center}
+.section-title{font-size:14px;font-weight:500;letter-spacing:.1em;color:#1a1a1a;margin-bottom:12px}
 .innate-nums{display:flex;gap:0px}
 .inn{font-size:14px;color:#bbb;width:18px;text-align:center;font-family:'MPLUS1Code',monospace}
 .inn.has{color:#555}
 .inn.obs{color:#c0392b;font-weight:500}
-.phase-section{margin-top:32px;border-top:1px solid #e8e8e8;padding-top:16px;text-align:center}
+.phase-section{margin-top:32px;border-top:1px solid #e8e8e8;padding-top:20px;text-align:center}
 #phaseTitleText{margin-bottom:0}
 .phase-wrap{display:flex;gap:12px;justify-content:center;margin-top:0}
 .phase-side{flex:1;min-width:0;max-width:190px}
@@ -71,8 +71,8 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .phase-edge{stroke:#ddd;stroke-width:1.4;fill:none}
 .phase-dot{fill:#999}
 .phase-dot.current{fill:#b8860b}
-.flow-block{margin-top:16px;border-top:1px solid #e8e8e8;padding-top:16px;text-align:center}
-.soul-section{margin-top:32px;border-top:1px solid #e8e8e8;padding-top:16px;padding-bottom:20px;text-align:center}
+.flow-block{margin-top:16px;border-top:1px solid #e8e8e8;padding-top:20px;text-align:center}
+.soul-section{margin-top:32px;border-top:1px solid #e8e8e8;padding-top:20px;padding-bottom:20px;text-align:center}
 .soul-country-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:0}
 .soul-country-row select{font-size:13px;padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-family:inherit;background:#fff}
 .soul-country-row label{font-size:12px;color:#666}
@@ -118,7 +118,6 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .sign{font-size:13px;color:#1a1a1a;margin-right:1px;font-family:'MPLUS1Code',monospace}
 /* 新版流年流月流日 */
 .flow-new-section{margin:0 0 20px}
-.flow-new-title{font-size:13px;font-weight:500;letter-spacing:.1em;color:#1a1a1a;margin-bottom:12px;text-align:left}
 .flow-new-grid{display:grid;gap:6px}
 .flow-year-grid{grid-template-columns:repeat(3,1fr)}
 .flow-month-grid{grid-template-columns:repeat(4,1fr)}
@@ -465,7 +464,7 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
         </div>
         <div class="screenshot-btn-wrap" style="text-align:center;padding:16px 0 12px"><button id="screenshotBtn" onclick="takeScreenshot()" class="screenshot-btn" style="padding:4px 14px;border:1px solid #ddd;border-radius:14px;font-size:12px;color:#888;letter-spacing:.08em;background:#fff;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#bbb';this.style.color='#555'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">📷 <span id="screenshotText">儲存截圖</span></button></div>
         <div class="innate-section" id="innateSection">
-          <div class="innate-title" id="innateTitle" style="display:grid;grid-template-columns:auto 1fr auto;align-items:center"><button disabled style="-webkit-appearance:none;appearance:none;background:none;border:none;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;white-space:nowrap;visibility:hidden">展開 ▼</button><span id="innateTitleText">先天數</span><button onclick="toggleNineGrid(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;white-space:nowrap">收合 ▲</button></div>
+          <div class="section-title" id="innateTitle" style="display:grid;grid-template-columns:auto 1fr auto;align-items:center"><button disabled style="-webkit-appearance:none;appearance:none;background:none;border:none;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;white-space:nowrap;visibility:hidden">展開 ▼</button><span id="innateTitleText">先天數</span><button onclick="toggleNineGrid(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;white-space:nowrap">收合 ▲</button></div>
           <div id="nineGridSection"></div>
           <div id="nineGridSection2" class="hidden" style="margin-top:12px;padding-top:12px;border-top:1px dashed #ddd"></div>
           <div id="nineGridSection3" class="hidden" style="margin-top:12px;padding-top:12px;border-top:1px dashed #ddd"></div>
@@ -473,18 +472,13 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
         <div class="phase-section" id="phaseSection">
           <div class="phase-nav-row">
             <button onclick="changePhaseNav(-1)">‹ <span id="phaseNavPrevText">去年</span></button>
-            <span class="innate-title" id="phaseTitleText">位格</span>
+            <span class="section-title" id="phaseTitleText">位格</span>
             <button onclick="changePhaseNav(1)"><span id="phaseNavNextText">明年</span> ›</button>
           </div>
           <div id="phaseBlock"></div>
         </div>
-        <div class="flow-block" id="flowBlock">
-          <div id="flowYearBlock"></div>
-          <div id="flowMonthBlock" style="margin-top:20px;padding-top:20px;border-top:1px solid #e8e8e8"></div>
-          <div id="flowDayBlock" style="margin-top:20px;padding-top:20px;border-top:1px solid #e8e8e8"></div>
-        </div>
         <div class="soul-section" id="soulSection">
-          <div class="innate-title" style="display:flex;align-items:center;justify-content:center;gap:6px"><span id="soulTitleText">靈魂本質</span><button onclick="openSoulRefModal()" style="-webkit-appearance:none;appearance:none;background:none;border:1px solid #ccc;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;color:#888;cursor:pointer;padding:0">?</button></div>
+          <div class="section-title" style="text-align:center"><span id="soulTitleWrap" style="position:relative;display:inline-block"><span id="soulTitleText">靈魂本質</span><button onclick="openSoulRefModal()" style="-webkit-appearance:none;appearance:none;background:none;border:1px solid #ccc;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;color:#888;cursor:pointer;padding:0;position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:6px">?</button></span></div>
           <div class="soul-country-row">
             <label for="soulCountry" id="soulCountryLabelText">對照國家</label>
             <select id="soulCountry" onchange="onSoulCountryChange(this)">
@@ -500,6 +494,11 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
           </div>
           <div id="soulCustomLabel" class="hidden" style="font-size:11px;color:#2c8a4a;margin-top:4px"></div>
           <div id="soulOutput"></div>
+        </div>
+        <div class="flow-block" id="flowBlock">
+          <div id="flowYearBlock"></div>
+          <div id="flowMonthBlock" style="margin-top:20px;padding-top:20px;border-top:1px solid #e8e8e8"></div>
+          <div id="flowDayBlock" style="margin-top:20px;padding-top:20px;border-top:1px solid #e8e8e8"></div>
         </div>
       </div>
       <div class="panel" id="panel1"><div id="gregFlowTable"></div></div>
@@ -550,22 +549,23 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
   </div>
 </div>
 <div id="soulRefModal" class="soul-modal-overlay hidden" onclick="if(event.target===this)closeSoulRefModal()">
-  <div class="soul-modal-card" style="width:min(90vw,360px);max-height:80vh;overflow-y:auto">
-    <h3 id="soulRefModalTitleText">靈魂本質對照表</h3>
-    <div id="soulRefAlienDescText" style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">0的系列（未來印記）</div>
-    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px">
-      <tbody id="soulRefAlienTable"></tbody>
-    </table>
-    <div id="soulRefEarthDescText" style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">9的系列（過去印記）</div>
-    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px">
-      <tbody id="soulRefEarthTable"></tbody>
-    </table>
-    <div id="soulRefDimDescText" style="font-size:11px;color:#888;text-align:center;margin-bottom:8px">次元意識參考表</div>
-    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px">
-      <tbody id="soulRefDimTable"></tbody>
-    </table>
-    <div class="soul-modal-btnrow">
-      <button onclick="closeSoulRefModal()" id="soulRefCloseBtnText">關閉</button>
+  <div class="soul-modal-card" style="width:min(90vw,360px);max-height:80vh;overflow:hidden;position:relative;padding:0">
+    <button onclick="closeSoulRefModal()" aria-label="Close" style="position:absolute;top:10px;left:10px;z-index:2;-webkit-appearance:none;appearance:none;background:#fff;border:none;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.15);width:28px;height:28px;font-size:20px;line-height:1;color:#999;cursor:pointer;padding:0">×</button>
+    <div style="max-height:80vh;overflow-y:auto;padding:20px">
+      <h3 id="soulRefModalTitleText">靈魂本質對照表</h3>
+      <div id="soulRefNoticeText" style="font-size:10px;color:#aaa;text-align:center;margin-bottom:10px">內容僅供參考，非絕對定論</div>
+      <div id="soulRefAlienDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">0的系列（未來印記）</div>
+      <table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;margin-bottom:14px">
+        <tbody id="soulRefAlienTable"></tbody>
+      </table>
+      <div id="soulRefEarthDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">9的系列（過去印記）</div>
+      <table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;margin-bottom:14px">
+        <tbody id="soulRefEarthTable"></tbody>
+      </table>
+      <div id="soulRefDimDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">次元意識參考表</div>
+      <table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;margin-bottom:14px">
+        <tbody id="soulRefDimTable"></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -630,7 +630,7 @@ const T={
     rhythmPrev:'‹ 前3年', rhythmNext:'後3年 ›',
     soulTitle:'靈魂本質', soulCountryLabel:'對照國家', soulSelectPlaceholder:'請選擇',
     soulCountryTW:'台灣', soulCountryUS:'美國', soulCountryCN:'中國', soulCountryKR:'韓國', soulCountryMY:'馬來西亞', soulCountryJP:'日本（自動判斷年號）', soulCountryCustom:'自訂國家／地區',
-    soulRefModalTitle:'靈魂本質對照表', soulRefAlienDesc:'0的系列（未來印記）', soulRefEarthDesc:'9的系列（過去印記）', soulRefDimDesc:'次元意識參考表', soulRefCloseBtn:'關閉',
+    soulRefModalTitle:'靈魂本質對照表', soulRefNotice:'內容僅供參考，非絕對定論', soulRefAlienDesc:'0的系列（未來印記）', soulRefEarthDesc:'9的系列（過去印記）', soulRefDimDesc:'次元意識參考表', soulRefCloseBtn:'關閉',
     soulRefDimSuffix:'靈',
     soulCustomModalTitle:'自訂國家／地區', soulCustomNameLabel:'名稱（選填）', soulCustomFoundingNote:'國家建國日（國慶日）',
     soulCustomCancel:'取消', soulCustomConfirm:'確定',
@@ -641,7 +641,7 @@ const T={
     soulSkyNumLabel:'人天數', soulEarthNumLabel:'人地數',
     soulBodyLabel:'靈魂主體', soulFuLabel:'靈魂副體', soulYangPlanLabel:'揚升計畫',
     soulStageAbbr:['幼','少','青','中','老'],
-    soulMissingTimeNote:'（未填寫「時」與「分」，揚升計畫僅計算青年／中年／老年，幼年少年顯示為 －）',
+    soulMissingTimeNote:'（未填寫「時」或「分」，可能無法顯示完整的揚升計畫）',
     soulExceedNote:'超過對照表範圍，無前例可循',
     pairShot:'合盤'
   },
@@ -654,7 +654,7 @@ const T={
     leapDivider:'— Leap Month Set 2 —', bd2Divider:'— Second Birthday —',
     bd2HintPrefix:'Have a second birthday besides a leap month one? ', bd2HintOpen:'Tap here → +', bd2HintClose:'Hide －',
     innateTitle:'Innate Numbers',
-    phaseTitle:'Phase',
+    phaseTitle:'Phase Number',
     phaseNavPrev:'Prev',
     phaseNavNext:'Next',
     errDate:'Please enter a valid birthday', errLunar:'Lunar conversion failed, please check the date',
@@ -681,7 +681,7 @@ const T={
     rhythmPrev:'‹ 3 Yrs Back', rhythmNext:'3 Yrs Fwd ›',
     soulTitle:'Soul Essence', soulCountryLabel:'Reference Country', soulSelectPlaceholder:'Select...',
     soulCountryTW:'Taiwan', soulCountryUS:'USA', soulCountryCN:'China', soulCountryKR:'South Korea', soulCountryMY:'Malaysia', soulCountryJP:'Japan (auto era detection)', soulCountryCustom:'Custom Country/Region',
-    soulRefModalTitle:'Soul Essence Reference Table', soulRefAlienDesc:'Series of 0 (Future Imprint)', soulRefEarthDesc:'Series of 9 (Past Imprint)', soulRefDimDesc:'Dimensional Consciousness Reference', soulRefCloseBtn:'Close',
+    soulRefModalTitle:'Soul Essence Reference Table', soulRefNotice:'For reference only, not a definitive conclusion', soulRefAlienDesc:'Series of 0 (Future Imprint)', soulRefEarthDesc:'Series of 9 (Past Imprint)', soulRefDimDesc:'Dimensional Consciousness Reference', soulRefCloseBtn:'Close',
     soulRefDimSuffix:' Spirit',
     soulCustomModalTitle:'Custom Country/Region', soulCustomNameLabel:'Name (optional)', soulCustomFoundingNote:'Founding Date (National Day)',
     soulCustomCancel:'Cancel', soulCustomConfirm:'Confirm',
@@ -692,7 +692,7 @@ const T={
     soulSkyNumLabel:'Adj. Birthday', soulEarthNumLabel:'Adj. Birthday',
     soulBodyLabel:'Primary Soul', soulFuLabel:'Companion Soul', soulYangPlanLabel:'Ascension Plan',
     soulStageAbbr:['C','Y','A','M','E'],
-    soulMissingTimeNote:'(Hour/Minute not entered — Ascension Plan only covers Youth/Midlife/Elder; Childhood/Adolescence shown as "－")',
+    soulMissingTimeNote:'(Hour or Minute not entered — the Ascension Plan may not display in full)',
     soulExceedNote:'Beyond the reference table — no precedent yet',
     pairShot:'Synastry'
   }
@@ -731,6 +731,7 @@ function toggleLang(){
   lang=lang==='zh'?'en':'zh';
   if(typeof gtag==='function') gtag('event','lang_switch',{lang:lang});
   applyLang();
+  if(!document.getElementById('soulRefModal').classList.contains('hidden')) openSoulRefModal();
   if(document.getElementById('pairOverlay').classList.contains('open')&&_pairLastIds){
     const list=getRecords();
     const sel=_pairLastIds.map(id=>list.find(r=>r.id===id)).filter(Boolean);
@@ -827,10 +828,10 @@ function applyLang(){
   document.getElementById('soulOptJP').textContent=t('soulCountryJP');
   document.getElementById('soulOptCustom').textContent=t('soulCountryCustom');
   document.getElementById('soulRefModalTitleText').textContent=t('soulRefModalTitle');
+  document.getElementById('soulRefNoticeText').textContent=t('soulRefNotice');
   document.getElementById('soulRefAlienDescText').textContent=t('soulRefAlienDesc');
   document.getElementById('soulRefEarthDescText').textContent=t('soulRefEarthDesc');
   document.getElementById('soulRefDimDescText').textContent=t('soulRefDimDesc');
-  document.getElementById('soulRefCloseBtnText').textContent=t('soulRefCloseBtn');
   document.getElementById('soulCustomModalTitleText').textContent=t('soulCustomModalTitle');
   document.getElementById('soulCustomNameLabelText').textContent=t('soulCustomNameLabel');
   document.getElementById('soulCustomFoundingNoteText').textContent=t('soulCustomFoundingNote');
@@ -1157,7 +1158,7 @@ function renderFlowYear(el,sets,todayY,todayM,todayD){
     const gFYS=makeStage(sumArr([...digs(gFY),...digs(s.gregM),...digs(s.gregD)]));
     const lFYS=makeStage(sumArr([...digs(lFY),...digs(s.lunM),...digs(s.lunD)]));
     const fyBtn=idx===0?'<button onclick="toggleFlowSection(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;justify-self:end">▲</button>':'<span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span>';
-    const titleDiv=`<div class="flow-new-title" style="display:grid;grid-template-columns:28px 78px 1fr 78px 28px;align-items:center"><span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">+${flowLvBadge(gFYS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowYear'):'　　'}</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">-${flowLvBadge(lFYS,lInnate,true)}</span>${fyBtn}</div>`;
+    const titleDiv=`<div class="section-title" style="display:grid;grid-template-columns:28px 78px 1fr 78px 28px;align-items:center"><span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">+${flowLvBadge(gFYS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowYear'):'　　'}</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">-${flowLvBadge(lFYS,lInnate,true)}</span>${fyBtn}</div>`;
     const centerY=Math.max(gFY,lFY);
     const fyYears=[centerY-1,centerY,centerY+1];
     const fyLabels=fyYears.map(yr=>String(yr));
@@ -1346,7 +1347,7 @@ function renderFlowMonth(el,sets,todayY,todayM,todayD){
     const gFMS=makeStage(sumArr([...digs(s.gregY),...digs(gFM),...digs(s.gregD)]));
     const lFMS=makeStage(sumArr([...digs(s.lunY),...digs(lFM),...digs(s.lunD)]));
     const fmBtn=idx===0?'<button onclick="toggleFlowSection(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;justify-self:end">▲</button>':'<span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span>';
-    const titleDiv=`<div class="flow-new-title" style="display:grid;grid-template-columns:28px 78px 1fr 78px 28px;align-items:center"><span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">+${flowLvBadge(gFMS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowMonth'):'　　'}</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">-${flowLvBadge(lFMS,lInnate,true)}</span>${fmBtn}</div>`;
+    const titleDiv=`<div class="section-title" style="display:grid;grid-template-columns:28px 78px 1fr 78px 28px;align-items:center"><span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">+${flowLvBadge(gFMS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowMonth'):'　　'}</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">-${flowLvBadge(lFMS,lInnate,true)}</span>${fmBtn}</div>`;
     const fmCells=fmMonthLabels.map((lbl,i)=>{
       const mo=i+1;
       const isCurrentG=(mo===gFM);
@@ -1402,7 +1403,7 @@ function renderFlowDay(el,sets,todayY,todayM,todayD){
     const gFDS=makeStage(sumArr([...digs(s.gregY),...digs(s.gregM),...digs(todayD)]));
     const lFDS=makeStage(sumArr([...digs(s.lunY),...digs(s.lunM),...digs(solarToLunar(todayY,todayM,todayD)?.day||todayD)]));
     const fdBtn=idx===0?'<button onclick="toggleFlowSection(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;justify-self:end">▲</button>':'<span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span>';
-    const titleDiv=`<div class="flow-new-title" style="display:grid;grid-template-columns:28px 78px 1fr 78px 28px;align-items:center"><span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">+${flowLvBadge(gFDS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowDay'):'　　'}</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">-${flowLvBadge(lFDS,lInnate,true)}</span>${fdBtn}</div>`;
+    const titleDiv=`<div class="section-title" style="display:grid;grid-template-columns:28px 78px 1fr 78px 28px;align-items:center"><span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">+${flowLvBadge(gFDS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowDay'):'　　'}</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">-${flowLvBadge(lFDS,lInnate,true)}</span>${fdBtn}</div>`;
     function fdStageG(dy){return makeStage(sumArr([...digs(s.gregY),...digs(s.gregM),...digs(dy)]));}
     function fdStageL(dy){
       const lunar=solarToLunar(calYear,calMonth,dy);
@@ -2585,21 +2586,21 @@ const SOUL_EARTH=['新靈魂','宗教人','巫師','亞特蘭提斯人','列穆�
 const SOUL_ALIEN=['','四次元靈','五次元靈','六次元靈','七次元靈','八次元靈','九次元靈'];
 // 對照表用：X次元靈＝第N類外星人＋別稱＋（9系列）稱號＋別稱＋時間點，給說明彈窗參考
 const SOUL_ALIEN_REF=[
-  {n:0,dim:'',title:'新靈魂',alt:'—',desc:''},
+  {n:0,dim:'',title:'新靈魂',alt:'尚未展開靈魂旅程的新生靈魂',desc:''},
   {n:1,dim:'四次元',title:'第一類外星人',alt:'小天使／守護靈／智人靈',desc:'理智頭腦化，善於邏輯，追求心智成長'},
-  {n:2,dim:'五次元',title:'第二類外星人',alt:'中階幹部天使／飛天男女',desc:'致力改善地球，靈通心電感應'},
-  {n:3,dim:'六次元',title:'第三類外星人',alt:'大天使',desc:'沉穩不怒而威，任務與地球磁場建構相關'},
+  {n:2,dim:'五次元',title:'第二類外星人',alt:'中階天使／飛天導師／魔王',desc:'致力改善地球，靈通心電感應'},
+  {n:3,dim:'六次元',title:'第三類外星人',alt:'大天使長老／光明與黑暗',desc:'沉穩不怒而威，任務與地球磁場建構相關'},
   {n:4,dim:'七次元',title:'第四類外星人',alt:'彩虹國度使者／基督意識',desc:'傳遞喜悅真理之光，任務是傳訊息、傳福音'},
   {n:5,dim:'八次元',title:'第五類外星人',alt:'造物主層級',desc:'顯像創造的源頭，意念容易心想事成'},
-  {n:6,dim:'九次元',title:'第六類外星人',alt:'聖靈層級／原始造物主',desc:'講義原文僅稱「神秘的黑洞」'}
+  {n:6,dim:'九次元',title:'第六類外星人',alt:'聖靈層級／原始造物主',desc:''}
 ];
 const SOUL_EARTH_REF=[
-  {n:0,title:'新靈魂',alt:'—',time:'—'},
-  {n:1,title:'宗教人',alt:'—',time:'約2600年前，歷練各大宗教，累積深厚信仰智慧；但易困於輪迴劇本、依賴算命，覺醒關鍵在超越教條'},
-  {n:2,title:'巫師',alt:'北美彩虹巫師／南美薩滿療癒巫師',time:'約5200年前前宗教時期，善用自然力量療癒；曾遭獵巫迫害，因此不信任制度化宗教'},
-  {n:3,title:'亞特<br>蘭提斯人',alt:'古代神話中的神祇',time:'約10400年前古文明，分裂成心靈行者（水晶療癒）與科技行者（高科技3C）兩派，相信人定勝天；但攜帶災難創傷印記（懼高、懼水、幽閉等）'},
-  {n:4,title:'列穆<br>里亞人',alt:'神人（可飛行、瞬間移動）',time:'約30萬～3萬年前神人世代，可瞬間移動、擁有異能，擅長磁力治療，對生命充滿美學與慈悲的理解'},
-  {n:5,title:'遠古外星<br>實驗生物',alt:'巨人、半獸半人、神獸等奇珍異獸',time:'30萬年前外星實驗計畫，蘊藏特殊天賦體質'}
+  {n:0,title:'新靈魂',alt:'尚未經歷地球輪迴的靈魂'},
+  {n:1,title:'宗教人',alt:'約2600年前至今，歷練各大宗教信仰，累積深厚的信仰智慧'},
+  {n:2,title:'巫師',alt:'約5200年前，前宗教時期的巫師或薩滿，善於自然療癒與傳承知識'},
+  {n:3,title:'亞特<br>蘭提斯人',alt:'約10400年前，神話中的神祇，高度發展水晶能量技術的文明，具備科技研發或心靈療癒的靈魂印記'},
+  {n:4,title:'列穆<br>里亞人',alt:'約30萬～3萬年前的神人世代，擅長磁力治療，充滿慈悲與和諧的黃金時期'},
+  {n:5,title:'遠古外星<br>實驗生物',alt:'30萬年前的外星實驗計畫，蘊藏巨人、半獸半人等特殊天賦體質'}
 ];
 // 次元意識參考表：純介紹次元本身，不綁定0/9顆數
 const SOUL_DIMENSION_REF=[
@@ -2613,7 +2614,38 @@ const SOUL_DIMENSION_REF=[
   {n:8,title:'第八次元',desc:'特徵為純然的顏色與流動圖像，生命體彼此交融、無法辨識自我與他人差異，大愛在此產生，也稱渾沌之境。'},
   {n:9,title:'第九次元',desc:'聖火柱、光柱的起始點，是仍有「分裂」存在的最後次元。形相僅有極精細光柱或平行光束，是米大隆意識的領域，人類意識能企及的最高次元。'},
   {n:10,title:'第十次元',desc:'所有原始超靈族群完全交融於同一意識，再也無法察覺各自的個體性。'},
-  {n:11,title:'第十一次元以上',desc:'目前無參考資料。'}
+  {n:11,title:'第十一次元+',desc:'目前無參考資料。'}
+];
+// ── 英文版（對照頁彈窗專用，主體/副體實際輸出文字不受影響）──
+const SOUL_ALIEN_REF_EN=[
+  {n:0,dim:'',title:'New Soul',alt:'A soul that has not yet begun its journey',desc:''},
+  {n:1,dim:'4D',title:'Type-1 E.T.',alt:'Little Angel／Guardian Spirit／Homo Sapiens Spirit',desc:'Rational and logic-driven, seeks intellectual growth'},
+  {n:2,dim:'5D',title:'Type-2 E.T.',alt:'Mid-level Angel／Ascended Flying Master／Demon Lord',desc:"Devoted to healing the earth, telepathic"},
+  {n:3,dim:'6D',title:'Type-3 E.T.',alt:'Archangel Elder／Light and Dark',desc:"Calm and commanding presence; tasked with stabilizing earth's magnetic field"},
+  {n:4,dim:'7D',title:'Type-4 E.T.',alt:'Rainbow Realm Messenger／Christ Consciousness',desc:'Carries joy and truth; mission is to spread the message'},
+  {n:5,dim:'8D',title:'Type-5 E.T.',alt:'Creator-level Being',desc:'Source of manifestation; thoughts easily become reality'},
+  {n:6,dim:'9D',title:'Type-6 E.T.',alt:'Holy Spirit Level／Primordial Creator',desc:''}
+];
+const SOUL_EARTH_REF_EN=[
+  {n:0,title:'New Soul',alt:'A soul that has not yet experienced earthly reincarnation'},
+  {n:1,title:'Devotee',alt:'~2,600 years ago to the present, deeply versed in world religions, gaining profound faith wisdom'},
+  {n:2,title:'Sorcerer',alt:'~5,200 years ago, a witch or shaman of the pre-religious era, skilled in natural healing and the passing down of knowledge'},
+  {n:3,title:'Atlantean',alt:'~10,400 years ago; deity of ancient myth; a civilization with advanced crystal-energy technology; souls carrying an imprint of technological innovation or spiritual healing'},
+  {n:4,title:'Lemurian',alt:'~300,000–30,000 years ago; a golden age of magnetic healing, compassion, and harmony'},
+  {n:5,title:'Ancient Alien<br>Experiment Being',alt:'An alien experiment from 300,000 years ago; carrying unique gifts as giants, half-beast half-humans, and mythical creatures'}
+];
+const SOUL_DIMENSION_REF_EN=[
+  {n:1,title:'1D',desc:'Realm of pure minerals; holds consciousness only, without self-awareness — the stage where nature spirits adapt to their environment.'},
+  {n:2,title:'2D',desc:'Lower astral realm; aware only of its own existence, with no spiritual perception — home to plant life.'},
+  {n:3,title:'3D',desc:'Physical and quasi-astral realm; reality based on linear time-space — the realm of human consciousness.'},
+  {n:4,title:'4D',desc:'Beings hold consciousness and emotion; light and dark polarity coexist. The dawn of Christ Consciousness, guided by angelic guides. Nightmares and astral harm often occur here.'},
+  {n:5,title:'5D',desc:'Polarity still present; beings can freely shapeshift, beyond time and space. This is the causal plane — flying dreams, healing dreams, lucid dreams, and true psychic phenomena occur here; the dark side holds sorcerers, warlocks, and underworld rulers.'},
+  {n:6,title:'6D',desc:'Higher councils and angelic elders; only light exists from here onward. The dawn of collective consciousness — a single soul may split into multiple parts sharing one higher self. Home of Melchizedek Consciousness.'},
+  {n:7,title:'7D',desc:'Realm of sacred sound and music; beings express through harmony, forming flowing three-dimensional forms. Purely the domain of Melchizedek Consciousness.'},
+  {n:8,title:'8D',desc:'Marked by pure color and flowing imagery; beings merge into one another, unable to distinguish self from other — where great love arises.'},
+  {n:9,title:'9D',desc:'The origin point of the sacred pillar of light; the last dimension where "separation" still exists. Beings take the form of fine light-beams or parallel light-rays. Home of Metatron Consciousness — the furthest reach of human consciousness.'},
+  {n:10,title:'10D',desc:'All primordial oversoul groups fully merge into one consciousness, losing all individual distinction.'},
+  {n:11,title:'11D+',desc:'No reference material available at this time.'}
 ];
 function soulCountChar(str,ch){return str.split('').filter(c=>c===ch).length;}
 function soulTitleFromCounts(c0,c9){
@@ -2762,9 +2794,13 @@ function renderSoulResultForBirthday(country,custom,by,bm,bd,bh,bmn){
   const refDateStr=`+${adjResult.refDate.y}/${p2(adjResult.refDate.m)}/${p2(adjResult.refDate.d)}`;
   const soulYearStr=`+${adjResult.adjYear}/${p2(bm)}/${p2(bd)}`;
 
-  let html=renderSoulTrackBlock({
+  let html='';
+  if(missingTime){
+    html+=`<div style="color:#c0392b;font-size:11px;margin-bottom:6px">${t('soulMissingTimeNote')}</div>`;
+  }
+  html+=renderSoulTrackBlock({
     refLabel,refDateStr,yearLabel:t('soulSkyNumLabel'),yearStr:soulYearStr,
-    bodyNum,fuNum,bodyInfo,fuInfo,stages,missingTime,
+    bodyNum,fuNum,bodyInfo,fuInfo,stages,
     stageBirthY:by,stageBirthM:bm,stageBirthD:bd,isGreg:true
   });
 
@@ -2783,7 +2819,7 @@ function renderSoulResultForBirthday(country,custom,by,bm,bd,bh,bmn){
 
     html+=renderSoulTrackBlock({
       refLabel,refDateStr:lunFoundStr,yearLabel:t('soulEarthNumLabel'),yearStr:lunYearStr,
-      bodyNum:lBodyNum,fuNum:lFuNum,bodyInfo:lBodyInfo,fuInfo:lFuInfo,stages:lStagesArr,missingTime,
+      bodyNum:lBodyNum,fuNum:lFuNum,bodyInfo:lBodyInfo,fuInfo:lFuInfo,stages:lStagesArr,
       stageBirthY:lunarBd.year,stageBirthM:lunarBd.month,stageBirthD:lunarBd.day,isGreg:false
     });
   }
@@ -2813,7 +2849,7 @@ function renderSoulSection(){
 }
 
 // 國曆軌／農曆軌共用的完整區塊渲染：標題＋主體／副體＋揚升計畫文字版＋表格版時間軸
-function renderSoulTrackBlock({refLabel,refDateStr,yearLabel,yearStr,bodyNum,fuNum,bodyInfo,fuInfo,stages,missingTime,stageBirthY,stageBirthM,stageBirthD,isGreg}){
+function renderSoulTrackBlock({refLabel,refDateStr,yearLabel,yearStr,bodyNum,fuNum,bodyInfo,fuInfo,stages,stageBirthY,stageBirthM,stageBirthD,isGreg}){
   const currentStageName=soulCurrentStageName(stageBirthY,stageBirthM,stageBirthD,isGreg);
   const order=['幼年','少年','青年','中年','老年']; // 內部比對用固定中文key，跟語言無關
   const abbr=t('soulStageAbbr');
@@ -2827,9 +2863,6 @@ function renderSoulTrackBlock({refLabel,refDateStr,yearLabel,yearStr,bodyNum,fuN
   }).join('｜');
 
   let html='<div class="soul-track">';
-  if(missingTime){
-    html+=`<div style="color:#c0392b;font-size:11px;margin-bottom:6px">${t('soulMissingTimeNote')}</div>`;
-  }
   html+=`<div class="soul-numline" style="color:#999"><span class="lab">${refLabel}</span><span class="num">${refDateStr}</span><span class="title" style="margin-left:14px;color:#999">${yearLabel}：</span><span class="num" style="color:#999">${yearStr}</span></div>`;
   html+=`<div class="soul-numline"><span class="lab">${t('soulBodyLabel')}</span><span class="num soul-body-num">【${bodyNum}】</span><span class="title">${bodyInfo.title}</span></div>`;
   html+=`<div class="soul-numline"><span class="lab">${t('soulFuLabel')}</span><span class="num soul-fu-num">【${fuNum}】</span><span class="title">${fuInfo.title}</span></div>`;
@@ -2882,17 +2915,23 @@ function confirmSoulCustom(){
 }
 
 function openSoulRefModal(){
+  const alienData=lang==='en'?SOUL_ALIEN_REF_EN:SOUL_ALIEN_REF;
+  const earthData=lang==='en'?SOUL_EARTH_REF_EN:SOUL_EARTH_REF;
+  const dimData=lang==='en'?SOUL_DIMENSION_REF_EN:SOUL_DIMENSION_REF;
+  const midWrap=lang==='en'?'':'white-space:nowrap;';
+  const midWidth=lang==='en'?'':'width:5em;';
   const alienTbody=document.getElementById('soulRefAlienTable');
-  alienTbody.innerHTML=SOUL_ALIEN_REF.map(r=>
-    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap">0x${r.n}</td><td style="padding:5px 4px;font-weight:600;white-space:nowrap;text-align:center">${r.dim?r.dim+t('soulRefDimSuffix'):r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px;line-height:1.5">${r.dim?(r.title+'／'+r.alt)+(r.desc?'<br>'+r.desc:''):'—'}</td></tr>`
+  alienTbody.innerHTML=alienData.map(r=>
+    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap;width:2.2em">0x${r.n}</td><td style="padding:5px 4px;font-weight:600;${midWrap}${midWidth}text-align:center">${r.dim?r.dim+t('soulRefDimSuffix'):r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px;line-height:1.5">${r.dim?(r.title+'／'+r.alt):(r.alt||'—')}</td></tr>`
   ).join('');
   const earthTbody=document.getElementById('soulRefEarthTable');
-  earthTbody.innerHTML=SOUL_EARTH_REF.map(r=>
-    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap">9x${r.n}</td><td style="padding:5px 4px;font-weight:600;white-space:nowrap;text-align:center">${r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px;line-height:1.5">${r.alt!=='—'?r.alt+'<br>':''}${r.time}</td></tr>`
+  earthTbody.innerHTML=earthData.map(r=>
+    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap;width:2.2em">9x${r.n}</td><td style="padding:5px 4px;font-weight:600;${midWrap}${midWidth}text-align:center">${r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px;line-height:1.5">${r.alt}</td></tr>`
   ).join('');
+  const dimColWidth=lang==='en'?'':'width:7.2em;';
   const dimTbody=document.getElementById('soulRefDimTable');
-  dimTbody.innerHTML=SOUL_DIMENSION_REF.map(r=>
-    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;font-weight:600;white-space:nowrap;vertical-align:top">${r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px">${r.desc}</td></tr>`
+  dimTbody.innerHTML=dimData.map(r=>
+    `<tr style="border-bottom:1px solid #eee"><td colspan="2" style="padding:5px 4px;font-weight:600;white-space:nowrap;${dimColWidth}text-align:center;vertical-align:top">${r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px">${r.desc}</td></tr>`
   ).join('');
   document.getElementById('soulRefModal').classList.remove('hidden');
 }
