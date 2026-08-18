@@ -488,6 +488,8 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
               <option value="CN" id="soulOptCN">中國</option>
               <option value="KR" id="soulOptKR">韓國</option>
               <option value="MY" id="soulOptMY">馬來西亞</option>
+              <option value="UK" id="soulOptUK">英國</option>
+              <option value="FR" id="soulOptFR">法國</option>
               <option value="JP" id="soulOptJP">日本（自動判斷年號）</option>
               <option value="CUSTOM" id="soulOptCustom">自訂國家／地區</option>
             </select>
@@ -554,14 +556,10 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
     <div style="max-height:80vh;overflow-y:auto;padding:20px">
       <h3 id="soulRefModalTitleText">靈魂本質對照表</h3>
       <div id="soulRefNoticeText" style="font-size:10px;color:#aaa;text-align:center;margin-bottom:10px">內容僅供參考，非絕對定論</div>
-      <div id="soulRefAlienDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">0的系列（未來印記）</div>
-      <table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;margin-bottom:14px">
-        <tbody id="soulRefAlienTable"></tbody>
-      </table>
-      <div id="soulRefEarthDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">9的系列（過去印記）</div>
-      <table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;margin-bottom:14px">
-        <tbody id="soulRefEarthTable"></tbody>
-      </table>
+      <div id="soulRefAlienDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">0系列（未來印記／宇宙資料庫）</div>
+      <div id="soulRefAlienTable" style="font-size:12px;margin-bottom:14px"></div>
+      <div id="soulRefEarthDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">9系列（過去印記／地球資料庫）</div>
+      <div id="soulRefEarthTable" style="font-size:12px;margin-bottom:14px"></div>
       <div id="soulRefDimDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">次元意識參考表</div>
       <table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;margin-bottom:14px">
         <tbody id="soulRefDimTable"></tbody>
@@ -629,9 +627,8 @@ const T={
     pairRhythmTitle:'份', pairRhythmSub:'關係流年表',
     rhythmPrev:'‹ 前3年', rhythmNext:'後3年 ›',
     soulTitle:'靈魂本質', soulCountryLabel:'對照國家', soulSelectPlaceholder:'請選擇',
-    soulCountryTW:'台灣', soulCountryUS:'美國', soulCountryCN:'中國', soulCountryKR:'韓國', soulCountryMY:'馬來西亞', soulCountryJP:'日本（自動判斷年號）', soulCountryCustom:'自訂國家／地區',
-    soulRefModalTitle:'靈魂本質對照表', soulRefNotice:'內容僅供參考，非絕對定論', soulRefAlienDesc:'0的系列（未來印記）', soulRefEarthDesc:'9的系列（過去印記）', soulRefDimDesc:'次元意識參考表', soulRefCloseBtn:'關閉',
-    soulRefDimSuffix:'靈',
+    soulCountryTW:'台灣', soulCountryUS:'美國', soulCountryCN:'中國', soulCountryKR:'韓國', soulCountryMY:'馬來西亞', soulCountryUK:'英國', soulCountryFR:'法國', soulCountryJP:'日本（自動判斷年號）', soulCountryCustom:'自訂國家／地區',
+    soulRefModalTitle:'靈魂本質對照表', soulRefNotice:'內容僅供參考，非絕對定論', soulRefAlienDesc:'0系列（未來印記／宇宙資料庫）', soulRefEarthDesc:'9系列（過去印記／地球資料庫）', soulRefDimDesc:'次元意識參考表', soulRefCloseBtn:'關閉',
     soulCustomModalTitle:'自訂國家／地區', soulCustomNameLabel:'名稱（選填）', soulCustomFoundingNote:'國家建國日（國慶日）',
     soulCustomCancel:'取消', soulCustomConfirm:'確定',
     soulCustomSetLabel:'建國 {date}（點國家選單可重新設定）',
@@ -680,9 +677,8 @@ const T={
     pairRhythmTitle:'Rhythm', pairRhythmSub:'Relationship Transit Timeline',
     rhythmPrev:'‹ 3 Yrs Back', rhythmNext:'3 Yrs Fwd ›',
     soulTitle:'Soul Essence', soulCountryLabel:'Reference Country', soulSelectPlaceholder:'Select...',
-    soulCountryTW:'Taiwan', soulCountryUS:'USA', soulCountryCN:'China', soulCountryKR:'South Korea', soulCountryMY:'Malaysia', soulCountryJP:'Japan (auto era detection)', soulCountryCustom:'Custom Country/Region',
-    soulRefModalTitle:'Soul Essence Reference Table', soulRefNotice:'For reference only, not a definitive conclusion', soulRefAlienDesc:'Series of 0 (Future Imprint)', soulRefEarthDesc:'Series of 9 (Past Imprint)', soulRefDimDesc:'Dimensional Consciousness Reference', soulRefCloseBtn:'Close',
-    soulRefDimSuffix:' Spirit',
+    soulCountryTW:'Taiwan', soulCountryUS:'USA', soulCountryCN:'China', soulCountryKR:'South Korea', soulCountryMY:'Malaysia', soulCountryUK:'United Kingdom', soulCountryFR:'France', soulCountryJP:'Japan (auto era detection)', soulCountryCustom:'Custom Country/Region',
+    soulRefModalTitle:'Soul Essence Reference Table', soulRefNotice:'For reference only, not a definitive conclusion', soulRefAlienDesc:'Series of 0 (Future Imprint / Cosmic Database)', soulRefEarthDesc:'Series of 9 (Past Imprint / Earth Database)', soulRefDimDesc:'Dimensional Consciousness Reference', soulRefCloseBtn:'Close',
     soulCustomModalTitle:'Custom Country/Region', soulCustomNameLabel:'Name (optional)', soulCustomFoundingNote:'Founding Date (National Day)',
     soulCustomCancel:'Cancel', soulCustomConfirm:'Confirm',
     soulCustomSetLabel:'Founded {date} (tap the country menu to change)',
@@ -825,6 +821,8 @@ function applyLang(){
   document.getElementById('soulOptCN').textContent=t('soulCountryCN');
   document.getElementById('soulOptKR').textContent=t('soulCountryKR');
   document.getElementById('soulOptMY').textContent=t('soulCountryMY');
+  document.getElementById('soulOptUK').textContent=t('soulCountryUK');
+  document.getElementById('soulOptFR').textContent=t('soulCountryFR');
   document.getElementById('soulOptJP').textContent=t('soulCountryJP');
   document.getElementById('soulOptCustom').textContent=t('soulCountryCustom');
   document.getElementById('soulRefModalTitleText').textContent=t('soulRefModalTitle');
@@ -2533,7 +2531,7 @@ function takePairScreenshot(){
 // ══════════════════════════════════════════════════════════
 const SOUL_COUNTRIES={
   TW:{y:1911,m:10,d:10}, CN:{y:1949,m:10,d:1}, US:{y:1776,m:7,d:4},
-  KR:{y:1945,m:8,d:15}, MY:{y:1957,m:8,d:31}
+  KR:{y:1945,m:8,d:15}, MY:{y:1957,m:8,d:31}, UK:{y:1707,m:5,d:1}, FR:{y:1792,m:9,d:22}
 };
 const SOUL_ERAS=[
   {name:'大正',y:1912,m:7,d:30},
@@ -2586,30 +2584,30 @@ const SOUL_EARTH=['新靈魂','宗教人','巫師','亞特蘭提斯人','列穆�
 const SOUL_ALIEN=['','四次元靈','五次元靈','六次元靈','七次元靈','八次元靈','九次元靈'];
 // 對照表用：X次元靈＝第N類外星人＋別稱＋（9系列）稱號＋別稱＋時間點，給說明彈窗參考
 const SOUL_ALIEN_REF=[
-  {n:0,dim:'',title:'新靈魂',alt:'尚未展開靈魂旅程的新生靈魂',desc:''},
-  {n:1,dim:'四次元',title:'第一類外星人',alt:'小天使／守護靈／智人靈',desc:'理智頭腦化，善於邏輯，追求心智成長'},
-  {n:2,dim:'五次元',title:'第二類外星人',alt:'中階天使／飛天導師／魔王',desc:'致力改善地球，靈通心電感應'},
-  {n:3,dim:'六次元',title:'第三類外星人',alt:'大天使長老／光明與黑暗',desc:'沉穩不怒而威，任務與地球磁場建構相關'},
-  {n:4,dim:'七次元',title:'第四類外星人',alt:'彩虹國度使者／基督意識',desc:'傳遞喜悅真理之光，任務是傳訊息、傳福音'},
-  {n:5,dim:'八次元',title:'第五類外星人',alt:'造物主層級',desc:'顯像創造的源頭，意念容易心想事成'},
-  {n:6,dim:'九次元',title:'第六類外星人',alt:'聖靈層級／原始造物主',desc:''}
+  {n:0,title:'新靈魂',note:'尚未展開靈魂旅程的新生靈魂'},
+  {n:1,title:'四次元靈',note:'第一類外星人，小天使、守護靈、智人靈'},
+  {n:2,title:'五次元靈',note:'第二類外星人，中階天使、飛天導師、魔王'},
+  {n:3,title:'六次元靈',note:'第三類外星人，大天使長老、光明與黑暗共榮'},
+  {n:4,title:'七次元靈',note:'第四類外星人，彩虹使者，基督意識'},
+  {n:5,title:'八次元靈',note:'第五類外星人，造物主層級'},
+  {n:6,title:'九次元靈',note:'第六類外星人，聖靈層級、原始造物主'}
 ];
 const SOUL_EARTH_REF=[
-  {n:0,title:'新靈魂',alt:'尚未經歷地球輪迴的靈魂'},
-  {n:1,title:'宗教人',alt:'約2600年前至今，歷練各大宗教信仰，累積深厚的信仰智慧'},
-  {n:2,title:'巫師',alt:'約5200年前，前宗教時期的巫師或薩滿，善於自然療癒與傳承知識'},
-  {n:3,title:'亞特<br>蘭提斯人',alt:'約10400年前，神話中的神祇，高度發展水晶能量技術的文明，具備科技研發或心靈療癒的靈魂印記'},
-  {n:4,title:'列穆<br>里亞人',alt:'約30萬～3萬年前的神人世代，擅長磁力治療，充滿慈悲與和諧的黃金時期'},
-  {n:5,title:'遠古外星<br>實驗生物',alt:'30萬年前的外星實驗計畫，蘊藏巨人、半獸半人等特殊天賦體質'}
+  {n:0,title:'新靈魂',note:'尚未經歷地球輪迴的靈魂'},
+  {n:1,title:'宗教人',note:'約2600年前，歷練各大宗教信仰'},
+  {n:2,title:'薩滿或彩虹巫師',note:'約5200年前，前宗教時期'},
+  {n:3,title:'亞特蘭提斯人',note:'約10400年前，以水晶技術發展高科技與心靈療癒'},
+  {n:4,title:'列穆里亞人',note:'約30萬～3萬年前，號稱是地球最偉大光輝的黃金時代'},
+  {n:5,title:'遠古外星實驗生物',note:'30萬年前的實驗計畫，巨人、半獸半人等奇幻神獸類'}
 ];
 // 次元意識參考表：純介紹次元本身，不綁定0/9顆數
 const SOUL_DIMENSION_REF=[
   {n:1,title:'第一次元',desc:'純粹礦物的領域，只能容納意識，缺乏自我意識與覺察能力，是萬物精靈適應環境的階段。'},
   {n:2,title:'第二次元',desc:'低等星光界，能覺察自身是僅有的存在，對精神毫無知覺，是植物物種所在。'},
   {n:3,title:'第三次元',desc:'物質與相似星光界，直線時空為基礎的實相，是人類意識所在的領域。'},
-  {n:4,title:'第四次元',desc:'生命體保有意識與感情想法，黑暗光明兩極並存，是基督意識的初步階段，有指導靈天使驅策成長。惡夢與星光體傷害多發生於此。'},
-  {n:5,title:'第五次元',desc:'仍存兩極性，生命體可隨意變形，已超越時空限制。此為因果層面，飛翔夢、療癒夢、清醒夢、正神通皆發生於此；黑暗面存在惡勢力魔頭、法師、巫師、陰間魔王。'},
-  {n:6,title:'第六次元',desc:'高層會眾團、天使長老，自此以上唯有光明無黑暗。集體意識產生的初步階段，同一靈魂投生後可能分裂為多個部分、共享同一高我。默基瑟德意識存在此領域。'},
+  {n:4,title:'第四次元',desc:'意識與感情並存的二元性次元，基督意識初步階段，有指導靈天使陪伴或驅策成長。'},
+  {n:5,title:'第五次元',desc:'光明與黑暗仍存，但意識漸漸能理解包容二元對立。心電感應，清醒夢等神通力皆來自此次元。'},
+  {n:6,title:'第六次元',desc:'大天使默基瑟德所在的次元，自此以上唯有光明無黑暗。彩虹數字所定義的高我所在的次元。'},
   {n:7,title:'第七次元',desc:'聖音與聖樂的領域，生命體以和聲作為本質表達，形成流動的立體圖像。同一靈魂家族成員可體驗合一而仍保有個別特性。'},
   {n:8,title:'第八次元',desc:'特徵為純然的顏色與流動圖像，生命體彼此交融、無法辨識自我與他人差異，大愛在此產生，也稱渾沌之境。'},
   {n:9,title:'第九次元',desc:'聖火柱、光柱的起始點，是仍有「分裂」存在的最後次元。形相僅有極精細光柱或平行光束，是米大隆意識的領域，人類意識能企及的最高次元。'},
@@ -2618,29 +2616,29 @@ const SOUL_DIMENSION_REF=[
 ];
 // ── 英文版（對照頁彈窗專用，主體/副體實際輸出文字不受影響）──
 const SOUL_ALIEN_REF_EN=[
-  {n:0,dim:'',title:'New Soul',alt:'A soul that has not yet begun its journey',desc:''},
-  {n:1,dim:'4D',title:'Type-1 E.T.',alt:'Little Angel／Guardian Spirit／Homo Sapiens Spirit',desc:'Rational and logic-driven, seeks intellectual growth'},
-  {n:2,dim:'5D',title:'Type-2 E.T.',alt:'Mid-level Angel／Ascended Flying Master／Demon Lord',desc:"Devoted to healing the earth, telepathic"},
-  {n:3,dim:'6D',title:'Type-3 E.T.',alt:'Archangel Elder／Light and Dark',desc:"Calm and commanding presence; tasked with stabilizing earth's magnetic field"},
-  {n:4,dim:'7D',title:'Type-4 E.T.',alt:'Rainbow Realm Messenger／Christ Consciousness',desc:'Carries joy and truth; mission is to spread the message'},
-  {n:5,dim:'8D',title:'Type-5 E.T.',alt:'Creator-level Being',desc:'Source of manifestation; thoughts easily become reality'},
-  {n:6,dim:'9D',title:'Type-6 E.T.',alt:'Holy Spirit Level／Primordial Creator',desc:''}
+  {n:0,title:'New Soul',note:'A soul that has not yet begun its journey'},
+  {n:1,title:'4D Spirit',note:'Type-1 E.T., Little Angel, Guardian Spirit, Homo Sapiens Spirit'},
+  {n:2,title:'5D Spirit',note:'Type-2 E.T., Mid-level Angel, Ascended Flying Master, Demon Lord'},
+  {n:3,title:'6D Spirit',note:'Type-3 E.T., Archangel Elder, Light and Dark in Harmony'},
+  {n:4,title:'7D Spirit',note:'Type-4 E.T., Rainbow Messenger, Christ Consciousness'},
+  {n:5,title:'8D Spirit',note:'Type-5 E.T., Creator-level Being'},
+  {n:6,title:'9D Spirit',note:'Type-6 E.T., Holy Spirit Level, Primordial Creator'}
 ];
 const SOUL_EARTH_REF_EN=[
-  {n:0,title:'New Soul',alt:'A soul that has not yet experienced earthly reincarnation'},
-  {n:1,title:'Devotee',alt:'~2,600 years ago to the present, deeply versed in world religions, gaining profound faith wisdom'},
-  {n:2,title:'Sorcerer',alt:'~5,200 years ago, a witch or shaman of the pre-religious era, skilled in natural healing and the passing down of knowledge'},
-  {n:3,title:'Atlantean',alt:'~10,400 years ago; deity of ancient myth; a civilization with advanced crystal-energy technology; souls carrying an imprint of technological innovation or spiritual healing'},
-  {n:4,title:'Lemurian',alt:'~300,000–30,000 years ago; a golden age of magnetic healing, compassion, and harmony'},
-  {n:5,title:'Ancient Alien<br>Experiment Being',alt:'An alien experiment from 300,000 years ago; carrying unique gifts as giants, half-beast half-humans, and mythical creatures'}
+  {n:0,title:'New Soul',note:'A soul that has not yet experienced earthly reincarnation'},
+  {n:1,title:'Devotee',note:'~2,600 years ago, versed in world religions'},
+  {n:2,title:'Shaman or Rainbow Sorcerer',note:'~5,200 years ago, the pre-religious era'},
+  {n:3,title:'Atlantean',note:'~10,400 years ago, advanced crystal-tech civilization and spiritual healing'},
+  {n:4,title:'Lemurian',note:'~300,000–30,000 years ago, said to be earth\u2019s greatest golden age'},
+  {n:5,title:'Ancient Alien Experiment Being',note:'A 300,000-year-old experiment; giants, half-beast half-humans, and mythical creatures'}
 ];
 const SOUL_DIMENSION_REF_EN=[
   {n:1,title:'1D',desc:'Realm of pure minerals; holds consciousness only, without self-awareness — the stage where nature spirits adapt to their environment.'},
   {n:2,title:'2D',desc:'Lower astral realm; aware only of its own existence, with no spiritual perception — home to plant life.'},
   {n:3,title:'3D',desc:'Physical and quasi-astral realm; reality based on linear time-space — the realm of human consciousness.'},
-  {n:4,title:'4D',desc:'Beings hold consciousness and emotion; light and dark polarity coexist. The dawn of Christ Consciousness, guided by angelic guides. Nightmares and astral harm often occur here.'},
-  {n:5,title:'5D',desc:'Polarity still present; beings can freely shapeshift, beyond time and space. This is the causal plane — flying dreams, healing dreams, lucid dreams, and true psychic phenomena occur here; the dark side holds sorcerers, warlocks, and underworld rulers.'},
-  {n:6,title:'6D',desc:'Higher councils and angelic elders; only light exists from here onward. The dawn of collective consciousness — a single soul may split into multiple parts sharing one higher self. Home of Melchizedek Consciousness.'},
+  {n:4,title:'4D',desc:'A dual-polarity dimension where consciousness and emotion coexist — the dawn of Christ Consciousness, with angelic guides accompanying or driving growth.'},
+  {n:5,title:'5D',desc:'Light and dark still coexist, but consciousness begins to understand and embrace this duality. Telepathy, lucid dreaming, and other psychic abilities all originate from this dimension.'},
+  {n:6,title:'6D',desc:'Home of Archangel Melchizedek — from here onward, only light exists, no darkness. The dimension of the Higher Self as defined in Rainbow Numerology.'},
   {n:7,title:'7D',desc:'Realm of sacred sound and music; beings express through harmony, forming flowing three-dimensional forms. Purely the domain of Melchizedek Consciousness.'},
   {n:8,title:'8D',desc:'Marked by pure color and flowing imagery; beings merge into one another, unable to distinguish self from other — where great love arises.'},
   {n:9,title:'9D',desc:'The origin point of the sacred pillar of light; the last dimension where "separation" still exists. Beings take the form of fine light-beams or parallel light-rays. Home of Metatron Consciousness — the furthest reach of human consciousness.'},
@@ -2918,15 +2916,19 @@ function openSoulRefModal(){
   const alienData=lang==='en'?SOUL_ALIEN_REF_EN:SOUL_ALIEN_REF;
   const earthData=lang==='en'?SOUL_EARTH_REF_EN:SOUL_EARTH_REF;
   const dimData=lang==='en'?SOUL_DIMENSION_REF_EN:SOUL_DIMENSION_REF;
-  const midWrap=lang==='en'?'':'white-space:nowrap;';
-  const midWidth=lang==='en'?'':'width:5em;';
-  const alienTbody=document.getElementById('soulRefAlienTable');
-  alienTbody.innerHTML=alienData.map(r=>
-    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap;width:2.2em">0x${r.n}</td><td style="padding:5px 4px;font-weight:600;${midWrap}${midWidth}text-align:center">${r.dim?r.dim+t('soulRefDimSuffix'):r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px;line-height:1.5">${r.dim?(r.title+'／'+r.alt):(r.alt||'—')}</td></tr>`
+  const alienList=document.getElementById('soulRefAlienTable');
+  alienList.innerHTML=alienData.map(r=>
+    `<div style="padding:6px 0;border-bottom:1px solid #eee">
+      <div>${lang==='en'?`${r.n}×0 — <strong>${r.title}</strong>`:`${r.n}顆0：<strong>${r.title}</strong>`}</div>
+      ${r.note?`<div style="color:#666;font-size:11px;margin-top:2px">${r.note}</div>`:''}
+    </div>`
   ).join('');
-  const earthTbody=document.getElementById('soulRefEarthTable');
-  earthTbody.innerHTML=earthData.map(r=>
-    `<tr style="border-bottom:1px solid #eee"><td style="padding:5px 4px;color:#888;white-space:nowrap;width:2.2em">9x${r.n}</td><td style="padding:5px 4px;font-weight:600;${midWrap}${midWidth}text-align:center">${r.title}</td><td style="padding:5px 4px;color:#666;font-size:11px;line-height:1.5">${r.alt}</td></tr>`
+  const earthList=document.getElementById('soulRefEarthTable');
+  earthList.innerHTML=earthData.map(r=>
+    `<div style="padding:6px 0;border-bottom:1px solid #eee">
+      <div>${lang==='en'?`${r.n}×9 — <strong>${r.title}</strong>`:`${r.n}顆9：<strong>${r.title}</strong>`}</div>
+      ${r.note?`<div style="color:#666;font-size:11px;margin-top:2px">${r.note}</div>`:''}
+    </div>`
   ).join('');
   const dimColWidth=lang==='en'?'':'width:7.2em;';
   const dimTbody=document.getElementById('soulRefDimTable');
