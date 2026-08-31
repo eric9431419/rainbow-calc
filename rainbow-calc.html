@@ -6,13 +6,21 @@
 <link rel="icon" type="image/png" href="icon.PNG">
 <meta name="apple-mobile-web-app-title" content="彩虹數字計算器">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>彩虹數字計算器</title>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500&family=MPLUS+1+Code:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
+<script>
+// 平台判斷共用函式（App化用），定義在 head 最前面，因為 lunar.js／html2canvas
+// 要在頁面解析初期就決定讀本機還是CDN，比其他程式碼都早執行。
+window.isNativeApp = function(){
+  return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+};
+window.__isNative = window.isNativeApp(); // 只判斷一次，結果快取起來，避免重複呼叫
+document.write('<script src="' + (window.__isNative ? 'lib/lunar.js' : 'https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js') + '"><\/script>');
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif;min-height:100vh;padding:0 0 60px}
+body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif;min-height:100vh;padding:env(safe-area-inset-top,0px) 0 calc(60px + env(safe-area-inset-bottom,0px))}
 .page{max-width:480px;margin:0 auto;background:#fff;min-height:100vh}
 .header{padding:32px 24px 20px;text-align:center;position:relative}
 .lang-btn{position:absolute;top:32px;right:20px;font-size:12px;color:#999;border:1px solid #ddd;border-radius:14px;padding:4px 14px;min-width:44px;text-align:center;cursor:pointer;background:#fff;font-family:'M PLUS Rounded 1c',sans-serif;letter-spacing:.05em;transition:all .15s}
@@ -52,6 +60,13 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .stage-lv{font-size:11px;color:#4a90d9;font-family:'MPLUS1Code',monospace}
 .innate-section{margin-top:32px;border-top:1px solid #e8e8e8;padding-top:20px;text-align:center}
 .section-title{font-size:14px;font-weight:500;letter-spacing:.1em;color:#1a1a1a;margin-bottom:12px}
+/* 以下為精簡重複 inline style 抽出的共用 class（2026/08新增，純視覺，不影響邏輯）*/
+.rec-divider{margin-top:12px;padding-top:12px;border-top:1px dashed #ddd}
+.ref-desc-title{font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px}
+.leap-badge{font-size:11px;color:#e06c75;margin-right:1px;vertical-align:middle}
+.flow-title-row{display:grid;grid-template-columns:28px 78px 1fr 78px 28px;align-items:center}
+.flow-arrow-hidden{background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end}
+.flow-toggle-btn{-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;justify-self:end}
 .innate-nums{display:flex;gap:0px}
 .inn{font-size:14px;color:#bbb;width:18px;text-align:center;font-family:'MPLUS1Code',monospace}
 .inn.has{color:#555}
@@ -116,6 +131,7 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .flow-dest{color:#1a1a1a}
 .flow-lv{font-size:11px;color:#4a90d9;font-family:'MPLUS1Code',monospace}
 .sign{font-size:13px;color:#1a1a1a;margin-right:1px;font-family:'MPLUS1Code',monospace}
+.flow-sign{font-size:11px;color:#aaa;text-align:center;white-space:nowrap}
 /* 新版流年流月流日 */
 .flow-new-section{margin:0 0 20px}
 .flow-new-grid{display:grid;gap:6px}
@@ -213,9 +229,12 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .rec-current-date{font-size:13px;color:#555;text-align:center;font-family:'MPLUS1Code',monospace;padding:6px 0}
 .rec-field{margin-bottom:10px}
 .rec-field input[type=text]{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:6px;padding:8px 10px;font-size:16px;font-family:inherit;text-align:center}
+.rec-search-wrap{position:relative}
+.rec-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:#bbb;pointer-events:none}
+#recSearchInput{padding-left:32px;padding-right:32px}
 .rec-save-btn{width:100%;margin-top:6px;padding:9px;border:1px solid #ddd;border-radius:20px;background:#fff;color:#555;font-size:13px;font-family:inherit;letter-spacing:.1em;cursor:pointer;transition:all .15s}
 .rec-save-btn:hover{border-color:#bbb;color:#333}
-.rec-msg{font-size:12px;margin-top:6px;min-height:16px;text-align:center}
+.rec-msg{font-size:12px;margin-top:2px;min-height:10px;text-align:center}
 .rec-msg.ok{color:#2e9e5b}
 .rec-msg.err{color:#c0392b}
 .rec-item{border:1px solid #eee;border-radius:8px;padding:10px 12px;margin-bottom:8px;position:relative}
@@ -247,7 +266,7 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 /* 合盤 */
 .rec-check{width:16px;height:16px;accent-color:#b8860b;cursor:pointer;margin:0;display:block}
 .rec-check-wrap{width:24px;display:flex;align-items:center;justify-content:flex-start}
-.rec-pair-footer{border-bottom:1px solid #eee;padding:0 0 14px;margin-top:-2px;margin-bottom:4px;background:#fff;display:none}
+.rec-pair-footer{border-bottom:1px solid #eee;padding:0 0 14px;margin-top:-2px;margin-bottom:14px;background:#fff;display:none}
 .rec-pair-footer.show{display:block}
 .rec-pair-sticky{position:sticky;top:0;z-index:5;background:#fff;box-shadow:0 4px 6px -6px rgba(0,0,0,.15)}
 .rec-pair-sticky:empty{display:none}
@@ -267,9 +286,9 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
 .pair-persons .num-cell{padding:2px 0}
 .pair-persons .num-cell.label{font-size:9px;white-space:nowrap;overflow:hidden}
 .pair-persons .stage-val{gap:1px}
-.pair-persons .stage-num{font-size:8px}
-.pair-persons .stage-num.destiny{font-size:9px}
-.pair-persons .stage-lv{font-size:6px}
+.pair-persons .stage-num{font-size:6px}
+.pair-persons .stage-num.destiny{font-size:7px}
+.pair-persons .stage-lv{font-size:4px}
 .pair-persons .cal-sign{font-size:7px}
 /* 陽曆／陰曆兩個 num-header+num-row 區塊之間加間隔，避免陽曆數字列跟陰曆標題列黏在一起；
    間隔量跟 num-header 本身 margin-bottom（粗格線後的留白）一致 */
@@ -375,7 +394,9 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
   .rhythm-seg .relnum-label,.rhythm-seg .relnum-sub{font-size:9px}
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+document.write('<script src="' + (window.__isNative ? 'lib/html2canvas.min.js' : 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js') + '"><\/script>');
+</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YHXTPYK44G"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -466,8 +487,8 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
         <div class="innate-section" id="innateSection">
           <div class="section-title" id="innateTitle" style="display:grid;grid-template-columns:auto 1fr auto;align-items:center"><button disabled style="-webkit-appearance:none;appearance:none;background:none;border:none;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;white-space:nowrap;visibility:hidden">展開 ▼</button><span id="innateTitleText">先天數</span><button onclick="toggleNineGrid(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;white-space:nowrap">收合 ▲</button></div>
           <div id="nineGridSection"></div>
-          <div id="nineGridSection2" class="hidden" style="margin-top:12px;padding-top:12px;border-top:1px dashed #ddd"></div>
-          <div id="nineGridSection3" class="hidden" style="margin-top:12px;padding-top:12px;border-top:1px dashed #ddd"></div>
+          <div id="nineGridSection2" class="hidden rec-divider"></div>
+          <div id="nineGridSection3" class="hidden rec-divider"></div>
         </div>
         <div class="phase-section" id="phaseSection">
           <div class="phase-nav-row">
@@ -530,11 +551,15 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
       </div>
       <button class="rec-save-btn" id="recSaveBtn" onclick="saveRecord()">儲存這筆生日</button>
       <div class="rec-msg" id="recMsg"></div>
-      <div class="rec-section-title-row" style="display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 6px">
+      <div class="rec-section-title-row" style="display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 20px">
         <button id="recImportBtn" onclick="document.getElementById('recImportFile').click()" style="padding:4px 14px;border:1px solid #ddd;border-radius:14px;font-size:12px;color:#888;background:#fff;cursor:pointer;font-family:inherit"><span id="recImportBtnText">匯入</span></button>
         <div class="rec-section-title" id="recListTitle" style="margin:0">已存紀錄</div>
         <button id="recExportBtn" onclick="exportRecords()" style="padding:4px 14px;border:1px solid #ddd;border-radius:14px;font-size:12px;color:#888;background:#fff;cursor:pointer;font-family:inherit"><span id="recExportBtnText">匯出</span></button>
         <input type="file" id="recImportFile" accept="application/json,.json" style="display:none" onchange="importRecordsFile(event)">
+      </div>
+      <div class="rec-field rec-search-wrap" style="margin-bottom:10px">
+        <svg class="rec-search-icon" viewBox="0 0 20 20"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2"/><line x1="13" y1="13" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="text" id="recSearchInput" placeholder="搜尋姓名" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="onRecSearchInput(this.value)">
       </div>
       <div class="rec-pair-sticky" id="recPairSticky"></div>
       <div id="recList"></div>
@@ -556,11 +581,11 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
     <div style="max-height:80vh;overflow-y:auto;padding:20px">
       <h3 id="soulRefModalTitleText">靈魂本質對照表</h3>
       <div id="soulRefNoticeText" style="font-size:10px;color:#aaa;text-align:center;margin-bottom:10px">內容僅供參考，非絕對定論</div>
-      <div id="soulRefAlienDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">0系列（未來印記／宇宙資料庫）</div>
+      <div id="soulRefAlienDescText" class="ref-desc-title">0系列（未來印記／宇宙資料庫）</div>
       <div id="soulRefAlienTable" style="font-size:12px;margin-bottom:14px"></div>
-      <div id="soulRefEarthDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">9系列（過去印記／地球資料庫）</div>
+      <div id="soulRefEarthDescText" class="ref-desc-title">9系列（過去印記／地球資料庫）</div>
       <div id="soulRefEarthTable" style="font-size:12px;margin-bottom:14px"></div>
-      <div id="soulRefDimDescText" style="font-size:13px;font-weight:700;color:#444;text-align:center;margin-bottom:8px">次元意識參考表</div>
+      <div id="soulRefDimDescText" class="ref-desc-title">次元意識參考表</div>
       <table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;margin-bottom:14px">
         <tbody id="soulRefDimTable"></tbody>
       </table>
@@ -590,6 +615,8 @@ body{background:#f5f5f5;color:#1a1a1a;font-family:'M PLUS Rounded 1c',sans-serif
   </div>
 </div>
 <script>
+// 平台判斷 isNativeApp() 定義在 <head> 最前面（window.isNativeApp），這裡沿用同一份，不重複定義。
+
 // ── i18n ──────────────────────────────────────────────────────
 const T={
   zh:{
@@ -618,6 +645,7 @@ const T={
     recNeedDate:'請先輸入生日，再儲存', recSaved:'已儲存',
     recUnnamed:'未命名',
     recListTitle:'已存紀錄', recEmpty:'尚無紀錄', recExportBtn:'匯出', recImportBtn:'匯入',
+    recSearchPh:'搜尋姓名', recSearchEmpty:'沒有符合的紀錄',
     recImportSuccess:'已匯入 {n} 筆新紀錄', recImportNone:'沒有新紀錄可匯入（可能已經匯入過）', recImportError:'匯入失敗，檔案格式不正確',
     recLoadBtn:'載入', recDeleteBtn:'刪除',
     recDeleteConfirm:'確定刪除？', recDeleteYes:'刪除', recDeleteNo:'取消',
@@ -668,6 +696,7 @@ const T={
     recNeedDate:'Please enter a birthday first', recSaved:'Saved',
     recUnnamed:'Unnamed',
     recListTitle:'Saved Records', recEmpty:'No records yet', recExportBtn:'Export', recImportBtn:'Import',
+    recSearchPh:'Search by name', recSearchEmpty:'No matching records',
     recImportSuccess:'Imported {n} new record(s)', recImportNone:'No new records to import (may already be imported)', recImportError:'Import failed, invalid file format',
     recLoadBtn:'Load', recDeleteBtn:'Delete',
     recDeleteConfirm:'Delete this record?', recDeleteYes:'Delete', recDeleteNo:'Cancel',
@@ -809,6 +838,7 @@ function applyLang(){
   document.getElementById('recordsPanelTitle').textContent=t('recordsPanelTitle');
   document.getElementById('recCurrentTitle').textContent=t('recCurrentTitle');
   document.getElementById('recNameInput').placeholder=t('recNameInputPh');
+  document.getElementById('recSearchInput').placeholder=t('recSearchPh');
   document.getElementById('recSaveBtn').textContent=t('recSaveBtn');
   document.getElementById('recListTitle').textContent=t('recListTitle');
   document.getElementById('recExportBtnText').textContent=t('recExportBtn');
@@ -1022,7 +1052,7 @@ function renderCalSection(el,isGreg,dateStr,y,m,d,h,mn,innate,showBtn=true,isLea
   if(hasMins) dateParts.push(mn);
   const colStyle=`grid-template-columns:repeat(${cols},1fr);`;
   let headerCells=dateParts.map((v,i)=>{
-    if(i===1&&isLeapMonth) return`<div class="num-cell label"><span style="font-size:11px;color:#e06c75;margin-right:1px;vertical-align:middle">${t('leap')}</span>${p2(v)}</div>`;
+    if(i===1&&isLeapMonth) return`<div class="num-cell label"><span class="leap-badge">${t('leap')}</span>${p2(v)}</div>`;
     return`<div class="num-cell label">${i===0?v:p2(v)}</div>`;
   }).join('');
   const stageOrder=['老年','中年','青年','少年','幼年'].slice(0,cols);
@@ -1155,8 +1185,8 @@ function renderFlowYear(el,sets,todayY,todayM,todayD){
     const{gFY,lFY,gInnate,lInnate}=calcFlowData(s.gregY,s.gregM,s.gregD,s.lunY,s.lunM,s.lunD,todayY,todayM,todayD);
     const gFYS=makeStage(sumArr([...digs(gFY),...digs(s.gregM),...digs(s.gregD)]));
     const lFYS=makeStage(sumArr([...digs(lFY),...digs(s.lunM),...digs(s.lunD)]));
-    const fyBtn=idx===0?'<button onclick="toggleFlowSection(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;justify-self:end">▲</button>':'<span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span>';
-    const titleDiv=`<div class="section-title" style="display:grid;grid-template-columns:28px 78px 1fr 78px 28px;align-items:center"><span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">+${flowLvBadge(gFYS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowYear'):'　　'}</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">-${flowLvBadge(lFYS,lInnate,true)}</span>${fyBtn}</div>`;
+    const fyBtn=idx===0?'<button onclick="toggleFlowSection(this)" class="flow-toggle-btn">▲</button>':'<span class="flow-arrow-hidden">▲</span>';
+    const titleDiv=`<div class="section-title flow-title-row"><span class="flow-arrow-hidden">▲</span><span class="sign flow-sign">+${flowLvBadge(gFYS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowYear'):'　　'}</span><span class="sign flow-sign">-${flowLvBadge(lFYS,lInnate,true)}</span>${fyBtn}</div>`;
     const centerY=Math.max(gFY,lFY);
     const fyYears=[centerY-1,centerY,centerY+1];
     const fyLabels=fyYears.map(yr=>String(yr));
@@ -1179,7 +1209,7 @@ function renderFlowYear(el,sets,todayY,todayM,todayD){
     }).join('');
     const gridDiv=`<div class="flow-new-grid flow-year-grid">${fyCells}</div>`;
     if(idx===0) html+=titleDiv+gridDiv;
-    else html+=`<div style="margin-top:12px;padding-top:12px;border-top:1px dashed #ddd">${titleDiv}${gridDiv}</div>`;
+    else html+=`<div class="rec-divider">${titleDiv}${gridDiv}</div>`;
   });
   html+='</div>';
   el.innerHTML=html;
@@ -1310,7 +1340,7 @@ function renderPhase(el,sets,todayY,todayM,todayD){
       </div>
     </div>`;
     if(idx===0) html+=wrap;
-    else html+=`<div style="margin-top:12px;padding-top:12px;border-top:1px dashed #ddd">${wrap}</div>`;
+    else html+=`<div class="rec-divider">${wrap}</div>`;
   });
   html+='</div>';
   el.innerHTML=html;
@@ -1344,8 +1374,8 @@ function renderFlowMonth(el,sets,todayY,todayM,todayD){
     const{gFM,lFM,gInnate,lInnate}=calcFlowData(s.gregY,s.gregM,s.gregD,s.lunY,s.lunM,s.lunD,todayY,todayM,todayD);
     const gFMS=makeStage(sumArr([...digs(s.gregY),...digs(gFM),...digs(s.gregD)]));
     const lFMS=makeStage(sumArr([...digs(s.lunY),...digs(lFM),...digs(s.lunD)]));
-    const fmBtn=idx===0?'<button onclick="toggleFlowSection(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;justify-self:end">▲</button>':'<span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span>';
-    const titleDiv=`<div class="section-title" style="display:grid;grid-template-columns:28px 78px 1fr 78px 28px;align-items:center"><span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">+${flowLvBadge(gFMS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowMonth'):'　　'}</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">-${flowLvBadge(lFMS,lInnate,true)}</span>${fmBtn}</div>`;
+    const fmBtn=idx===0?'<button onclick="toggleFlowSection(this)" class="flow-toggle-btn">▲</button>':'<span class="flow-arrow-hidden">▲</span>';
+    const titleDiv=`<div class="section-title flow-title-row"><span class="flow-arrow-hidden">▲</span><span class="sign flow-sign">+${flowLvBadge(gFMS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowMonth'):'　　'}</span><span class="sign flow-sign">-${flowLvBadge(lFMS,lInnate,true)}</span>${fmBtn}</div>`;
     const fmCells=fmMonthLabels.map((lbl,i)=>{
       const mo=i+1;
       const isCurrentG=(mo===gFM);
@@ -1366,7 +1396,7 @@ function renderFlowMonth(el,sets,todayY,todayM,todayD){
     }).join('');
     const gridDiv=`<div class="flow-new-grid flow-month-grid">${fmCells}</div>`;
     if(idx===0) html+=titleDiv+gridDiv;
-    else html+=`<div style="margin-top:12px;padding-top:12px;border-top:1px dashed #ddd">${titleDiv}${gridDiv}</div>`;
+    else html+=`<div class="rec-divider">${titleDiv}${gridDiv}</div>`;
   });
   html+='</div>';
   el.innerHTML=html;
@@ -1400,8 +1430,8 @@ function renderFlowDay(el,sets,todayY,todayM,todayD){
     const{gInnate,lInnate}=calcFlowData(s.gregY,s.gregM,s.gregD,s.lunY,s.lunM,s.lunD,todayY,todayM,todayD);
     const gFDS=makeStage(sumArr([...digs(s.gregY),...digs(s.gregM),...digs(todayD)]));
     const lFDS=makeStage(sumArr([...digs(s.lunY),...digs(s.lunM),...digs(solarToLunar(todayY,todayM,todayD)?.day||todayD)]));
-    const fdBtn=idx===0?'<button onclick="toggleFlowSection(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;justify-self:end">▲</button>':'<span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span>';
-    const titleDiv=`<div class="section-title" style="display:grid;grid-template-columns:28px 78px 1fr 78px 28px;align-items:center"><span style="background:none;border:none;font-size:10px;padding:0 4px 0 8px;visibility:hidden;justify-self:end">▲</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">+${flowLvBadge(gFDS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowDay'):'　　'}</span><span class="sign" style="font-size:11px;color:#aaa;text-align:center;white-space:nowrap">-${flowLvBadge(lFDS,lInnate,true)}</span>${fdBtn}</div>`;
+    const fdBtn=idx===0?'<button onclick="toggleFlowSection(this)" class="flow-toggle-btn">▲</button>':'<span class="flow-arrow-hidden">▲</span>';
+    const titleDiv=`<div class="section-title flow-title-row"><span class="flow-arrow-hidden">▲</span><span class="sign flow-sign">+${flowLvBadge(gFDS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowDay'):'　　'}</span><span class="sign flow-sign">-${flowLvBadge(lFDS,lInnate,true)}</span>${fdBtn}</div>`;
     function fdStageG(dy){return makeStage(sumArr([...digs(s.gregY),...digs(s.gregM),...digs(dy)]));}
     function fdStageL(dy){
       const lunar=solarToLunar(calYear,calMonth,dy);
@@ -1424,7 +1454,7 @@ function renderFlowDay(el,sets,todayY,todayM,todayD){
     }
     const gridDiv=`<div class="flow-cal-wrap">${monthNavHtml}<div class="flow-cal-grid"><div class="flow-cal-week">${weekHeaders}</div><div class="flow-cal-body">${calCells}</div></div></div>`;
     if(idx===0) html+=titleDiv+gridDiv;
-    else html+=`<div style="margin-top:12px;padding-top:12px;border-top:1px dashed #ddd">${titleDiv}${gridDiv}</div>`;
+    else html+=`<div class="rec-divider">${titleDiv}${gridDiv}</div>`;
   });
   html+='</div>';
   el.innerHTML=html;
@@ -1483,7 +1513,7 @@ function renderFlowYearTable(el,birthY,birthM,birthD,innate,isGreg,isLeap,h=null
   const titleWithDate=`<div class="cal-title">${calTitle}</div>`;
   const hasTime=h!==null,hasMins=mn!==null;
   const ftCols=hasTime?(hasMins?5:4):3;
-  const bdParts=[birthY,(isLeap?`<span style="font-size:11px;color:#e06c75;margin-right:1px;vertical-align:middle">${t('leap')}</span>`:'')+p2(birthM),p2(birthD)];
+  const bdParts=[birthY,(isLeap?`<span class="leap-badge">${t('leap')}</span>`:'')+p2(birthM),p2(birthD)];
   if(h!==null) bdParts.push(p2(h));
   if(mn!==null) bdParts.push(p2(mn));
   const bdCells=bdParts.map(v=>`<div class="num-cell label">${v}</div>`).join('');
@@ -2084,6 +2114,8 @@ function renderRecCurrentDate(){
 
 function openRecordsPanel(){
   document.getElementById('recNameInput').value='';
+  document.getElementById('recSearchInput').value='';
+  _recSearchQuery='';
   setRecMsg('','');
   renderRecCurrentDate();
   renderRecordList();
@@ -2218,7 +2250,7 @@ function toggleRecordDetail(id){
 function recordItemHtml(r){
   const checkedAttr=_pairSel.includes(r.id)?' checked':'';
   return`<div class="rec-item${r.pinned?' rec-pinned':''}" id="rec-item-${r.id}">
-      <div class="rec-pin-badge${r.pinned?' active':''}" onclick="toggleRecordPin(${r.id})"><svg viewBox="0 0 384 512"><path d="M32 32C32 14.3 46.3 0 64 0H320c17.7 0 32 14.3 32 32s-14.3 32-32 32h-3.6l12.2 122.2c48.5 21.4 84.1 66.7 90.8 121.1l.5 4.3c.6 4.6-.9 9.3-4 12.8s-7.6 5.5-12.3 5.5H32c-4.7 0-9.1-2-12.3-5.5s-4.6-8.2-4-12.8l.5-4.3c6.7-54.4 42.3-99.7 90.8-121.1L119.6 64H116c-17.7 0-32-14.3-32-32zM160 464V336h64V464c0 26.5-14.3 48-32 48s-32-21.5-32-48z"/></svg></div>
+      <div class="rec-pin-badge${r.pinned?' active':''}" onclick="toggleRecordPin(${r.id})"><svg viewBox="0 0 384 512"><path d="M32 32C32 14.3 46.3 0 64 0L320 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-29.5 0 10.3 134.1c37.1 21.2 65.8 56.4 78.2 99.7l3.8 13.4c2.8 9.7 .8 20-5.2 28.1S362 352 352 352L32 352c-10 0-19.5-4.7-25.5-12.7s-8-18.4-5.2-28.1L5 297.8c12.4-43.3 41-78.5 78.2-99.7L93.5 64 64 64C46.3 64 32 49.7 32 32zM160 400l64 0 0 112c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-112z"/></svg></div>
       <div class="rec-item-head">
         <button class="rec-toggle-btn rec-detail-toggle-dummy" id="rec-detail-dummy-${r.id}" disabled>${t('recExpand')}</button>
         <div class="rec-check-wrap"><input type="checkbox" class="rec-check" id="rec-check-${r.id}" onchange="togglePairSel(${r.id},this)"${checkedAttr}></div>
@@ -2234,6 +2266,11 @@ function recordItemHtml(r){
       <div class="rec-item-confirm" id="rec-confirm-${r.id}"></div>
     </div>`;
 }
+let _recSearchQuery='';
+function onRecSearchInput(v){
+  _recSearchQuery=v.trim();
+  renderRecordList();
+}
 function renderRecordList(){
   const list=getRecords();
   const wrap=document.getElementById('recList');
@@ -2246,11 +2283,16 @@ function renderRecordList(){
   // 已勾選要合盤的紀錄整張卡片移到頂端 sticky 區域，跟著合盤按鈕一起浮動；
   // 捲動列表只顯示尚未勾選的（釘選優先，其餘維持原順序）
   const selItems=_pairSel.map(id=>list.find(r=>r.id===id)).filter(Boolean);
-  const nonSelItems=list.filter(r=>!_pairSel.includes(r.id));
+  let nonSelItems=list.filter(r=>!_pairSel.includes(r.id));
+  // 搜尋框只篩選捲動列表，已勾選要合盤的卡片維持固定顯示、不受篩選影響
+  if(_recSearchQuery){
+    const q=_recSearchQuery.toLowerCase();
+    nonSelItems=nonSelItems.filter(r=>String(r.name).toLowerCase().includes(q));
+  }
   const pinnedItems=nonSelItems.filter(r=>r.pinned);
   const otherItems=nonSelItems.filter(r=>!r.pinned);
   const ordered=[...pinnedItems,...otherItems];
-  wrap.innerHTML=ordered.map(recordItemHtml).join('');
+  wrap.innerHTML=ordered.length?ordered.map(recordItemHtml).join(''):`<div class="rec-empty">${t('recSearchEmpty')}</div>`;
   document.getElementById('recPairSticky').innerHTML=selItems.length>0
     ?selItems.map(recordItemHtml).join('')+pairFooterHtml(selItems)
     :'';
@@ -2421,7 +2463,7 @@ function buildPairStageBlock(y,m,d,h,mn,isGreg,isLeap){
   const{innate,stages}=calcStages(y,m,d,h,mn);
   const calTitle=`<div class="cal-title">${isGreg?t('greg'):t('lun')}<span class="cal-sign">${isGreg?'(+)':'(-)'}</span></div>`;
   const ftCols=(h!==null)?(mn!==null?5:4):3;
-  const bdParts=[y,(isLeap?`<span style="font-size:11px;color:#e06c75;margin-right:1px;vertical-align:middle">${t('leap')}</span>`:'')+p2(m),p2(d)];
+  const bdParts=[y,(isLeap?`<span class="leap-badge">${t('leap')}</span>`:'')+p2(m),p2(d)];
   if(h!==null) bdParts.push(p2(h));
   if(mn!==null) bdParts.push(p2(mn));
   const bdCells=bdParts.map(v=>`<div class="num-cell label">${v}</div>`).join('');
