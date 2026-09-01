@@ -485,7 +485,7 @@ document.write('<script src="' + (window.__isNative ? 'lib/html2canvas.min.js' :
         </div>
         <div class="screenshot-btn-wrap" style="text-align:center;padding:16px 0 12px"><button id="screenshotBtn" onclick="takeScreenshot()" class="screenshot-btn" style="padding:4px 14px;border:1px solid #ddd;border-radius:14px;font-size:12px;color:#888;letter-spacing:.08em;background:#fff;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#bbb';this.style.color='#555'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">📷 <span id="screenshotText">儲存截圖</span></button></div>
         <div class="innate-section" id="innateSection">
-          <div class="section-title" id="innateTitle" style="display:grid;grid-template-columns:auto 1fr auto;align-items:center"><button disabled style="-webkit-appearance:none;appearance:none;background:none;border:none;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;white-space:nowrap;visibility:hidden">展開 ▼</button><span id="innateTitleText">先天數</span><button onclick="toggleNineGrid(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;white-space:nowrap">收合 ▲</button></div>
+          <div class="section-title" id="innateTitle" style="display:grid;grid-template-columns:auto 1fr auto;align-items:center"><button disabled style="-webkit-appearance:none;appearance:none;background:none;border:none;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;white-space:nowrap;visibility:hidden">展開 ▼</button><span id="innateTitleText">先天數</span><button onclick="toggleNineGrid(this)" style="-webkit-appearance:none;appearance:none;background:none;border:none;cursor:pointer;color:#aaa;font-size:10px;font-family:inherit;font-weight:inherit;line-height:inherit;margin:0;padding:0 4px 0 8px;white-space:nowrap">展開 ▼</button></div>
           <div id="nineGridSection"></div>
           <div id="nineGridSection2" class="hidden rec-divider"></div>
           <div id="nineGridSection3" class="hidden rec-divider"></div>
@@ -686,7 +686,7 @@ const T={
     greg:'Solar', lun:'Lunar', leap:'Leap',
     flowYear:'Annual Transit', flowMonth:'Monthly Transit', flowDay:'Daily Transit',
     flowTableSuffix:'9-Year Energy Rhythm',
-    coffee:'🧋 Buy Me a Bubble Tea', coffeeUrl:'https://buy.stripe.com/5kQ8wQe1NcdT9cN4Sq8Vi00', studio:'The Roots Hollow',
+    coffee:'🧋 Buy Me a Bubble Tea', coffeeUrl:'https://buy.stripe.com/7sY8wQe1NdhXbkV98G8Vi01', studio:'The Roots Hollow',
     langBtn:'中文',
     g4:'4D', g5:'5D', g6:'6D+',
     hideBd:'Hide Birthday', showBd:'Show Birthday',
@@ -1137,11 +1137,15 @@ function renderNineGrids(gInnate,lInnate,gPathNums,lPathNums,gDestNums,lDestNums
     `;
   // 保留已有內容（如標題），只移除舊的 nine-grid-wrap
   const existing=el.querySelector('.nine-grid-wrap');
-  const wasCollapsed=existing&&existing.querySelector('.nine-grid-collapsible.collapsed');
+  const wasExpanded=existing&&!existing.querySelector('.nine-grid-collapsible.collapsed');
   if(existing) existing.remove();
   el.insertAdjacentHTML('beforeend',gridHtmlStr);
-  if(wasCollapsed){
+  if(!wasExpanded){
     el.querySelectorAll('.nine-grid-collapsible').forEach(w=>w.classList.add('collapsed'));
+  }
+  const nineGridToggleBtn=document.querySelector('#innateTitle button[onclick="toggleNineGrid(this)"]');
+  if(nineGridToggleBtn){
+    nineGridToggleBtn.textContent=wasExpanded?(lang==='en'?'Collapse ▲':'收合 ▲'):(lang==='en'?'Expand ▼':'展開 ▼');
   }
 }
 
@@ -1179,13 +1183,13 @@ function flowLvBadge(s,innate,bold=false){
 function renderFlowYear(el,sets,todayY,todayM,todayD){
   // sets = [{gregY,gregM,gregD,lunY,lunM,lunD,sup}] 1或2組，sup='¹'或'²'
   const prevGrid=el.querySelector('.flow-new-grid,.flow-cal-wrap');
-  const wasCollapsed=prevGrid&&prevGrid.style.display==='none';
+  const wasExpanded=prevGrid&&prevGrid.style.display!=='none';
   let html='<div class="flow-new-section">';
   sets.forEach((s,idx)=>{
     const{gFY,lFY,gInnate,lInnate}=calcFlowData(s.gregY,s.gregM,s.gregD,s.lunY,s.lunM,s.lunD,todayY,todayM,todayD);
     const gFYS=makeStage(sumArr([...digs(gFY),...digs(s.gregM),...digs(s.gregD)]));
     const lFYS=makeStage(sumArr([...digs(lFY),...digs(s.lunM),...digs(s.lunD)]));
-    const fyBtn=idx===0?'<button onclick="toggleFlowSection(this)" class="flow-toggle-btn">▲</button>':'<span class="flow-arrow-hidden">▲</span>';
+    const fyBtn=idx===0?'<button onclick="toggleFlowSection(this)" class="flow-toggle-btn">▼</button>':'<span class="flow-arrow-hidden">▲</span>';
     const titleDiv=`<div class="section-title flow-title-row"><span class="flow-arrow-hidden">▲</span><span class="sign flow-sign">+${flowLvBadge(gFYS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowYear'):'　　'}</span><span class="sign flow-sign">-${flowLvBadge(lFYS,lInnate,true)}</span>${fyBtn}</div>`;
     const centerY=Math.max(gFY,lFY);
     const fyYears=[centerY-1,centerY,centerY+1];
@@ -1213,7 +1217,7 @@ function renderFlowYear(el,sets,todayY,todayM,todayD){
   });
   html+='</div>';
   el.innerHTML=html;
-  if(wasCollapsed){
+  if(!wasExpanded){
     el.querySelectorAll('.flow-new-grid,.flow-cal-wrap').forEach(g=>g.style.display='none');
     const btn=el.querySelector('[onclick="toggleFlowSection(this)"]');
     if(btn) btn.textContent='▼';
@@ -1367,14 +1371,14 @@ function _reRenderFlowDay(){
 // ── 流月 ──
 function renderFlowMonth(el,sets,todayY,todayM,todayD){
   const prevGrid=el.querySelector('.flow-new-grid,.flow-cal-wrap');
-  const wasCollapsed=prevGrid&&prevGrid.style.display==='none';
+  const wasExpanded=prevGrid&&prevGrid.style.display!=='none';
   const fmMonthLabels=lang==='en'?['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
   let html='<div class="flow-new-section">';
   sets.forEach((s,idx)=>{
     const{gFM,lFM,gInnate,lInnate}=calcFlowData(s.gregY,s.gregM,s.gregD,s.lunY,s.lunM,s.lunD,todayY,todayM,todayD);
     const gFMS=makeStage(sumArr([...digs(s.gregY),...digs(gFM),...digs(s.gregD)]));
     const lFMS=makeStage(sumArr([...digs(s.lunY),...digs(lFM),...digs(s.lunD)]));
-    const fmBtn=idx===0?'<button onclick="toggleFlowSection(this)" class="flow-toggle-btn">▲</button>':'<span class="flow-arrow-hidden">▲</span>';
+    const fmBtn=idx===0?'<button onclick="toggleFlowSection(this)" class="flow-toggle-btn">▼</button>':'<span class="flow-arrow-hidden">▲</span>';
     const titleDiv=`<div class="section-title flow-title-row"><span class="flow-arrow-hidden">▲</span><span class="sign flow-sign">+${flowLvBadge(gFMS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowMonth'):'　　'}</span><span class="sign flow-sign">-${flowLvBadge(lFMS,lInnate,true)}</span>${fmBtn}</div>`;
     const fmCells=fmMonthLabels.map((lbl,i)=>{
       const mo=i+1;
@@ -1400,7 +1404,7 @@ function renderFlowMonth(el,sets,todayY,todayM,todayD){
   });
   html+='</div>';
   el.innerHTML=html;
-  if(wasCollapsed){
+  if(!wasExpanded){
     el.querySelectorAll('.flow-new-grid,.flow-cal-wrap').forEach(g=>g.style.display='none');
     const btn=el.querySelector('[onclick="toggleFlowSection(this)"]');
     if(btn) btn.textContent='▼';
@@ -1410,7 +1414,7 @@ function renderFlowMonth(el,sets,todayY,todayM,todayD){
 // ── 流日 ──
 function renderFlowDay(el,sets,todayY,todayM,todayD){
   const prevGrid=el.querySelector('.flow-new-grid,.flow-cal-wrap');
-  const wasCollapsed=prevGrid&&prevGrid.style.display==='none';
+  const wasExpanded=prevGrid&&prevGrid.style.display!=='none';
   const weekLabels=lang==='en'?['Mon','Tue','Wed','Thu','Fri','Sat','Sun']:['週一','週二','週三','週四','週五','週六','週日'];
   const weekHeaders=weekLabels.map(w=>`<div class="flow-cal-head">${w}</div>`).join('');
   const calYear=todayY,calMonth=todayM;
@@ -1430,7 +1434,7 @@ function renderFlowDay(el,sets,todayY,todayM,todayD){
     const{gInnate,lInnate}=calcFlowData(s.gregY,s.gregM,s.gregD,s.lunY,s.lunM,s.lunD,todayY,todayM,todayD);
     const gFDS=makeStage(sumArr([...digs(s.gregY),...digs(s.gregM),...digs(todayD)]));
     const lFDS=makeStage(sumArr([...digs(s.lunY),...digs(s.lunM),...digs(solarToLunar(todayY,todayM,todayD)?.day||todayD)]));
-    const fdBtn=idx===0?'<button onclick="toggleFlowSection(this)" class="flow-toggle-btn">▲</button>':'<span class="flow-arrow-hidden">▲</span>';
+    const fdBtn=idx===0?'<button onclick="toggleFlowSection(this)" class="flow-toggle-btn">▼</button>':'<span class="flow-arrow-hidden">▲</span>';
     const titleDiv=`<div class="section-title flow-title-row"><span class="flow-arrow-hidden">▲</span><span class="sign flow-sign">+${flowLvBadge(gFDS,gInnate,true)}</span><span style="text-align:center">${idx===0?t('flowDay'):'　　'}</span><span class="sign flow-sign">-${flowLvBadge(lFDS,lInnate,true)}</span>${fdBtn}</div>`;
     function fdStageG(dy){return makeStage(sumArr([...digs(s.gregY),...digs(s.gregM),...digs(dy)]));}
     function fdStageL(dy){
@@ -1458,7 +1462,7 @@ function renderFlowDay(el,sets,todayY,todayM,todayD){
   });
   html+='</div>';
   el.innerHTML=html;
-  if(wasCollapsed){
+  if(!wasExpanded){
     el.querySelectorAll('.flow-new-grid,.flow-cal-wrap').forEach(g=>g.style.display='none');
     const btn=el.querySelector('[onclick="toggleFlowSection(this)"]');
     if(btn) btn.textContent='▼';
