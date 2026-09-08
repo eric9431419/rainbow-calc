@@ -1165,8 +1165,8 @@ function calcFlowData(gregY,gregM,gregD,lunY,lunM,lunD,todayY,todayM,todayD){
   const lDayPassed=ltd>=lunD;
   let lFM=ltm;
   if(!lDayPassed){lFM=ltm-1;if(lFM<1)lFM=12;}
-  const gInnate=[...digs(gregY),...digs(gregM),...digs(gregD)];
-  const lInnate=[...digs(lunY),...digs(lunM),...digs(lunD)];
+  const gInnate=String(gregY).split('').concat(p2(gregM).split(''),p2(gregD).split('')).map(Number);
+  const lInnate=String(lunY).split('').concat(p2(lunM).split(''),p2(lunD).split('')).map(Number);
   return{gFY,gFM,lFY,lFM,gInnate,lInnate};
 }
 
